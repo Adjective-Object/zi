@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib",
+        "module": "CommonJS"
+    },
+    "include": ["./src"],
+    "exclude": ["./lib"],
+    "references": []
+}

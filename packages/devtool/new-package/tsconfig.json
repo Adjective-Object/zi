@@ -1,0 +1,18 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib",
+        "module": "CommonJS"
+    },
+    "include": ["./src"],
+    "exclude": ["./lib"],
+    "references": [
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.json"
+        }
+    ]
+}

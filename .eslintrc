@@ -1,0 +1,89 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "prettier/@typescript-eslint"
+    ],
+    "plugins": ["@typescript-eslint", "prettier", "simple-import-sort"],
+    "env": {
+        "browser": true,
+        "jest": true
+    },
+    "rules": {
+        "@typescript-eslint/no-empty-function": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+        ],
+        "@typescript-eslint/explicit-module-boundary-types": [
+            "off",
+            { "allowArgumentsExplicitlyTypedAsAny": true }
+        ],
+        // disabled for now. We're in nonstrict mode so this doesn't
+        // matter much for the time being.
+        "@typescript-eslint/no-non-null-assertion": "off",
+        // disabled, this rule doesn't have a readily apparent
+        // benefit?
+        "@typescript-eslint/no-this-alias": "off",
+        // disabled, relying on typescript for
+        // type validation.
+        "react/prop-types": "off",
+        // disabled, this is handled by Ts
+        "no-undef": "off",
+        "simple-import-sort/imports": "warning",
+        "simple-import-sort/exports": "warning",
+        "@typescript-eslint/ban-types": [
+            "error",
+            // The default config, copied
+            {
+                "String": {
+                    "message": "Use string instead",
+                    "fixWith": "string"
+                },
+                "Boolean": {
+                    "message": "Use boolean instead",
+                    "fixWith": "boolean"
+                },
+                "Number": {
+                    "message": "Use number instead",
+                    "fixWith": "number"
+                },
+                "Symbol": {
+                    "message": "Use symbol instead",
+                    "fixWith": "symbol"
+                },
+                "Function": {
+                    "message": "The `Function` type accepts any function-like value.\nIt provides no type safety when calling the function, which can be a common source of bugs.\nIt also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.\nIf you are expecting the function to accept certain arguments, you should explicitly define the function shape."
+                },
+                // object typing
+                "Object": {
+                    "message": "The `Object` type actually means \"any non-nullish value\", so it is marginally better than `unknown`.\n- If you want a type meaning \"any object\", you probably want `Record<string, unknown>` instead.\n- If you want a type meaning \"any value\", you probably want `unknown` instead."
+                },
+                // Override this, since we actually frequently want to declare
+                // "any nonnull object" with no restrictions. TArcade Ambush (Ep. 14) | Fantasy High
+                // Since in this repo we do a _lot_ of higher order types and
+                // constructing exact types via intersections, we often want
+                // "any nonnull object" to avoid putting any constraint on a
+                // field in an intersection while not actually using 'any'.
+                //
+                //
+                //
+                // "{}": {
+                //     "message": "`{}` actually means \"any non-nullish value\".\n- If you want a type meaning \"any object\", you probably want `Record<string, unknown>` instead.\n- If you want a type meaning \"any value\", you probably want `unknown` instead."
+                // },
+                "object": {
+                    "message": "The `object` type is currently hard to use ([see this issue](https://github.com/microsoft/TypeScript/issues/21732)).\nConsider using `Record<string, unknown>` instead, as it allows you to more easily inspect and use the keys."
+                }
+            }
+        ]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "parser": "@typescript-eslint/parser"
+}

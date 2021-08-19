@@ -1,0 +1,11 @@
+{
+  "name": "async-spawn",
+  "devDependencies": {
+    "@types/node": "^14.14.45",
+    "eslint": "^7.26.0",
+    "prettier": "^2.3.0",
+    "typescript": "^4.2.4"
+  },
+  "main": "lib/index.js",
+  "input": "src/index.ts"
+}

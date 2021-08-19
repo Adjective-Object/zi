@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2019",
+        "lib": ["es2019", "dom"],
+        "sourceMap": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "noErrorTruncation": true,
+        "declaration": true,
+        "composite": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "exclude": ["node_modules", "packages/**/lib/*"]
+}

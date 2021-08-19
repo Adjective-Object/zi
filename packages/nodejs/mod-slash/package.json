@@ -1,0 +1,34 @@
+{
+    "name": "mod-slash",
+    "version": "0.0.0",
+    "description": "A fork of npm:slash with module:true",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/draftsim#readme",
+    "license": "UNLICENSED",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "input": "src/index.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Adjective-Object/draftsim.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/draftsim/issues"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.45",
+        "eslint": "^7.26.0",
+        "prettier": "^2.3.0",
+        "typescript": "^4.2.4"
+    }
+}
