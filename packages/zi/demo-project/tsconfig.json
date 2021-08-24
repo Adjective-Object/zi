@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib",
+        "module": "CommonJS"
+    },
+    "include": ["./src"],
+    "exclude": ["./lib"],
+    "references": [
+        {
+            "path": "../rollup-plugin-zi-import-hijack/tsconfig.json"
+        }
+    ],
+    "extends": "../../../tsconfig.json"
+}
