@@ -109,6 +109,9 @@ export function asyncSpawn(...args: [any, ...any[]]): Promise<number> {
             resolve(exitCode);
         }
     });
+    child.on('error', (err: Error) => {
+        reject(err);
+    });
     return new Promise<number>((res, rej) => {
         resolve = res;
         reject = rej;

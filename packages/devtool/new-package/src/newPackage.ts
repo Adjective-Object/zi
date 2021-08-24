@@ -8,9 +8,7 @@ import {
     PortablePath,
     npath,
 } from '@yarnpkg/fslib';
-import { promisify } from 'util';
-import { spawn } from 'child_process';
-const spawnPromise = promisify(spawn);
+import { asyncSpawn } from 'async-spawn';
 
 function kebabToCamel(kebab: string): string {
     const [firstWord, ...restWords] = kebab.split('-');
@@ -58,18 +56,19 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
         return 1;
     }
 
-    // check if the package destination path already exists
-    if (await fs.existsPromise(destinationDirectory)) {
-        console.error(`Path ${destinationDirectory} already existed`);
-        return 1;
-    }
-
     // Make the destination directory
     const newPackageDirectory: PortablePath = ppath.join(
         packagesDirectory,
         destinationDirectory,
         intendedPackageName,
     );
+
+    // check if the package destination path already exists
+    if (await fs.existsPromise(newPackageDirectory)) {
+        console.error(`Path ${newPackageDirectory} already existed`);
+        return 1;
+    }
+
     const srcDir: PortablePath = ppath.join(
         newPackageDirectory,
         toFilename('src'),
@@ -83,6 +82,7 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
         toFilename('new-package-template'),
     );
     const templateContents = await fs.readdirPromise(templateDirPath);
+    const camelCaseName = kebabToCamel(intendedPackageName);
     await Promise.all(
         templateContents.map(async (fileName) => {
             const templateFilePath = ppath.join(templateDirPath, fileName);
@@ -101,7 +101,6 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
                         'utf-8',
                     )) as unknown as string,
                 );
-                const camelCaseName = kebabToCamel(intendedPackageName);
                 await fs.writeFilePromise(
                     templateFileDestinationPath,
                     JSON.stringify(
@@ -117,7 +116,7 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
                     ),
                 );
             } else if (fileName === '_tsconfig.json') {
-                console.log('  templating and copying tsconfig.json');
+                console.log('  templating and copying tsconfig.json...');
                 // ts not picking up the overloaded file definition..
                 const templatePackageJson = JSON.parse(
                     (await fs.readFilePromise(
@@ -150,6 +149,17 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
                 );
             }
         }),
+    );
+
+    console.log('  creating source entrypoint...');
+    await fs.mkdirpPromise(ppath.join(destinationDirectory, toFilename('src')));
+    await fs.writeFilePromise(
+        ppath.join(
+            destinationDirectory,
+            toFilename('src'),
+            toFilename(`${camelCaseName}.ts`),
+        ),
+        '',
     );
 
     console.log(
@@ -197,11 +207,20 @@ async function main(): Promise<number> {
         return exitCode;
     }
 
-    console.log('spawning yarn to resolve the workspace');
-    await spawnPromise('yarn', ['install'], {
-        cwd: project.cwd,
-        stdio: 'inherit',
-    });
+    const packageNativeDir = npath.fromPortablePath(project.cwd);
+    console.log('spawning yarn to resolve the workspace in', packageNativeDir);
+    try {
+        await asyncSpawn('yarn', ['install'], {
+            cwd: packageNativeDir,
+            stdio: 'inherit',
+        });
+    } catch (e) {
+        console.error('encountered error trying to run yarn', e);
+        console.error(
+            'you may need to run yarn manually to resolve your workspace',
+        );
+        return 1;
+    }
 
     return exitCode;
 }
