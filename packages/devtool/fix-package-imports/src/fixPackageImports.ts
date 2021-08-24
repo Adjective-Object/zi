@@ -399,6 +399,7 @@ async function main() {
     const packageJsonPaths = (
         await glob('**/package.json', {
             cwd: packagesDir,
+            ignore: '**/node_modules/**',
         })
     ).map((file) => path.join(packagesDir, file));
 
