@@ -106,9 +106,9 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
                     JSON.stringify(
                         {
                             name: intendedPackageName,
-                            main: `dist/${camelCaseName}.js`,
-                            module: `dist/${camelCaseName}.es.js`,
-                            types: `dist/types/${camelCaseName}.d.ts`,
+                            main: `lib/${camelCaseName}.js`,
+                            module: `lib/${camelCaseName}.es.js`,
+                            types: `lib/types/${camelCaseName}.d.ts`,
                             ...templatePackageJson,
                         },
                         null,
@@ -133,6 +133,7 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
                                 ...destinationDirectory
                                     .split(ppath.sep)
                                     .map(() => toFilename('..')),
+                                toFilename('..'),
                                 toFilename('..'),
                                 toFilename('tsconfig.json'),
                             ),
