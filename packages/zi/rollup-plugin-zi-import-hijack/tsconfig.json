@@ -4,15 +4,11 @@
         "rootDir": "src",
         "outDir": "lib",
         "strict": true,
-        "module": "CommonJS",
+        "module": "ESNext",
         "composite": true
     },
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": [
         {
             "path": "../../nodejs/mod-slash/tsconfig.json"

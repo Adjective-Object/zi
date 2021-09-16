@@ -3,15 +3,11 @@
         "rootDir": "src",
         "outDir": "lib",
         "strict": true,
-        "module": "CommonJS",
+        "module": "ESNext",
         "composite": true
     },
     "extends": "../../../tsconfig.json",
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": []
 }

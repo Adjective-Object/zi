@@ -2,14 +2,10 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib",
-        "module": "CommonJS"
+        "module": "ESNext"
     },
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": [],
     "extends": "../../../tsconfig.json"
 }

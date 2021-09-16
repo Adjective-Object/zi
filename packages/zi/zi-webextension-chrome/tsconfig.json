@@ -6,6 +6,10 @@
     },
     "include": ["./src"],
     "exclude": ["./lib"],
-    "references": [],
+    "references": [
+        {
+            "path": "../zi-webextension-generic/tsconfig.json"
+        }
+    ],
     "extends": "../../../tsconfig.json"
 }

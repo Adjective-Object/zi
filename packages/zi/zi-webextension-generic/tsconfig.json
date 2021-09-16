@@ -2,10 +2,15 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib",
-        "module": "ESNext"
+        "module": "es2015",
+        "strictNullChecks": true
     },
     "include": ["./src"],
     "exclude": ["./lib"],
-    "references": [],
+    "references": [
+        {
+            "path": "../../browser-lib/assert-element/tsconfig.json"
+        }
+    ],
     "extends": "../../../tsconfig.json"
 }
