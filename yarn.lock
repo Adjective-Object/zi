@@ -2084,6 +2084,7 @@ __metadata:
     rollup-plugin-zi-import-hijack: "workspace:*"
     typescript: ^4.3.5
     vite: ^2.5.1
+    zi-compile-closure: "workspace:packages/zi/zi-compile-closure"
   languageName: unknown
   linkType: soft
 
@@ -4211,7 +4212,6 @@ __metadata:
     async-spawn: "workspace:*"
     case: ^1.6.3
     commander: ^8.1.0
-    eslint: ^7.32.0
     mz: ^2.7.0
     prettier: ^2.3.2
     typescript: ^4.3.5
@@ -5892,7 +5892,7 @@ resolve@^1.20.0:
     run-with-concurrent-limit: "workspace:*"
     typescript: ^4.3.5
   bin:
-    zi-compile-closure: dist/bin/cli.js
+    zi-compile-closure: lib/cli.js
   languageName: unknown
   linkType: soft
 
@@ -5928,7 +5928,5 @@ resolve@^1.20.0:
     new-package: "workspace:*"
     prettier: ^2.3.2
     typescript: ^4.3.5
-  bin:
-    devtool-fix-imports: dist/main.js
   languageName: unknown
   linkType: soft

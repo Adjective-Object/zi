@@ -6,7 +6,8 @@
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
-        "fixlint": "prettier --check src/**/*"
+        "fixlint": "prettier --check src/**/*",
+        "compile-closure": "zi-compile-closure -c tsconfig.json --root src '**/*.ts'"
     },
     "devDependencies": {
         "eslint": "^7.32.0",
@@ -14,6 +15,7 @@
         "rollup": "^2.56.3",
         "rollup-plugin-zi-import-hijack": "workspace:*",
         "typescript": "^4.3.5",
-        "vite": "^2.5.1"
+        "vite": "^2.5.1",
+        "zi-compile-closure": "workspace:packages/zi/zi-compile-closure"
     }
 }

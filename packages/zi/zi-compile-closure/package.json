@@ -3,7 +3,7 @@
     "main": "lib/ziCompileClosure.js",
     "module": "lib/ziCompileClosure.es.js",
     "types": "lib/ziCompileClosure.d.ts",
-    "bin": "lib/bin/cli.js",
+    "bin": "lib/cli.js",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",

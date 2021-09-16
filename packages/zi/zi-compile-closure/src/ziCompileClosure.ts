@@ -1,4 +1,4 @@
-import { readFile as readFileCb, createWriteStream } from 'fs';
+import { readFile as readFileCb, createWriteStream, stat as statCb } from 'fs';
 import { promisify } from 'util';
 import { fdir } from 'fdir';
 import { transform } from 'esbuild';
@@ -6,25 +6,24 @@ import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
 import { nanoid } from 'nanoid';
 
 const readFile = promisify(readFileCb);
+const stat = promisify(statCb);
 
 export async function run({
-    esbuildConfigPath,
+    tsconfigPath,
     outputPath,
-    inputGlobs,
+    inputGlobsOrFiles,
     rootDir,
     concurrency,
     progressBar,
 }: {
-    esbuildConfigPath: string;
+    tsconfigPath: string;
     outputPath: string;
-    inputGlobs: string[];
+    inputGlobsOrFiles: string[];
     rootDir: string;
     concurrency: number;
     progressBar: boolean;
 }) {
-    const transformOptions = await readFile(esbuildConfigPath, 'utf-8').then(
-        JSON.parse,
-    );
+    const tsconfigRaw = await readFile(tsconfigPath, 'utf-8').then(JSON.parse);
     const outStream = createWriteStream(outputPath);
     const outStreamWrite = (str: string) =>
         new Promise<void>((res, rej) => {
@@ -39,23 +38,34 @@ export async function run({
 
     // identify the closure with a random ID so the service worker
     // can detect if it is out of sync with the main app
-    await outStreamWrite(`{"id":${nanoid()}, "closure": {`);
+    await outStreamWrite(`{"id": "${nanoid()}", "closure": {`);
 
-    // find all files
-    const crawlResults = await (new fdir()
-        .glob(...inputGlobs)
-        .withFullPaths()
-        .crawl(rootDir)
-        .withPromise() as Promise<string[]>);
+    // check if the list is globs or files
+    const inputIsFiles = (
+        await Promise.all(
+            inputGlobsOrFiles.map(async (path) => {
+                const pathStat = await stat(path).catch(() => null);
+                return pathStat?.isFile;
+            }),
+        )
+    ).every((x) => x);
+
+    const fileList = inputIsFiles
+        ? inputGlobsOrFiles // glob files with fdir
+        : await (new fdir()
+              .glob(...inputGlobsOrFiles)
+              .withFullPaths()
+              .crawl(rootDir)
+              .withPromise() as Promise<string[]>);
 
     // compile them with a concurrent limit
     await runWithConcurrentLimit(
         concurrency,
-        crawlResults,
+        fileList,
         async (crawlPath: string) => {
             const transformResult = await transform(
                 await readFile(crawlPath, 'utf-8'),
-                transformOptions,
+                { tsconfigRaw },
             );
             await outStreamWrite(
                 `"${crawlPath}": "${JSON.stringify(transformResult.code)}","`,

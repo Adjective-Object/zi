@@ -110,3 +110,6 @@ public/resources/player-portraits/source/
 
 packages/**/lib/*
 public/js/*
+
+# zi custom stuff
+zi-closure.json
