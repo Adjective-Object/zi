@@ -108,7 +108,7 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
                             name: intendedPackageName,
                             main: `lib/${camelCaseName}.js`,
                             module: `lib/${camelCaseName}.es.js`,
-                            types: `lib/types/${camelCaseName}.d.ts`,
+                            types: `lib/${camelCaseName}.d.ts`,
                             ...templatePackageJson,
                         },
                         null,
@@ -156,7 +156,7 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
     await fs.mkdirpPromise(ppath.join(destinationDirectory, toFilename('src')));
     await fs.writeFilePromise(
         ppath.join(
-            destinationDirectory,
+            newPackageDirectory,
             toFilename('src'),
             toFilename(`${camelCaseName}.ts`),
         ),
