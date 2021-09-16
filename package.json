@@ -7,9 +7,6 @@
     "scripts": {
         "fixpnp": "pnpify --sdk vscode"
     },
-    "bin": {
-        "devtool-fix-imports": "dist/main.js"
-    },
     "workspaces": [
         "packages/**"
     ],
