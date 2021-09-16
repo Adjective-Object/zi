@@ -7,7 +7,7 @@
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
         "fixlint": "prettier --check src/**/*",
-        "compile-closure": "zi-compile-closure -c tsconfig.json --root src '**/*.ts'"
+        "compile-closure": "zi-compile-closure -c tsconfig.json '**/src/**/*.tsx?'"
     },
     "devDependencies": {
         "eslint": "^7.32.0",

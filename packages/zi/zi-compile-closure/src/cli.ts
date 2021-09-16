@@ -18,21 +18,22 @@ async function main() {
         }
         process.exit(0);
     }
-    console.log('running with options', parsedOptions);
     const args = parsedOptions.argv.slice(
         parsedOptions.argv.indexOf(__filename) + 1,
     );
     if (args.length === 0) {
         throw new Error('Got empty args array, expected a list globs to build');
     }
-    await run({
+    const runOptions = {
         tsconfigPath: parsedOptions.options.config ?? 'tsconfig.json',
         outputPath: parsedOptions.options.output ?? 'zi-closure.json',
         inputGlobsOrFiles: args,
         rootDir: parsedOptions.options.root ?? process.cwd(),
         progressBar: true,
         concurrency: parseInt(parsedOptions.options.concurrency) || 200,
-    });
+    };
+    console.log('running with options', runOptions);
+    await run(runOptions);
 }
 
 main().then(
