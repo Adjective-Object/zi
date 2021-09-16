@@ -223,6 +223,8 @@ async function updateTsconfigJsonReferences(
     );
 }
 
+const YARN = process.platform === 'win32' ? 'yarn.cmd' : 'yarn';
+
 /**
  *
  * @param packageDir
@@ -362,7 +364,7 @@ async function updatePackageJsonReferences(
         console.log('spawning yarn in', packageDir, 'to install', [
             ...missingNpmInstalls,
         ]);
-        await asyncSpawn('yarn', ['add', ...missingNpmInstalls], {
+        await asyncSpawn(YARN, ['add', ...missingNpmInstalls], {
             cwd: packageDir,
             stdio: 'inherit',
         });
@@ -376,7 +378,7 @@ async function updatePackageJsonReferences(
             [...missingDevNpmInstalls],
             'as a dev dependency',
         );
-        await asyncSpawn('yarn', ['add', '--dev', ...missingDevNpmInstalls], {
+        await asyncSpawn(YARN, ['add', '--dev', ...missingDevNpmInstalls], {
             cwd: packageDir,
             stdio: 'inherit',
         });
@@ -453,7 +455,7 @@ async function main() {
 
     if (needsGlobalInstall) {
         console.log('running yarn in whole workspace after updates');
-        await asyncSpawn('yarn', {
+        await asyncSpawn(YARN, {
             cwd: path.resolve(__dirname, '..', '..', '..'),
             stdio: 'inherit',
         });

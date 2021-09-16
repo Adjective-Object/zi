@@ -211,10 +211,14 @@ async function main(): Promise<number> {
     const packageNativeDir = npath.fromPortablePath(project.cwd);
     console.log('spawning yarn to resolve the workspace in', packageNativeDir);
     try {
-        await asyncSpawn('yarn', ['install'], {
-            cwd: packageNativeDir,
-            stdio: 'inherit',
-        });
+        await asyncSpawn(
+            process.platform === 'win32' ? 'yarn.cmd' : 'yarn',
+            ['install'],
+            {
+                cwd: packageNativeDir,
+                stdio: 'inherit',
+            },
+        );
     } catch (e) {
         console.error('encountered error trying to run yarn', e);
         console.error(
