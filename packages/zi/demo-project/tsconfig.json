@@ -4,12 +4,12 @@
         "outDir": "lib",
         "module": "CommonJS"
     },
-    "include": ["./src"],
-    "exclude": ["./lib"],
-    "references": [
-        {
-            "path": "../rollup-plugin-zi-import-hijack/tsconfig.json"
-        }
+    "include": [
+        "./src"
     ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [],
     "extends": "../../../tsconfig.json"
 }

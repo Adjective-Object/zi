@@ -2,7 +2,7 @@
     "name": "rollup-plugin-zi-import-hijack",
     "main": "lib/rollupPluginZiImportHijack.js",
     "module": "lib/rollupPluginZiImportHijack.es.js",
-    "types": "lib/types/rollupPluginZiImportHijack.d.ts",
+    "types": "lib/rollupPluginZiImportHijack.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
@@ -16,6 +16,7 @@
         "typescript": "^4.3.5"
     },
     "dependencies": {
+        "mod-slash": "workspace:*",
         "tsconfig-paths": "^3.10.1"
     }
 }

@@ -11,5 +11,5 @@
         "./lib"
     ],
     "references": [],
-    "extends": "../../tsconfig.json"
+    "extends": "../../../tsconfig.json"
 }

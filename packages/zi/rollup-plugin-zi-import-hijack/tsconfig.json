@@ -7,6 +7,15 @@
         "module": "CommonJS",
         "composite": true
     },
-    "include": ["./src"],
-    "exclude": ["./lib"]
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.json"
+        }
+    ]
 }

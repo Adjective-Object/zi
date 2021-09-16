@@ -1,8 +1,8 @@
 {
     "name": "zi-transform-source",
-    "main": "dist/ziTransformSource.js",
-    "module": "dist/ziTransformSource.es.js",
-    "types": "dist/types/ziTransformSource.d.ts",
+    "main": "lib/ziTransformSource.js",
+    "module": "lib/ziTransformSource.es.js",
+    "types": "lib/ziTransformSource.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
@@ -16,6 +16,7 @@
         "@types/jest": "^27.0.1",
         "@types/mz": "^2.7.3",
         "@types/node": "^16.6.2",
+        "eslint": "^7.32.0",
         "jest": "^27.0.6",
         "jest-cli": "^27.0.6",
         "prettier": "^2.3.2",
