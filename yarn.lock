@@ -837,6 +837,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/cli-progress@npm:^3.9.2":
+  version: 3.9.2
+  resolution: "@types/cli-progress@npm:3.9.2"
+  dependencies:
+    "@types/node": "*"
+  checksum: 371ecb29c45dce7127b4a8626521d908ce7dfaea6a537fcd491b12aea3a8ff58452eb1b33e0d2e0724c81b56df3930195e521e12fe979518deb5329a7a884a02
+  languageName: node
+  linkType: hard
+
 "@types/comment-json@npm:^2.4.2":
   version: 2.4.2
   resolution: "@types/comment-json@npm:2.4.2"
@@ -1748,6 +1757,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cli-progress@npm:^3.9.1":
+  version: 3.9.1
+  resolution: "cli-progress@npm:3.9.1"
+  dependencies:
+    colors: ^1.1.2
+    string-width: ^4.2.0
+  checksum: 1548550b0cf72f34fef9e99adddf70a06748a5c6231c744f3e7b41146b6c7a297136c61e5df4b67ca436a8f5d8308f148d373b2500c4bfe9fb1d9ac5ab78bb20
+  languageName: node
+  linkType: hard
+
 "clipanion@npm:^3.0.1":
   version: 3.0.1
   resolution: "clipanion@npm:3.0.1"
@@ -1846,7 +1865,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colors@npm:^1.4.0":
+"colors@npm:^1.1.2, colors@npm:^1.4.0":
   version: 1.4.0
   resolution: "colors@npm:1.4.0"
   checksum: 98aa2c2418ad87dedf25d781be69dc5fc5908e279d9d30c34d8b702e586a0474605b3a189511482b9d5ed0d20c867515d22749537f7bc546256c6014f3ebdcec
@@ -2059,6 +2078,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "demo-project@workspace:packages/zi/demo-project"
   dependencies:
+    eslint: ^7.32.0
     prettier: ^2.3.2
     rollup: ^2.56.3
     rollup-plugin-zi-import-hijack: "workspace:*"
@@ -2206,6 +2226,15 @@ __metadata:
   bin:
     esbuild: bin/esbuild
   checksum: db14cc10914d40a875da1b102cee7479ebe1b085cdc2deaa8e275468ada9bf3c6b793bd6004a031a9f2e34865fe629dc59030c5fe4820978f1cf071966aa2c5d
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:^0.12.28":
+  version: 0.12.28
+  resolution: "esbuild@npm:0.12.28"
+  bin:
+    esbuild: bin/esbuild
+  checksum: 9127dc048aad41a59d736460b9ea3cf5e367a7e5a650b2b465e066ee291e3c5e9fa5ad4b56cd4dea76cde9a1dee25a0e9e94f558b24170fc124eb0778e043eae
   languageName: node
   linkType: hard
 
@@ -2496,6 +2525,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fdir@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "fdir@npm:5.1.0"
+  checksum: 67d5269de25318e743929a8a3f824ad4a62df02d424b503cbe4ad11f06153668adf1740bdb07bea9f90675e48fee90fc151355380b657955f5d27acf502cd443
+  languageName: node
+  linkType: hard
+
 "file-entry-cache@npm:^6.0.1":
   version: 6.0.1
   resolution: "file-entry-cache@npm:6.0.1"
@@ -2665,6 +2701,13 @@ __metadata:
     has: ^1.0.3
     has-symbols: ^1.0.1
   checksum: a9fe2ca8fa3f07f9b0d30fb202bcd01f3d9b9b6b732452e79c48e79f7d6d8d003af3f9e38514250e3553fdc83c61650851cb6870832ac89deaaceb08e3721a17
+  languageName: node
+  linkType: hard
+
+"get-options@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "get-options@npm:1.2.0"
+  checksum: 1f02137670a9dffeb919a3f2be2cbd0dad841502fc9c382962aacbc3a704d8582ed6a7c25d0401a01ca46843a82b252c64fad70a6cbe7ea22ef506fc20f08d47
   languageName: node
   linkType: hard
 
@@ -4141,7 +4184,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.1.23":
+"nanoid@npm:^3.1.23, nanoid@npm:^3.1.25":
   version: 3.1.25
   resolution: "nanoid@npm:3.1.25"
   bin:
@@ -4168,6 +4211,7 @@ __metadata:
     async-spawn: "workspace:*"
     case: ^1.6.3
     commander: ^8.1.0
+    eslint: ^7.32.0
     mz: ^2.7.0
     prettier: ^2.3.2
     typescript: ^4.3.5
@@ -4500,7 +4544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.2.3":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.3, picomatch@npm:^2.3.0":
   version: 2.3.0
   resolution: "picomatch@npm:2.3.0"
   checksum: 16818720ea7c5872b6af110760dee856c8e4cd79aed1c7a006d076b1cc09eff3ae41ca5019966694c33fbd2e1cc6ea617ab10e4adac6df06556168f13be3fca2
@@ -4839,6 +4883,7 @@ resolve@^1.20.0:
   dependencies:
     "@types/mz": ^2.7.3
     "@types/node": ^16.7.1
+    mod-slash: "workspace:*"
     prettier: ^2.3.2
     rollup: ^2.56.3
     tsconfig-paths: ^3.10.1
@@ -4868,6 +4913,20 @@ resolve@^1.20.0:
   checksum: cb4f97ad25a75ebc11a8ef4e33bb962f8af8516bb2001082ceabd8902e15b98f4b84b4f8a9b222e5d57fc3bd1379c483886ed4619367a7680dad65316993021d
   languageName: node
   linkType: hard
+
+"run-with-concurrent-limit@workspace:*, run-with-concurrent-limit@workspace:packages/async-lib/run-with-concurrent-limit":
+  version: 0.0.0-use.local
+  resolution: "run-with-concurrent-limit@workspace:packages/async-lib/run-with-concurrent-limit"
+  dependencies:
+    "@types/cli-progress": ^3.9.2
+    "@types/mz": ^2.7.3
+    "@types/node": ^16.6.2
+    cli-progress: ^3.9.1
+    eslint: ^7.32.0
+    prettier: ^2.3.2
+    typescript: ^4.3.5
+  languageName: unknown
+  linkType: soft
 
 "safe-buffer@npm:~5.1.0, safe-buffer@npm:~5.1.1":
   version: 5.1.2
@@ -5816,6 +5875,27 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
+"zi-compile-closure@workspace:packages/zi/zi-compile-closure":
+  version: 0.0.0-use.local
+  resolution: "zi-compile-closure@workspace:packages/zi/zi-compile-closure"
+  dependencies:
+    "@types/cli-progress": ^3.9.2
+    "@types/mz": ^2.7.3
+    "@types/node": ^16.6.2
+    cli-progress: ^3.9.1
+    esbuild: ^0.12.28
+    fdir: ^5.1.0
+    get-options: ^1.2.0
+    nanoid: ^3.1.25
+    picomatch: ^2.3.0
+    prettier: ^2.3.2
+    run-with-concurrent-limit: "workspace:*"
+    typescript: ^4.3.5
+  bin:
+    zi-compile-closure: dist/bin/cli.js
+  languageName: unknown
+  linkType: soft
+
 "zi-transform-source@workspace:packages/zi/zi-transform-source":
   version: 0.0.0-use.local
   resolution: "zi-transform-source@workspace:packages/zi/zi-transform-source"
@@ -5823,6 +5903,7 @@ resolve@^1.20.0:
     "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
     "@types/node": ^16.6.2
+    eslint: ^7.32.0
     jest: ^27.0.6
     jest-cli: ^27.0.6
     prettier: ^2.3.2

@@ -1,0 +1,29 @@
+{
+    "name": "zi-compile-closure",
+    "main": "lib/ziCompileClosure.js",
+    "module": "lib/ziCompileClosure.es.js",
+    "types": "lib/ziCompileClosure.d.ts",
+    "bin": "lib/bin/cli.js",
+    "scripts": {
+        "build": "tsc -b ./tsconfig.json",
+        "lint": "prettier --write src/**/*",
+        "fixlint": "prettier --check src/**/*"
+    },
+    "devDependencies": {
+        "@types/cli-progress": "^3.9.2",
+        "@types/mz": "^2.7.3",
+        "@types/node": "^16.6.2",
+        "fdir": "^5.1.0",
+        "prettier": "^2.3.2",
+        "run-with-concurrent-limit": "workspace:*",
+        "typescript": "^4.3.5"
+    },
+    "dependencies": {
+        "cli-progress": "^3.9.1",
+        "esbuild": "^0.12.28",
+        "get-options": "^1.2.0",
+        "nanoid": "^3.1.25",
+        "picomatch": "^2.3.0",
+        "run-with-concurrent-limit": "workspace:*"
+    }
+}
