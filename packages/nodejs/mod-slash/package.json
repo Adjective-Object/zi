@@ -1,5 +1,6 @@
 {
     "name": "mod-slash",
+    "type": "module",
     "version": "0.0.0",
     "description": "A fork of npm:slash with module:true",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",

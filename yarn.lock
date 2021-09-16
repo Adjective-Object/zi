@@ -837,6 +837,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/chrome@npm:^0.0.157":
+  version: 0.0.157
+  resolution: "@types/chrome@npm:0.0.157"
+  dependencies:
+    "@types/filesystem": "*"
+    "@types/har-format": "*"
+  checksum: 56edd77a108320674eae6f01688559a4fed3f0a7df2a718b4ad9cd50eaff2f59532e8fa0eb7881e473aea4507d9dc72d0c2fe84ff2ff394c72322ddca7f586f1
+  languageName: node
+  linkType: hard
+
 "@types/cli-progress@npm:^3.9.2":
   version: 3.9.2
   resolution: "@types/cli-progress@npm:3.9.2"
@@ -869,6 +879,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/filesystem@npm:*":
+  version: 0.0.32
+  resolution: "@types/filesystem@npm:0.0.32"
+  dependencies:
+    "@types/filewriter": "*"
+  checksum: 4b9079d200a3b241722b90e1c5806c4b32c4dac87d42a1c7ef76a2c0dafdbe7d5f1a379b873ad5de73622b44de6599e1522908f67b938d54e785bd1c36e302a0
+  languageName: node
+  linkType: hard
+
+"@types/filewriter@npm:*":
+  version: 0.0.29
+  resolution: "@types/filewriter@npm:0.0.29"
+  checksum: 0c58aa875c2c245be7dbc42b20212f3203e13d11ec013a4a5cd0febf0e8b87214be5882c05ff9d7bdf0398f145a4fdbc24b7e6cf7b094e134a3b4c7a0598502f
+  languageName: node
+  linkType: hard
+
 "@types/glob@npm:^7.1.3":
   version: 7.1.4
   resolution: "@types/glob@npm:7.1.4"
@@ -885,6 +911,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: d076bb61f45d0fc42dee496ef8b1c2f8742e15d5e47e90e20d0243386e426c04d4efd408a48875ab432f7960b4ce3414db20ed0fbbfc7bcc89d84e574f6e045a
+  languageName: node
+  linkType: hard
+
+"@types/har-format@npm:*":
+  version: 1.2.7
+  resolution: "@types/har-format@npm:1.2.7"
+  checksum: a2fd4a4d180c995ee0d4461a88141c4dd40368bde6b0b97244c6628da0d179466732be8fea947c971f336df00c6a794df0d802d26117a785b17b7c78f0e2b189
   languageName: node
   linkType: hard
 
@@ -1017,6 +1050,13 @@ __metadata:
   version: 1.0.0
   resolution: "@types/treeify@npm:1.0.0"
   checksum: 1b2397030d13beee7f82b878ca80feeddb0d550a6b00d8be30082a370c0ac5985ecf7b9378cf93ea278ff00c3e900b416ae8d9379f2c7e8caecdece1dfc77380
+  languageName: node
+  linkType: hard
+
+"@types/webextension-polyfill@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@types/webextension-polyfill@npm:0.8.0"
+  checksum: e39c97c273b75e48a38bf3d27b88398557c758565d0c32405e0f457c7eef884864e776b36b7093a0a1c8633ddb93b47c49871f191cc89c787e8037ba13d2b1d7
   languageName: node
   linkType: hard
 
@@ -1409,6 +1449,16 @@ __metadata:
   checksum: b296c92c4b969e973260e47523207cd5769abd27c245a68c26dc7a0fe8053c55bb04360237cb51cab1df52be939da77150ace99ad331fb7fb13b3423ed73ff3d
   languageName: node
   linkType: hard
+
+"assert-element@workspace:*, assert-element@workspace:packages/browser-lib/assert-element":
+  version: 0.0.0-use.local
+  resolution: "assert-element@workspace:packages/browser-lib/assert-element"
+  dependencies:
+    eslint: ^7.32.0
+    prettier: ^2.3.2
+    typescript: ^4.4.3
+  languageName: unknown
+  linkType: soft
 
 "astral-regex@npm:^2.0.0":
   version: 2.0.0
@@ -2082,7 +2132,7 @@ __metadata:
     prettier: ^2.3.2
     rollup: ^2.56.3
     rollup-plugin-zi-import-hijack: "workspace:*"
-    typescript: ^4.3.5
+    typescript: ^4.4.3
     vite: ^2.5.1
     zi-compile-closure: "workspace:packages/zi/zi-compile-closure"
   languageName: unknown
@@ -2568,7 +2618,6 @@ __metadata:
     "@types/builtin-modules": ^3.1.1
     "@types/comment-json": ^2.4.2
     "@types/diff": ^5.0.0
-    "@types/mz": ^2.7.3
     "@types/node": ^14.14.45
     async-spawn: "workspace:*"
     builtin-modules: ^3.2.0
@@ -2579,7 +2628,6 @@ __metadata:
     glob: ^7.1.7
     glob-promise: ^4.1.0
     mod-slash: "workspace:*"
-    mz: ^2.7.0
     prettier: ^2.3.0
     ts-node: ^9.1.1
     typescript: ^4.2.4
@@ -4212,9 +4260,10 @@ __metadata:
     async-spawn: "workspace:*"
     case: ^1.6.3
     commander: ^8.1.0
+    eslint: ^7.32.0
     mz: ^2.7.0
     prettier: ^2.3.2
-    typescript: ^4.3.5
+    typescript: ^4.4.3
   bin:
     newpackage: lib/newPackage.js
   languageName: unknown
@@ -4881,13 +4930,13 @@ resolve@^1.20.0:
   version: 0.0.0-use.local
   resolution: "rollup-plugin-zi-import-hijack@workspace:packages/zi/rollup-plugin-zi-import-hijack"
   dependencies:
-    "@types/mz": ^2.7.3
     "@types/node": ^16.7.1
+    eslint: ^7.32.0
     mod-slash: "workspace:*"
     prettier: ^2.3.2
     rollup: ^2.56.3
     tsconfig-paths: ^3.10.1
-    typescript: ^4.3.5
+    typescript: ^4.4.3
   languageName: unknown
   linkType: soft
 
@@ -4919,12 +4968,10 @@ resolve@^1.20.0:
   resolution: "run-with-concurrent-limit@workspace:packages/async-lib/run-with-concurrent-limit"
   dependencies:
     "@types/cli-progress": ^3.9.2
-    "@types/mz": ^2.7.3
-    "@types/node": ^16.6.2
     cli-progress: ^3.9.1
     eslint: ^7.32.0
     prettier: ^2.3.2
-    typescript: ^4.3.5
+    typescript: ^4.4.3
   languageName: unknown
   linkType: soft
 
@@ -5581,7 +5628,7 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"typescript@^4.2.4, typescript@^4.3.5":
+typescript@^4.2.4:
   version: 4.3.5
   resolution: "typescript@npm:4.3.5"
   bin:
@@ -5591,13 +5638,33 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.2.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.3.5#~builtin<compat/typescript>":
+typescript@^4.4.3:
+  version: 4.4.3
+  resolution: "typescript@npm:4.4.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 05823f21796d450531a7e4ab299715d38fd9ded0e4ce7400876053f4b5166ca3dde7a68cecfe72d9086039f03c0b6edba36516fb10ed83c5837d9600532ea4c2
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.2.4#~builtin<compat/typescript>":
   version: 4.3.5
   resolution: "typescript@patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: bc2c4fdf0f1557fdafe4ef74848c72ebd9c8c60829568248f869121aea2bb20e16649a252431d0acb185ec118143be22bed73d08f64379557810d82756afedde
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
+  version: 4.4.3
+  resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=d8b4e7"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 215a59742afb7e0c3668e2c50ca19813deb24b3cc0d16ac3591990e033728050aaa99e159a72b54cb43653f16c778a5cf9dfeed1f51c3b105710ae082c064af7
   languageName: node
   linkType: hard
 
@@ -5702,6 +5769,13 @@ resolve@^1.20.0:
   dependencies:
     makeerror: 1.0.x
   checksum: 4038fcf92f6ab0288267ad05008aec9e089a759f1bd32e1ea45cc2eb498eb12095ec43cf8ca2bf23a465f4580a0d33b25b89f450ba521dd27083cbc695ee6bf5
+  languageName: node
+  linkType: hard
+
+"webextension-polyfill@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "webextension-polyfill@npm:0.8.0"
+  checksum: 56286e6216e15834fdcdc3dcf611000d96b49c9d925de3d657eb5f1e294074180dd3efe78a0966223eb311ac3a0ac5fdf71d324b836bf05724455ffd6c7c98c3
   languageName: node
   linkType: hard
 
@@ -5884,13 +5958,14 @@ resolve@^1.20.0:
     "@types/node": ^16.6.2
     cli-progress: ^3.9.1
     esbuild: ^0.12.28
+    eslint: ^7.32.0
     fdir: ^5.1.0
     get-options: ^1.2.0
     nanoid: ^3.1.25
     picomatch: ^2.3.0
     prettier: ^2.3.2
     run-with-concurrent-limit: "workspace:*"
-    typescript: ^4.3.5
+    typescript: ^4.4.3
   bin:
     zi-compile-closure: lib/cli.js
   languageName: unknown
@@ -5901,7 +5976,6 @@ resolve@^1.20.0:
   resolution: "zi-transform-source@workspace:packages/zi/zi-transform-source"
   dependencies:
     "@types/jest": ^27.0.1
-    "@types/mz": ^2.7.3
     "@types/node": ^16.6.2
     eslint: ^7.32.0
     jest: ^27.0.6
@@ -5910,7 +5984,35 @@ resolve@^1.20.0:
     ts-jest: ^27.0.5
     ts-morph: ^11.0.3
     tsconfig-paths: ^3.10.1
-    typescript: ^4.3.5
+    typescript: ^4.4.3
+  languageName: unknown
+  linkType: soft
+
+"zi-webextension-chrome@workspace:packages/zi/zi-webextension-chrome":
+  version: 0.0.0-use.local
+  resolution: "zi-webextension-chrome@workspace:packages/zi/zi-webextension-chrome"
+  dependencies:
+    "@types/chrome": ^0.0.157
+    "@types/webextension-polyfill": ^0.8.0
+    esbuild: ^0.12.28
+    eslint: ^7.32.0
+    prettier: ^2.3.2
+    typescript: ^4.4.3
+    webextension-polyfill: ^0.8.0
+    zi-webextension-generic: "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"zi-webextension-generic@workspace:*, zi-webextension-generic@workspace:packages/zi/zi-webextension-generic":
+  version: 0.0.0-use.local
+  resolution: "zi-webextension-generic@workspace:packages/zi/zi-webextension-generic"
+  dependencies:
+    "@types/webextension-polyfill": ^0.8.0
+    assert-element: "workspace:*"
+    eslint: ^7.32.0
+    prettier: ^2.3.2
+    typescript: ^4.4.3
+    webextension-polyfill: ^0.8.0
   languageName: unknown
   linkType: soft
 
@@ -5927,6 +6029,6 @@ resolve@^1.20.0:
     jest-cli: ^27.0.6
     new-package: "workspace:*"
     prettier: ^2.3.2
-    typescript: ^4.3.5
+    typescript: ^4.4.3
   languageName: unknown
   linkType: soft

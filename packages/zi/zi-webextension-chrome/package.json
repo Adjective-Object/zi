@@ -1,0 +1,23 @@
+{
+    "name": "zi-webextension-chrome",
+    "type": "module",
+    "scripts": {
+        "typecheck": "tsc -b ./tsconfig.json",
+        "bundle": "esbuild src/*.ts --bundle --outdir=dist",
+        "build": "echo 'This project is built with typescript and esbuild. Use `yarn typecheck` and `yarn bundle'",
+        "lint": "prettier --write src/**/*",
+        "fixlint": "prettier --check src/**/*"
+    },
+    "devDependencies": {
+        "@types/chrome": "^0.0.157",
+        "@types/webextension-polyfill": "^0.8.0",
+        "esbuild": "^0.12.28",
+        "eslint": "^7.32.0",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
+    },
+    "dependencies": {
+        "webextension-polyfill": "^0.8.0",
+        "zi-webextension-generic": "workspace:*"
+    }
+}

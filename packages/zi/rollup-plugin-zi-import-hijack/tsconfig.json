@@ -4,7 +4,6 @@
         "rootDir": "src",
         "outDir": "lib",
         "strict": true,
-        "module": "ESNext",
         "composite": true
     },
     "include": ["./src"],

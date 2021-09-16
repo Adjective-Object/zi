@@ -4,7 +4,12 @@ import { asyncSpawn } from 'async-spawn';
 import * as CommentJson from 'comment-json';
 import * as Diff from 'diff';
 import { promise as glob } from 'glob-promise';
-import fs from 'mz/fs';
+import {
+    readFile as readFileCb,
+    writeFile as writeFileCb,
+    exists as existsCb,
+} from 'fs';
+import { promisify } from 'util';
 import * as path from 'path';
 import {
     createSourceFile,
@@ -15,6 +20,9 @@ import {
     ScriptTarget,
 } from 'typescript';
 import { slash } from 'mod-slash';
+const readFile = promisify(readFileCb);
+const writeFile = promisify(writeFileCb);
+const exists = promisify(existsCb);
 
 function simplifyModuleSpecifier(moduleSpecifier: string): string | null {
     if (moduleSpecifier.startsWith('.')) {
@@ -70,7 +78,7 @@ async function findPackageImportSpecifiers(
         scriptFiles.map(async (scriptFile: string) => {
             let fileContent;
             try {
-                fileContent = await fs.readFile(scriptFile);
+                fileContent = await readFile(scriptFile);
             } catch (e) {
                 throw new Error(`Error while reading file ${scriptFile}: ${e}`);
             }
@@ -107,7 +115,7 @@ async function findInternalPackageNames(
             packageJsonPaths.map(
                 async (packageJsonPath: string): Promise<[string, string]> => {
                     const parsedPackageJson = JSON.parse(
-                        await fs.readFile(packageJsonPath, 'utf-8'),
+                        await readFile(packageJsonPath, 'utf-8'),
                     );
                     const packageDirname = path.dirname(packageJsonPath);
                     const packageBasename = path.basename(packageDirname);
@@ -158,9 +166,9 @@ async function updateTsconfigJsonReferences(
     const rootExtend = slash(
         path.relative(packageDir, path.join(repoDir, 'tsconfig.json')),
     );
-    if (!(await fs.exists(tsconfigPath))) {
+    if (!(await exists(tsconfigPath))) {
         console.log(`path ${tsconfigPath} does not exist. Creating.`);
-        await fs.writeFile(
+        await writeFile(
             tsconfigPath,
             JSON.stringify(
                 {
@@ -178,8 +186,7 @@ async function updateTsconfigJsonReferences(
         );
     }
 
-    const parsedTsconfigJson = await fs
-        .readFile(tsconfigPath, 'utf-8')
+    const parsedTsconfigJson = await readFile(tsconfigPath, 'utf-8')
         .then(CommentJson.parse)
         .catch((e) => {
             console.error(`error reading/parsing "${tsconfigPath}"`.red);
@@ -217,7 +224,7 @@ async function updateTsconfigJsonReferences(
         parsedTsconfigJson.references = intendedReferenceArr;
         hasMismatch = true;
     }
-    await fs.writeFile(
+    await writeFile(
         tsconfigPath,
         CommentJson.stringify(parsedTsconfigJson, null, 4),
     );
@@ -248,7 +255,7 @@ async function updatePackageJsonReferences(
     ].filter((ref) => !internalPackageNameMap.has(ref));
 
     const packageJsonContent = JSON.parse(
-        await fs.readFile(packageJsonPath, 'utf-8'),
+        await readFile(packageJsonPath, 'utf-8'),
     );
 
     let needsUpdate = false;
@@ -386,7 +393,7 @@ async function updatePackageJsonReferences(
 
     if (needsUpdate) {
         console.log('writing updated package.json to', packageJsonPath);
-        await fs.writeFile(
+        await writeFile(
             packageJsonPath,
             JSON.stringify(packageJsonContent, null, 4),
         );
@@ -417,7 +424,7 @@ async function main() {
         const importSpecifiers = await findPackageImportSpecifiers(packageDir);
 
         const parsedPackageJson = JSON.parse(
-            await fs.readFile(path.join(packageDir, 'package.json'), 'utf-8'),
+            await readFile(path.join(packageDir, 'package.json'), 'utf-8'),
         );
 
         if (

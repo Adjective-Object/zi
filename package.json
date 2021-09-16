@@ -20,6 +20,6 @@
         "jest-cli": "^27.0.6",
         "new-package": "workspace:*",
         "prettier": "^2.3.2",
-        "typescript": "^4.3.5"
+        "typescript": "^4.4.3"
     }
 }

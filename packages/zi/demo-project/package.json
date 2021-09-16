@@ -1,5 +1,6 @@
 {
     "name": "demo-project",
+    "type": "module",
     "main": "lib/demoProject.js",
     "module": "lib/demoProject.es.js",
     "types": "lib/demoProject.d.ts",
@@ -7,14 +8,15 @@
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
         "fixlint": "prettier --check src/**/*",
-        "compile-closure": "zi-compile-closure -c tsconfig.json '**/src/**/*.tsx?'"
+        "compile-closure": "zi-compile-closure -c tsconfig.json '**/src/**/*.tsx?'",
+        "dev": "vite"
     },
     "devDependencies": {
         "eslint": "^7.32.0",
         "prettier": "^2.3.2",
         "rollup": "^2.56.3",
         "rollup-plugin-zi-import-hijack": "workspace:*",
-        "typescript": "^4.3.5",
+        "typescript": "^4.4.3",
         "vite": "^2.5.1",
         "zi-compile-closure": "workspace:packages/zi/zi-compile-closure"
     }
