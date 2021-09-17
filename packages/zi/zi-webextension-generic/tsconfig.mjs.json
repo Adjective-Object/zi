@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/mjs",
+        "strictNullChecks": true,
+        "module": "esnext"
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../../browser-lib/assert-element/tsconfig.mjs.json"
+        }
+    ],
+    "extends": "../../../tsconfig.json"
+}

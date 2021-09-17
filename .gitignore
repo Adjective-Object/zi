@@ -110,6 +110,7 @@ public/resources/player-portraits/source/
 
 packages/**/lib/*
 public/js/*
+packages/**/node_modules
 
 # zi custom stuff
 zi-closure.json

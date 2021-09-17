@@ -1,5 +1,4 @@
 {
-    "type": "module",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",

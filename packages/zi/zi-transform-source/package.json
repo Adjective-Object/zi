@@ -1,8 +1,7 @@
 {
     "name": "zi-transform-source",
-    "type": "module",
-    "main": "lib/ziTransformSource.js",
-    "module": "lib/ziTransformSource.es.js",
+    "main": "lib/cjs/ziTransformSource.js",
+    "module": "lib/mjs/ziTransformSource.es.js",
     "types": "lib/ziTransformSource.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",

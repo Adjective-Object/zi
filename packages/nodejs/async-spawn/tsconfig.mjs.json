@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/mjs",
+        "strict": true,
+        "composite": true
+    },
+    "extends": "../../../tsconfig.json",
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": []
+}

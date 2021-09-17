@@ -1,6 +1,5 @@
 {
     "name": "zi-webextension-chrome",
-    "type": "module",
     "scripts": {
         "typecheck": "tsc -b ./tsconfig.json",
         "bundle": "esbuild src/*.ts --bundle --outdir=dist",

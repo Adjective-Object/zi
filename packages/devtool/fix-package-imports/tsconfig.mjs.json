@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/mjs",
+        "module": "esnext",
+        "target": "esnext"
+    },
+    "extends": "../../../tsconfig.json",
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.mjs.json"
+        }
+    ]
+}

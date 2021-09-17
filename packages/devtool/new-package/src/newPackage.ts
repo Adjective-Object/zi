@@ -172,7 +172,7 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
 }
 
 async function main(): Promise<number> {
-    const packageVersion = require('../package.json').version || 'pre-alpha';
+    const packageVersion = require('../../package.json').version || 'pre-alpha';
     const program = commander.program
         .version(packageVersion)
         .usage('[options] <packageName>');

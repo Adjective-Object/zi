@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib",
+        "strictNullChecks": true
+    },
+    "include": ["./src"],
+    "exclude": ["./lib"],
+    "references": []
+}

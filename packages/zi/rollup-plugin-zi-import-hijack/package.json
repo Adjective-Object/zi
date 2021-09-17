@@ -1,8 +1,7 @@
 {
     "name": "rollup-plugin-zi-import-hijack",
-    "type": "module",
-    "main": "lib/rollupPluginZiImportHijack.js",
-    "module": "lib/rollupPluginZiImportHijack.es.js",
+    "main": "lib/cjs/rollupPluginZiImportHijack.js",
+    "module": "lib/mjs/rollupPluginZiImportHijack.es.js",
     "types": "lib/rollupPluginZiImportHijack.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",

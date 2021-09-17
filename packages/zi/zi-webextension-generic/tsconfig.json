@@ -1,15 +1,18 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "lib",
-        "strictNullChecks": true
+        "composite": true
     },
-    "include": ["./src"],
-    "exclude": ["./lib"],
+    "include": [],
+    "exclude": [
+        "src",
+        "node_modules"
+    ],
     "references": [
         {
-            "path": "../../browser-lib/assert-element/tsconfig.json"
+            "path": "./tsconfig.cjs.json"
+        },
+        {
+            "path": "./tsconfig.mjs.json"
         }
-    ],
-    "extends": "../../../tsconfig.json"
+    ]
 }

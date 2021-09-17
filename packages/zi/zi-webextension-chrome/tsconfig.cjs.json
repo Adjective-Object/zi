@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/cjs",
+        "module": "CommonJs"
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../zi-webextension-generic/tsconfig.cjs.json"
+        }
+    ],
+    "extends": "../../../tsconfig.json"
+}

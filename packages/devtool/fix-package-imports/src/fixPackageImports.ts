@@ -12,6 +12,7 @@ import {
 import { promisify } from 'util';
 import * as path from 'path';
 import {
+    CompilerOptions,
     createSourceFile,
     isCallExpression,
     isIdentifier,
@@ -140,29 +141,14 @@ async function findInternalPackageNames(
     );
 }
 
-async function updateTsconfigJsonReferences(
+async function findOrPatchReferences(
     repoDir: string,
     packageDir: string,
-    internalPackagePathMap: Map<string, string>,
-    importSpecifiers: Set<string>,
+    tsconfigPath: string,
+    intendedReferenceArr: { path: string }[],
+    intendedCompilerOptions: Record<keyof CompilerOptions, any>,
 ) {
-    // intended tsconfig json
-    const intendedReferences = [...importSpecifiers].filter((ref) =>
-        internalPackagePathMap.has(ref),
-    );
-
-    // TODO consider mismatches between package directories and names
-    const intendedReferenceArr = intendedReferences.sort().map((refName) => ({
-        path: slash(
-            path.relative(
-                packageDir,
-                path.join(internalPackagePathMap.get(refName), 'tsconfig.json'),
-            ),
-        ),
-    }));
-
     // write a new tsconfig or patch onto the old one
-    const tsconfigPath = path.join(packageDir, 'tsconfig.json');
     const rootExtend = slash(
         path.relative(packageDir, path.join(repoDir, 'tsconfig.json')),
     );
@@ -175,6 +161,7 @@ async function updateTsconfigJsonReferences(
                     compilerOptions: {
                         outDir: 'lib',
                         strict: true,
+                        ...intendedCompilerOptions,
                     },
                     extends: rootExtend,
                     includes: ['./src'],
@@ -184,50 +171,134 @@ async function updateTsconfigJsonReferences(
                 4,
             ),
         );
+    } else {
+        const parsedTsconfigJson = await readFile(tsconfigPath, 'utf-8')
+            .then(CommentJson.parse)
+            .catch((e) => {
+                console.error(`error reading/parsing "${tsconfigPath}"`.red);
+                console.error(e);
+            });
+
+        if (!parsedTsconfigJson) {
+            return;
+        }
+
+        const intendedString = JSON.stringify(intendedReferenceArr, null, 4);
+        const oldRefAsString = CommentJson.stringify(
+            parsedTsconfigJson.references,
+            null,
+            4,
+        );
+        let hasMismatch = false;
+        if (parsedTsconfigJson.extends !== rootExtend) {
+            console.log(`found 'extends' mismatch in ${tsconfigPath}:`);
+            parsedTsconfigJson.extends = rootExtend;
+            hasMismatch = true;
+        }
+        if (oldRefAsString !== intendedString) {
+            console.log(`found references mismatch in ${tsconfigPath}:`);
+            const diff = Diff.diffLines(oldRefAsString || '', intendedString);
+
+            diff.forEach((part: Diff.Change) => {
+                // green for additions, red for deletions
+                // grey for common parts
+                const color = part.added
+                    ? 'green'
+                    : part.removed
+                    ? 'red'
+                    : 'grey';
+                process.stderr.write(part.value[color]);
+            });
+            console.log();
+
+            parsedTsconfigJson.references = intendedReferenceArr;
+            for (let [k, v] of Object.entries(intendedCompilerOptions)) {
+                if (
+                    !(k in parsedTsconfigJson.compilerOptions) ||
+                    // TODO deep compare objects
+                    parsedTsconfigJson.compilerOptions[k] !== v
+                ) {
+                    parsedTsconfigJson.compilerOptions[k] = v;
+                }
+            }
+            hasMismatch = true;
+        }
+        await writeFile(
+            tsconfigPath,
+            CommentJson.stringify(parsedTsconfigJson, null, 4),
+        );
     }
+}
 
-    const parsedTsconfigJson = await readFile(tsconfigPath, 'utf-8')
-        .then(CommentJson.parse)
-        .catch((e) => {
-            console.error(`error reading/parsing "${tsconfigPath}"`.red);
-            console.error(e);
-        });
-
-    if (!parsedTsconfigJson) {
-        return;
-    }
-
-    const intendedString = JSON.stringify(intendedReferenceArr, null, 4);
-    const oldRefAsString = CommentJson.stringify(
-        parsedTsconfigJson.references,
-        null,
-        4,
+async function updateTsconfigJsonReferences(
+    repoDir: string,
+    packageDir: string,
+    internalPackagePathMap: Map<string, string>,
+    importSpecifiers: Set<string>,
+) {
+    // intended tsconfig json
+    const intendedReferences = [...importSpecifiers].filter((ref) =>
+        internalPackagePathMap.has(ref),
     );
-    let hasMismatch = false;
-    if (parsedTsconfigJson.extends !== rootExtend) {
-        console.log(`found 'extends' mismatch in ${tsconfigPath}:`);
-        parsedTsconfigJson.extends = rootExtend;
-        hasMismatch = true;
-    }
-    if (oldRefAsString !== intendedString) {
-        console.log(`found references mismatch in ${tsconfigPath}:`);
-        const diff = Diff.diffLines(oldRefAsString || '', intendedString);
 
-        diff.forEach((part: Diff.Change) => {
-            // green for additions, red for deletions
-            // grey for common parts
-            const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
-            process.stderr.write(part.value[color]);
-        });
-        console.log();
+    // TODO consider mismatches between package directories and names
+    const intendedReferenceArr = (tsconfigName: string) =>
+        intendedReferences.sort().map((refName) => ({
+            path: slash(
+                path.relative(
+                    packageDir,
+                    path.join(
+                        internalPackagePathMap.get(refName)!,
+                        tsconfigName,
+                    ),
+                ),
+            ),
+        }));
 
-        parsedTsconfigJson.references = intendedReferenceArr;
-        hasMismatch = true;
-    }
-    await writeFile(
-        tsconfigPath,
-        CommentJson.stringify(parsedTsconfigJson, null, 4),
-    );
+    await Promise.all([
+        findOrPatchReferences(
+            repoDir,
+            packageDir,
+            path.join(packageDir, 'tsconfig.cjs.json'),
+            intendedReferenceArr('tsconfig.cjs.json'),
+            {
+                outDir: 'lib/cjs',
+                module: 'CommonJs',
+            },
+        ),
+        findOrPatchReferences(
+            repoDir,
+            packageDir,
+            path.join(packageDir, 'tsconfig.mjs.json'),
+            intendedReferenceArr('tsconfig.mjs.json'),
+            {
+                outDir: 'lib/mjs',
+                module: 'esnext',
+            },
+        ),
+        writeFile(
+            path.join(packageDir, 'tsconfig.json'),
+            JSON.stringify(
+                {
+                    compilerOptions: {
+                        composite: true,
+                    },
+                    include: [],
+                    exclude: ['src', 'node_modules'],
+                    references: [
+                        {
+                            path: './tsconfig.cjs.json',
+                        },
+                        {
+                            path: './tsconfig.mjs.json',
+                        },
+                    ],
+                },
+                null,
+                4,
+            ),
+        ),
+    ]);
 }
 
 const YARN = process.platform === 'win32' ? 'yarn.cmd' : 'yarn';
@@ -403,7 +474,7 @@ async function updatePackageJsonReferences(
 }
 
 async function main() {
-    const repoRootDir = path.resolve(__dirname, '..', '..', '..', '..');
+    const repoRootDir = path.resolve(__dirname, '..', '..', '..', '..', '..');
     const packagesDir = path.join(repoRootDir, 'packages');
     const packageJsonPaths = (
         await glob('**/package.json', {

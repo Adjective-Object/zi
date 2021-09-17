@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/cjs",
+        "module": "CommonJs"
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.cjs.json"
+        }
+    ],
+    "extends": "../../../tsconfig.json"
+}

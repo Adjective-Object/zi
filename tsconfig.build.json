@@ -18,6 +18,7 @@
         "isolatedModules": true,
         "noErrorTruncation": true,
         "declaration": true,
+        "emitDeclarationOnly": true,
         "composite": true,
         "forceConsistentCasingInFileNames": true
     },

@@ -1,8 +1,7 @@
 {
     "name": "demo-project",
-    "type": "module",
-    "main": "lib/demoProject.js",
-    "module": "lib/demoProject.es.js",
+    "main": "lib/cjs/demoProject.js",
+    "module": "lib/mjs/demoProject.es.js",
     "types": "lib/demoProject.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",

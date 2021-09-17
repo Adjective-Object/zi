@@ -1,8 +1,7 @@
 {
     "name": "assert-element",
-    "type": "module",
-    "main": "lib/assertElement.js",
-    "module": "lib/assertElement.es.js",
+    "main": "lib/cjs/assertElement.js",
+    "module": "lib/mjs/assertElement.es.js",
     "types": "lib/assertElement.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",

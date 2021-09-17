@@ -1,9 +1,9 @@
 {
     "name": "new-package",
-    "main": "lib/newPackage.js",
+    "main": "lib/cjs/newPackage.js",
     "input": "src/newPackage.ts",
     "bin": {
-        "newpackage": "lib/newPackage.js"
+        "newpackage": "lib/cjs/newPackage.js"
     },
     "scripts": {
         "build": "tsc -b ./tsconfig.json",

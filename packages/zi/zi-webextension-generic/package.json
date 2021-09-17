@@ -1,6 +1,5 @@
 {
     "name": "zi-webextension-generic",
-    "type": "module",
     "main": "./lib/ziWebextensionGeneric.js",
     "module": "./lib/ziWebextensionGeneric.es.js",
     "types": "./lib/ziWebextensionGeneric.d.ts",

@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/mjs",
+        "module": "esnext"
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../zi-webextension-generic/tsconfig.mjs.json"
+        }
+    ],
+    "extends": "../../../tsconfig.json"
+}

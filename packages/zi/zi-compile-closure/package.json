@@ -1,10 +1,9 @@
 {
     "name": "zi-compile-closure",
-    "type": "module",
-    "main": "lib/ziCompileClosure.js",
-    "module": "lib/ziCompileClosure.es.js",
+    "main": "lib/cjs/ziCompileClosure.js",
+    "module": "lib/mjs/ziCompileClosure.es.js",
     "types": "lib/ziCompileClosure.d.ts",
-    "bin": "lib/cli.js",
+    "bin": "lib/cjs/cli.js",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",

@@ -2624,6 +2624,7 @@ __metadata:
     colors: ^1.4.0
     comment-json: ^4.1.0
     diff: ^5.0.0
+    esbuild: ^0.12.28
     eslint: ^7.26.0
     glob: ^7.1.7
     glob-promise: ^4.1.0
@@ -2632,7 +2633,7 @@ __metadata:
     ts-node: ^9.1.1
     typescript: ^4.2.4
   bin:
-    fixrefs: lib/fixPackageImports.js
+    fixrefs: lib/cjs/fixPackageImports.js
   languageName: unknown
   linkType: soft
 
@@ -4265,7 +4266,7 @@ __metadata:
     prettier: ^2.3.2
     typescript: ^4.4.3
   bin:
-    newpackage: lib/newPackage.js
+    newpackage: lib/cjs/newPackage.js
   languageName: unknown
   linkType: soft
 
@@ -4968,6 +4969,7 @@ resolve@^1.20.0:
   resolution: "run-with-concurrent-limit@workspace:packages/async-lib/run-with-concurrent-limit"
   dependencies:
     "@types/cli-progress": ^3.9.2
+    "@types/node": ^16.6.2
     cli-progress: ^3.9.1
     eslint: ^7.32.0
     prettier: ^2.3.2
@@ -5967,7 +5969,7 @@ typescript@^4.4.3:
     run-with-concurrent-limit: "workspace:*"
     typescript: ^4.4.3
   bin:
-    zi-compile-closure: lib/cli.js
+    zi-compile-closure: lib/cjs/cli.js
   languageName: unknown
   linkType: soft
 

@@ -1,12 +1,18 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "lib",
-        "strict": true,
         "composite": true
     },
-    "extends": "../../../tsconfig.json",
-    "include": ["./src"],
-    "exclude": ["./lib"],
-    "references": []
+    "include": [],
+    "exclude": [
+        "src",
+        "node_modules"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.cjs.json"
+        },
+        {
+            "path": "./tsconfig.mjs.json"
+        }
+    ]
 }
