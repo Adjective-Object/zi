@@ -1,0 +1,19 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/cjs",
+        "module": "CommonJs"
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.cjs.json"
+        }
+    ]
+}

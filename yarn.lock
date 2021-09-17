@@ -979,6 +979,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mkdirp@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@types/mkdirp@npm:1.0.2"
+  dependencies:
+    "@types/node": "*"
+  checksum: 72dedfb2d250f0e44ec964ac68ff6a4a03d7d9d6e83ae1d5ba6d212791af69cf051a5fac59846826242d099de56a18c8e0581861792fae8b845b3c9ad67ecdeb
+  languageName: node
+  linkType: hard
+
 "@types/mz@npm:^2.7.3":
   version: 2.7.4
   resolution: "@types/mz@npm:2.7.4"
@@ -1938,7 +1947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"comment-json@npm:*, comment-json@npm:^4.1.0":
+"comment-json@npm:*, comment-json@npm:^4.1.0, comment-json@npm:^4.1.1":
   version: 4.1.1
   resolution: "comment-json@npm:4.1.1"
   dependencies:
@@ -2270,6 +2279,31 @@ __metadata:
   checksum: 8b7b1be20d2de12d2255c0bc2ca638b7af5171142693299416e6a9339bd7d88fc8d7707d913d78e0993176005405a236b066b45666b27b797252c771156ace54
   languageName: node
   linkType: hard
+
+"esbp@workspace:packages/devtool/esbp":
+  version: 0.0.0-use.local
+  resolution: "esbp@workspace:packages/devtool/esbp"
+  dependencies:
+    "@types/mkdirp": ^1.0.2
+    "@types/mz": ^2.7.3
+    "@types/node": ^16.6.2
+    "@yarnpkg/core": ^3.0.0
+    "@yarnpkg/fslib": ^2.5.1
+    async-spawn: "workspace:*"
+    case: ^1.6.3
+    commander: ^8.1.0
+    comment-json: ^4.1.1
+    esbuild: ^0.12.28
+    eslint: ^7.32.0
+    fdir: ^5.1.0
+    mkdirp: ^1.0.4
+    mz: ^2.7.0
+    prettier: ^2.3.2
+    typescript: ^4.4.3
+  bin:
+    esbp: lib/cjs/esbp.js
+  languageName: unknown
+  linkType: soft
 
 "esbuild@npm:^0.12.17":
   version: 0.12.22
@@ -2624,6 +2658,7 @@ __metadata:
     colors: ^1.4.0
     comment-json: ^4.1.0
     diff: ^5.0.0
+    esbp: "workspace:packages/devtool/esbp"
     esbuild: ^0.12.28
     eslint: ^7.26.0
     glob: ^7.1.7

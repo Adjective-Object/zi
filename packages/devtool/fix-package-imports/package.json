@@ -28,6 +28,7 @@
         "@types/comment-json": "^2.4.2",
         "@types/diff": "^5.0.0",
         "@types/node": "^14.14.45",
+        "esbp": "workspace:packages/devtool/esbp",
         "esbuild": "^0.12.28",
         "eslint": "^7.26.0",
         "prettier": "^2.3.0",

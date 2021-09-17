@@ -79,6 +79,7 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
     const templateDirPath = ppath.join(
         npath.toPortablePath(__dirname),
         toFilename('..'),
+        toFilename('..'),
         toFilename('new-package-template'),
     );
     const templateContents = await fs.readdirPromise(templateDirPath);

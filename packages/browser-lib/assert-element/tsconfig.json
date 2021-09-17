@@ -3,10 +3,7 @@
         "composite": true
     },
     "include": [],
-    "exclude": [
-        "src",
-        "node_modules"
-    ],
+    "exclude": ["src", "node_modules"],
     "references": [
         {
             "path": "./tsconfig.cjs.json"
