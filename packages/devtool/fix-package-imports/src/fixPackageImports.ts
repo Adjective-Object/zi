@@ -255,50 +255,15 @@ async function updateTsconfigJsonReferences(
             ),
         }));
 
-    await Promise.all([
-        findOrPatchReferences(
-            repoDir,
-            packageDir,
-            path.join(packageDir, 'tsconfig.cjs.json'),
-            intendedReferenceArr('tsconfig.cjs.json'),
-            {
-                outDir: 'lib/cjs',
-                module: 'CommonJs',
-            },
-        ),
-        findOrPatchReferences(
-            repoDir,
-            packageDir,
-            path.join(packageDir, 'tsconfig.mjs.json'),
-            intendedReferenceArr('tsconfig.mjs.json'),
-            {
-                outDir: 'lib/mjs',
-                module: 'esnext',
-            },
-        ),
-        writeFile(
-            path.join(packageDir, 'tsconfig.json'),
-            JSON.stringify(
-                {
-                    compilerOptions: {
-                        composite: true,
-                    },
-                    include: [],
-                    exclude: ['src', 'node_modules'],
-                    references: [
-                        {
-                            path: './tsconfig.cjs.json',
-                        },
-                        {
-                            path: './tsconfig.mjs.json',
-                        },
-                    ],
-                },
-                null,
-                4,
-            ),
-        ),
-    ]);
+    await findOrPatchReferences(
+        repoDir,
+        packageDir,
+        path.join(packageDir, 'tsconfig.json'),
+        intendedReferenceArr('tsconfig.json'),
+        {
+            outDir: 'lib/types',
+        },
+    );
 }
 
 const YARN = process.platform === 'win32' ? 'yarn.cmd' : 'yarn';
