@@ -3,7 +3,10 @@
         "composite": true
     },
     "include": [],
-    "exclude": ["src", "node_modules"],
+    "exclude": [
+        "src",
+        "node_modules"
+    ],
     "references": [
         {
             "path": "./tsconfig.cjs.json"
@@ -12,7 +15,7 @@
             "path": "./tsconfig.mjs.json"
         },
         {
-            "path": "./tsconfig.types.json"
+            "path": "./tsconfig.mjs.json"
         }
     ]
 }

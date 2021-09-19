@@ -16,6 +16,7 @@
         "async-spawn": "workspace:*",
         "case": "^1.6.3",
         "commander": "^8.1.0",
+        "get-repo-root": "workspace:*",
         "mz": "^2.7.0"
     },
     "devDependencies": {

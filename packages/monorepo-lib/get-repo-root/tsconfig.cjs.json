@@ -5,14 +5,11 @@
         "outDir": "lib/cjs",
         "module": "CommonJs"
     },
-    "include": ["./src"],
-    "exclude": ["./lib"],
-    "references": [
-        {
-            "path": "../../nodejs/async-spawn/tsconfig.cjs.json"
-        },
-        {
-            "path": "../../nodejs/async-spawn/tsconfig.cjs.json"
-        }
-    ]
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": []
 }

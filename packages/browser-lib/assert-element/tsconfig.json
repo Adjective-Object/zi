@@ -1,15 +1,13 @@
 {
     "compilerOptions": {
-        "composite": true
+        "composite": true,
+        "outDir": "lib/types"
     },
     "include": [],
-    "exclude": ["src", "node_modules"],
-    "references": [
-        {
-            "path": "./tsconfig.cjs.json"
-        },
-        {
-            "path": "./tsconfig.mjs.json"
-        }
-    ]
+    "exclude": [
+        "src",
+        "node_modules"
+    ],
+    "references": [],
+    "extends": "../../../tsconfig.json"
 }

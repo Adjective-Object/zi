@@ -1,17 +1,16 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
         "outDir": "lib/types",
         "strict": true,
-        "composite": true,
         "emitDeclarationOnly": true
     },
     "extends": "../../../tsconfig.json",
-    "include": [
+    "includes": [
         "./src"
     ],
-    "exclude": [
-        "./lib"
-    ],
-    "references": []
+    "references": [
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
+        }
+    ]
 }

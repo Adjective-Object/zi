@@ -11,9 +11,5 @@
     "exclude": [
         "./lib"
     ],
-    "references": [
-        {
-            "path": "../../nodejs/async-spawn/tsconfig.cjs.json"
-        }
-    ]
+    "references": []
 }

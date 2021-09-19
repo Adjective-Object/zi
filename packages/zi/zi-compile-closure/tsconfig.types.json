@@ -1,17 +1,16 @@
 {
     "compilerOptions": {
-        "rootDir": "src",
         "outDir": "lib/types",
         "strict": true,
-        "composite": true,
         "emitDeclarationOnly": true
     },
     "extends": "../../../tsconfig.json",
-    "include": [
+    "includes": [
         "./src"
     ],
-    "exclude": [
-        "./lib"
-    ],
-    "references": []
+    "references": [
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
+        }
+    ]
 }

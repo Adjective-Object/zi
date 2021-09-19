@@ -7,20 +7,24 @@
         "emitDeclarationOnly": true
     },
     "extends": "../../../tsconfig.json",
-    "include": ["./src"],
-    "exclude": ["./lib"],
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
     "references": [
         {
-            "path": "../../nodejs/async-spawn/tsconfig.json"
+            "path": "../../nodejs/async-spawn/tsconfig.types.json"
         },
         {
-            "path": "../../nodejs/mod-slash/tsconfig.json"
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
         },
         {
-            "path": "../../monorepo-lib/get-repo-root/tsconfig.json"
+            "path": "../../monorepo-lib/list-internal-devdependencies/tsconfig.types.json"
         },
         {
-            "path": "../../monorepo-lib/list-internal-devdependencies/tsconfig.json"
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
         }
     ]
 }

@@ -6,11 +6,18 @@
         "module": "esnext",
         "emitDeclarationOnly": true
     },
-    "include": ["./src"],
-    "exclude": ["./lib"],
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
     "references": [
         {
-            "path": "../../nodejs/async-spawn/tsconfig.json"
+            "path": "../../nodejs/async-spawn/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
         }
     ]
 }

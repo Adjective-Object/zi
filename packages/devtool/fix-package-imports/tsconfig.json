@@ -3,7 +3,10 @@
         "composite": true
     },
     "include": [],
-    "exclude": ["src", "node_modules"],
+    "exclude": [
+        "src",
+        "node_modules"
+    ],
     "references": [
         {
             "path": "./tsconfig.cjs.json"
@@ -12,13 +15,7 @@
             "path": "./tsconfig.mjs.json"
         },
         {
-            "path": "./tsconfig.types.json"
-        },
-        {
-            "path": "../../monorepo-lib/get-repo-root/tsconfig.json"
-        },
-        {
-            "path": "../../monorepo-lib/list-internal-devdependencies/tsconfig.json"
+            "path": "./tsconfig.mjs.json"
         }
     ]
 }

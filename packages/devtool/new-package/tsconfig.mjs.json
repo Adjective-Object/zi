@@ -5,11 +5,18 @@
         "outDir": "lib/mjs",
         "module": "esnext"
     },
-    "include": ["./src"],
-    "exclude": ["./lib"],
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
     "references": [
         {
-            "path": "../../nodejs/async-spawn/tsconfig.json"
+            "path": "../../nodejs/async-spawn/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.mjs.json"
         }
     ]
 }

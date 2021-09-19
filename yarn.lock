@@ -1135,6 +1135,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@yarnpkg/fslib@npm:^2.6.0-rc.5":
+  version: 2.6.0-rc.5
+  resolution: "@yarnpkg/fslib@npm:2.6.0-rc.5"
+  dependencies:
+    "@yarnpkg/libzip": ^2.2.2
+    tslib: ^1.13.0
+  checksum: a41517f482aef3bb4bf55dd0eedbca8a6f9578db8aecea9f07ab6145c93bb70497b37353aa4876b717291148de2e1b6686b90569c4f5b8707261937db668d496
+  languageName: node
+  linkType: hard
+
 "@yarnpkg/json-proxy@npm:^2.1.1":
   version: 2.1.1
   resolution: "@yarnpkg/json-proxy@npm:2.1.1"
@@ -2289,7 +2299,6 @@ __metadata:
     "@types/node": ^16.6.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
-    async-spawn: "workspace:*"
     case: ^1.6.3
     commander: ^8.1.0
     comment-json: ^4.1.1
@@ -2654,6 +2663,7 @@ __metadata:
     "@types/diff": ^5.0.0
     "@types/node": ^14.14.45
     "@yarnpkg/core": ^3.0.0
+    "@yarnpkg/fslib": ^2.6.0-rc.5
     async-spawn: "workspace:*"
     builtin-modules: ^3.2.0
     colors: ^1.4.0
@@ -2814,11 +2824,9 @@ __metadata:
     "@types/node": ^16.6.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
-    async-spawn: "workspace:*"
     case: ^1.6.3
     commander: ^8.1.0
     eslint: ^7.32.0
-    get-repo-root: "workspace:*"
     mz: ^2.7.0
     prettier: ^2.3.2
     typescript: ^4.4.3
@@ -3995,7 +4003,6 @@ __metadata:
     "@types/node": ^16.6.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
-    async-spawn: "workspace:*"
     case: ^1.6.3
     commander: ^8.1.0
     eslint: ^7.32.0
@@ -4337,6 +4344,7 @@ __metadata:
     case: ^1.6.3
     commander: ^8.1.0
     eslint: ^7.32.0
+    get-repo-root: "workspace:*"
     mz: ^2.7.0
     prettier: ^2.3.2
     typescript: ^4.4.3

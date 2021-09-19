@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "composite": true
+        "composite": true,
+        "outDir": "lib/types"
     },
     "include": [],
     "exclude": [
@@ -9,10 +10,8 @@
     ],
     "references": [
         {
-            "path": "./tsconfig.cjs.json"
-        },
-        {
-            "path": "./tsconfig.mjs.json"
+            "path": "../zi-webextension-generic/tsconfig.json"
         }
-    ]
+    ],
+    "extends": "../../../tsconfig.json"
 }
