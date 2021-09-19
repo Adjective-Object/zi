@@ -1,4 +1,5 @@
 import 'colors';
+import { Workspace } from '@yarnpkg/core';
 import builtinModules from 'builtin-modules';
 import { asyncSpawn } from 'async-spawn';
 import * as CommentJson from 'comment-json';
@@ -21,6 +22,10 @@ import {
     ScriptTarget,
 } from 'typescript';
 import { slash } from 'mod-slash';
+import { listInternalDevDependencies } from 'list-internal-devdependencies';
+import { getRepoRootWorkspace } from 'get-repo-root';
+import { npath } from '@yarnpkg/fslib';
+
 const readFile = promisify(readFileCb);
 const writeFile = promisify(writeFileCb);
 const exists = promisify(existsCb);
@@ -232,6 +237,8 @@ async function findOrPatchReferences(
 
 async function updateTsconfigJsonReferences(
     repoDir: string,
+    rootYarnWorkspace: Workspace,
+    internalDevDependencies: Set<Workspace>,
     packageDir: string,
     internalPackagePathMap: Map<string, string>,
     importSpecifiers: Set<string>,
@@ -255,15 +262,87 @@ async function updateTsconfigJsonReferences(
             ),
         }));
 
-    await findOrPatchReferences(
-        repoDir,
-        packageDir,
-        path.join(packageDir, 'tsconfig.json'),
-        intendedReferenceArr('tsconfig.json'),
-        {
-            outDir: 'lib/types',
-        },
-    );
+    // if this is on the list of internal dev dependencies, then it will be built
+    // to cjs and mjs as part of repo bootstrap -- that means it has to build
+    // using typescript, rather than using esbp
+    if (
+        internalDevDependencies.has(
+            rootYarnWorkspace.project.getWorkspaceByFilePath(
+                npath.toPortablePath(packageDir),
+            ),
+        )
+    ) {
+        console.log(`templating ${packageDir} as an internal dev package`);
+        await Promise.all([
+            findOrPatchReferences(
+                repoDir,
+                packageDir,
+                path.join(packageDir, 'tsconfig.cjs.json'),
+                intendedReferenceArr('tsconfig.cjs.json'),
+                {
+                    outDir: 'lib/cjs',
+                    module: 'CommonJs',
+                },
+            ),
+            findOrPatchReferences(
+                repoDir,
+                packageDir,
+                path.join(packageDir, 'tsconfig.mjs.json'),
+                intendedReferenceArr('tsconfig.mjs.json'),
+                {
+                    outDir: 'lib/mjs',
+                    module: 'esnext',
+                },
+            ),
+            findOrPatchReferences(
+                repoDir,
+                packageDir,
+                path.join(packageDir, 'tsconfig.types.json'),
+                intendedReferenceArr('tsconfig.types.json'),
+                {
+                    outDir: 'lib/types',
+                    emitDeclarationOnly: true,
+                },
+            ),
+            writeFile(
+                path.join(packageDir, 'tsconfig.json'),
+                JSON.stringify(
+                    {
+                        compilerOptions: {
+                            composite: true,
+                        },
+                        include: [],
+                        exclude: ['src', 'node_modules'],
+                        references: [
+                            {
+                                path: './tsconfig.cjs.json',
+                            },
+                            {
+                                path: './tsconfig.mjs.json',
+                            },
+                            {
+                                path: './tsconfig.mjs.json',
+                            },
+                        ],
+                    },
+                    null,
+                    4,
+                ),
+            ),
+        ]);
+    } else {
+        console.log(`templating ${packageDir} as a non-dev package`);
+
+        await findOrPatchReferences(
+            repoDir,
+            packageDir,
+            path.join(packageDir, 'tsconfig.json'),
+            intendedReferenceArr('tsconfig.json'),
+            {
+                outDir: 'lib/types',
+            },
+        );
+    }
 }
 
 const YARN = process.platform === 'win32' ? 'yarn.cmd' : 'yarn';
@@ -476,9 +555,16 @@ async function main() {
             importSpecifiers.devImportsSet.delete(parsedPackageJson.name);
         }
 
+        const rootYarnWorkspace = await getRepoRootWorkspace();
+        const internalDevDependencies = new Set(
+            listInternalDevDependencies(rootYarnWorkspace),
+        );
+
         await Promise.all([
             updateTsconfigJsonReferences(
                 repoRootDir,
+                rootYarnWorkspace,
+                internalDevDependencies,
                 packageDir,
                 internalPackageNameMap,
                 new Set([

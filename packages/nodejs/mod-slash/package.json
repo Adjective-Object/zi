@@ -6,7 +6,8 @@
     "homepage": "https://github.com/Adjective-Object/draftsim#readme",
     "license": "UNLICENSED",
     "main": "lib/cjs/index.js",
-    "types": "lib/index.d.ts",
+    "module": "lib/mjs/index.js",
+    "types": "lib/types/index.d.ts",
     "input": "src/index.ts",
     "directories": {
         "lib": "lib",

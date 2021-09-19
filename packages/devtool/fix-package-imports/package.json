@@ -2,14 +2,13 @@
     "name": "fix-package-imports",
     "main": "lib/cjs/fixPackageImports.js",
     "module": "lib/mjs/fixPackageImports.js",
+    "types": "lib/types/fixPackageImports.d.js",
     "input": "src/fixPackageImports.ts",
     "bin": {
         "fixrefs": "lib/cjs/fixPackageImports.js"
     },
     "scripts": {
-        "build:mjs": "tsc -b ./tsconfig.json",
-        "build:cjs": "tsc -b ./tsconfig.json",
-        "build:types": "tsc -b ./tsconfig.json",
+        "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
         "fixlint": "prettier --check src/**/*"
     },
@@ -19,8 +18,10 @@
         "colors": "^1.4.0",
         "comment-json": "^4.1.0",
         "diff": "^5.0.0",
+        "get-repo-root": "workspace:*",
         "glob": "^7.1.7",
         "glob-promise": "^4.1.0",
+        "list-internal-devdependencies": "workspace:*",
         "mod-slash": "workspace:*"
     },
     "devDependencies": {

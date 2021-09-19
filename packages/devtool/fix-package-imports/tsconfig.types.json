@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "rootDir": "src",
-        "outDir": "lib/mjs",
-        "module": "esnext",
-        "target": "esnext"
+        "outDir": "lib/types",
+        "strict": true,
+        "composite": true,
+        "emitDeclarationOnly": true
     },
     "extends": "../../../tsconfig.json",
     "include": ["./src"],

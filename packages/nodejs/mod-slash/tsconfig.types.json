@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/types",
+        "strict": true,
+        "composite": true,
+        "emitDeclarationOnly": true
+    },
+    "extends": "../../../tsconfig.json",
+    "include": ["./src"],
+    "exclude": ["./lib"],
+    "references": []
+}

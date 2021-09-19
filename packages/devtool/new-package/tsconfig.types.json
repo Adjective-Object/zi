@@ -2,17 +2,15 @@
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "src",
-        "outDir": "lib/mjs",
-        "module": "esnext"
+        "outDir": "lib/types",
+        "module": "esnext",
+        "emitDeclarationOnly": true
     },
     "include": ["./src"],
     "exclude": ["./lib"],
     "references": [
         {
             "path": "../../nodejs/async-spawn/tsconfig.json"
-        },
-        {
-            "path": "../get-repo-root/tsconfig.json"
         }
     ]
 }

@@ -1,5 +1,5 @@
 import commander from 'commander';
-import { Configuration, Project } from '@yarnpkg/core';
+import { Project } from '@yarnpkg/core';
 import {
     ppath,
     toFilename,
@@ -9,6 +9,7 @@ import {
     npath,
 } from '@yarnpkg/fslib';
 import { asyncSpawn } from 'async-spawn';
+import { getRepoRootWorkspace} from 'get-repo-root';
 
 function kebabToCamel(kebab: string): string {
     const [firstWord, ...restWords] = kebab.split('-');
@@ -180,22 +181,7 @@ async function main(): Promise<number> {
     program.parse(process.argv);
 
     // check for an existing workspace
-    const cwd = ppath.cwd();
-    const configuration = await Configuration.find(
-        cwd,
-        {
-            modules: new Map(),
-            plugins: new Set(),
-        },
-        {
-            strict: false,
-        },
-    );
-    const { project, workspace: cwdWorkspace } = await Project.find(
-        configuration,
-        cwd,
-    );
-
+    cosnt repoRootWorkspace = await getRepoRootWorkspace();
     let exitCode: number = 0;
 
     for (let packageSpecifier of program.args) {
