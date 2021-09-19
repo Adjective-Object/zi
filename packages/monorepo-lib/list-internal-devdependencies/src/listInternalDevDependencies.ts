@@ -1,4 +1,5 @@
-import { Ident, IdentHash, Workspace } from '@yarnpkg/core';
+import { IdentHash, Workspace } from '@yarnpkg/core';
+import { npath } from '@yarnpkg/fslib';
 
 /**
  * Finds all the children of rootWorkspace that are listed
@@ -30,8 +31,11 @@ export function listInternalDevDependencies(
     const identHashToInternalWorkspace = new Map<IdentHash, Workspace>();
     for (let individualWorkspace of [...children, rootWorkspace]) {
         if (!individualWorkspace.manifest.name) {
-            console.warn('no individual manifast uhoh');
-            continue;
+            throw new Error(
+                `Internal workspace at ${npath.fromPortablePath(
+                    individualWorkspace.cwd,
+                )} had no name! Could not get the identHash of the name.`,
+            );
         }
         identHashToInternalWorkspace.set(
             individualWorkspace.manifest.name.identHash,
