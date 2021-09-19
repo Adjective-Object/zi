@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "lib/types"
+    },
+    "include": [],
+    "exclude": ["src", "node_modules"],
+    "references": [
+        {
+            "path": "../config-editor/tsconfig.json"
+        },
+        {
+            "path": "../find-package-imports/tsconfig.json"
+        },
+        {
+            "path": "../list-internal-devdependencies/tsconfig.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.json"
+        }
+    ],
+    "extends": "../../../tsconfig.json"
+}

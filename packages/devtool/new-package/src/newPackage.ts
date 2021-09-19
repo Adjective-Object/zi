@@ -9,7 +9,7 @@ import {
     npath,
 } from '@yarnpkg/fslib';
 import { asyncSpawn } from 'async-spawn';
-import { getRepoRootWorkspace} from 'get-repo-root';
+import { getRepoRootWorkspace } from 'get-repo-root';
 
 function kebabToCamel(kebab: string): string {
     const [firstWord, ...restWords] = kebab.split('-');
@@ -181,13 +181,16 @@ async function main(): Promise<number> {
     program.parse(process.argv);
 
     // check for an existing workspace
-    cosnt repoRootWorkspace = await getRepoRootWorkspace();
+    const repoRootWorkspace = await getRepoRootWorkspace();
     let exitCode: number = 0;
 
     for (let packageSpecifier of program.args) {
         exitCode =
             exitCode == 0
-                ? await bootstrapPackage(project, packageSpecifier)
+                ? await bootstrapPackage(
+                      repoRootWorkspace.project,
+                      packageSpecifier,
+                  )
                 : exitCode;
     }
 
@@ -195,7 +198,9 @@ async function main(): Promise<number> {
         return exitCode;
     }
 
-    const packageNativeDir = npath.fromPortablePath(project.cwd);
+    const packageNativeDir = npath.fromPortablePath(
+        repoRootWorkspace.project.cwd,
+    );
     console.log('spawning yarn to resolve the workspace in', packageNativeDir);
     try {
         await asyncSpawn(

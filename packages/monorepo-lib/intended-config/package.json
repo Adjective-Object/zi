@@ -1,0 +1,24 @@
+{
+    "name": "intended-config",
+    "main": "lib/cjs/intendedConfig.js",
+    "module": "lib/mjs/intendedConfig.js",
+    "types": "lib/types/intendedConfig.d.ts",
+    "input": "src/intendedConfig.ts",
+    "scripts": {
+        "build": "tsc -b ./tsconfig.json",
+        "lint": "prettier --write src/**/*",
+        "fixlint": "prettier --check src/**/*"
+    },
+    "dependencies": {
+        "config-editor": "workspace:*",
+        "find-package-imports": "workspace:*",
+        "list-internal-devdependencies": "workspace:*",
+        "mod-slash": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^16.6.2",
+        "eslint": "^7.32.0",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
+    }
+}

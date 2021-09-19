@@ -1,0 +1,21 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/mjs",
+        "module": "esnext"
+    },
+    "include": ["./src"],
+    "exclude": ["./lib"],
+    "references": [
+        {
+            "path": "../config-editor/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.mjs.json"
+        }
+    ]
+}
