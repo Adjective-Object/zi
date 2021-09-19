@@ -1,6 +1,6 @@
-import { Workspace } from '@yarnpkg/core';
 import { Change } from './Change';
 import { PackageConfigsManager } from './PackageConfigsManager';
+import { PackageLike } from './PackageLike';
 
 export class ConfigManager {
     private manifestIdentToConfigManager = new Map<
@@ -8,14 +8,14 @@ export class ConfigManager {
         PackageConfigsManager
     >();
 
-    public getManagerForWorkspace(childWorkspace: Workspace) {
+    public getManagerForPackageLike(childWorkspace: PackageLike) {
         let existingConfigManager = this.manifestIdentToConfigManager.get(
-            childWorkspace.manifest.indent,
+            childWorkspace.manifest.name.identHash,
         );
         if (!existingConfigManager) {
             const newManager = new PackageConfigsManager(childWorkspace);
             this.manifestIdentToConfigManager.set(
-                childWorkspace.manifest.indent,
+                childWorkspace.manifest.name.identHash,
                 newManager,
             );
 

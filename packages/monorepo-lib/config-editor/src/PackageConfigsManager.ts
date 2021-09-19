@@ -1,12 +1,12 @@
-import { Workspace } from '@yarnpkg/core';
 import { PortablePath, ppath, npath } from '@yarnpkg/fslib';
 import merge from 'lodash/merge';
 import { Change } from './Change';
+import { PackageLike } from './PackageLike';
 
 export class PackageConfigsManager {
     private intendedContents: Map<PortablePath, object> = new Map();
 
-    constructor(private workspace: Workspace) {}
+    constructor(private workspace: PackageLike) {}
 
     updateIntendedContents(
         relativePath: PortablePath,
