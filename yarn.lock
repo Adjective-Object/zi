@@ -2653,6 +2653,7 @@ __metadata:
     "@types/comment-json": ^2.4.2
     "@types/diff": ^5.0.0
     "@types/node": ^14.14.45
+    "@yarnpkg/core": ^3.0.0
     async-spawn: "workspace:*"
     builtin-modules: ^3.2.0
     colors: ^1.4.0

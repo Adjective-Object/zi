@@ -11,8 +11,13 @@ export function listInternalDevDependencies(
     rootWorkspace: Workspace,
 ): Iterable<Workspace> {
     const children = rootWorkspace.getRecursiveWorkspaceChildren();
-    const internalPackageNames = new Set<string>(
-        children.map((child) => child.manifest.name.name),
+    const internalPackageHashes = new Set<string>(
+        children
+            .map((child) => child.manifest.name?.identHash)
+            .filter(
+                <T>(x: T | undefined): x is Exclude<T, undefined> =>
+                    x != undefined,
+            ),
     );
 
     // Get union of all internal devDependencies of all
@@ -22,19 +27,25 @@ export function listInternalDevDependencies(
     // top-level iteration will capture the internal devDependencies
     // of any packages that are on the list.
     const resultIdentHashes = new Set<IdentHash>();
-    const identHashToWorkspace = new Map<IdentHash, Workspace>();
+    const identHashToInternalWorkspace = new Map<IdentHash, Workspace>();
     for (let individualWorkspace of [...children, rootWorkspace]) {
-        identHashToWorkspace.set(
+        if (!individualWorkspace.manifest.name) {
+            console.warn('no individual manifast uhoh');
+            continue;
+        }
+        identHashToInternalWorkspace.set(
             individualWorkspace.manifest.name.identHash,
             individualWorkspace,
         );
+
         const devDependencyEntries = [
             ...individualWorkspace.manifest.devDependencies.entries(),
-        ].filter(
-            ([packageIdent, packageVersion]) =>
-                internalPackageNames.has(packageIdent) &&
-                packageVersion.range.startsWith('workspace:'),
-        );
+        ].filter(([packageIdent, packageVersion]) => {
+            return (
+                internalPackageHashes.has(packageIdent) &&
+                packageVersion.range.startsWith('workspace:')
+            );
+        });
 
         for (let [devDependencyIdent] of devDependencyEntries) {
             resultIdentHashes.add(devDependencyIdent);
@@ -46,11 +57,17 @@ export function listInternalDevDependencies(
     const frontier: IdentHash[] = [...resultIdentHashes];
     while (frontier.length) {
         const current = frontier.pop();
-        const currentWorkspace = identHashToWorkspace.get(current);
-        for (let dependencyIdent of currentWorkspace.dependencies.keys()) {
-            seenInWalk.add(dependencyIdent);
-            frontier.push(dependencyIdent);
-            resultIdentHashes.add(dependencyIdent);
+        const currentInternalWorkspace =
+            identHashToInternalWorkspace.get(current);
+        if (currentInternalWorkspace) {
+            // this hash is to an internal package, walk and expand dependencies
+            for (let dependencyIdent of currentInternalWorkspace.manifest.dependencies.keys()) {
+                if (!seenInWalk.has(dependencyIdent)) {
+                    seenInWalk.add(dependencyIdent);
+                    frontier.push(dependencyIdent);
+                    resultIdentHashes.add(dependencyIdent);
+                }
+            }
         }
     }
 
