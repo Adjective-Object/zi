@@ -29,6 +29,12 @@
         },
         {
             "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
+        },
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
         }
     ]
 }

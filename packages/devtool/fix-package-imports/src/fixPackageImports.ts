@@ -1,7 +1,7 @@
 import { getIntendedConfigsForChildWorkspaces } from 'intended-config';
 import { getRepoRootWorkspace } from 'get-repo-root';
-import { ConfigManager } from 'config-editor';
-import { runWithConcurrentLimit } from 'async-lib/run-with-concurrent-limit/lib/runWithConcurrentLimit';
+import { ConfigManager, Change } from 'config-editor';
+import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
 import { Descriptor } from '@yarnpkg/core';
 
 async function main() {
@@ -46,7 +46,7 @@ async function main() {
         await runWithConcurrentLimit(
             10,
             changes,
-            (change) => change.write(),
+            (change: Change) => change.write(),
             true, // progressBar
         );
     }
