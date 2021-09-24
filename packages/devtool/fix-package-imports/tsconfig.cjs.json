@@ -5,12 +5,8 @@
         "module": "CommonJs"
     },
     "extends": "../../../tsconfig.json",
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": [
         {
             "path": "../../nodejs/async-spawn/tsconfig.cjs.json"
@@ -23,6 +19,15 @@
         },
         {
             "path": "../../nodejs/mod-slash/tsconfig.cjs.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/intended-config/tsconfig.cjs.json"
+        },
+        {
+            "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
         }
     ]
 }

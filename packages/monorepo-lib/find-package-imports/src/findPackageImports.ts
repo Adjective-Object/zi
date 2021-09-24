@@ -56,6 +56,10 @@ type DiscoveredImports = {
 
 /**
  * Scans package sources and tries to find imported packages by name
+ *
+ * TODO: mock out the fs access so this can be unit tested.
+ * (accept a @yarnpkg/fslib fs?)
+ *
  * @param packageDir path to the directory to scan
  * @returns the set of discovered dev / program dependencies
  */

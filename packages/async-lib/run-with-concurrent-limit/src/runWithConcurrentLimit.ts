@@ -4,7 +4,7 @@ export async function runWithConcurrentLimit<I>(
     maxBatchSize: number,
     inputs: I[],
     cb: (input: I) => Promise<void>,
-    progress: boolean,
+    progress?: boolean,
 ): Promise<void> {
     const i = [...inputs];
     let completedJobs = 0;

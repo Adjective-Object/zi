@@ -44,6 +44,12 @@ export type RepoMeta = {
     repoHomepageBaseUrl: string;
 };
 
+function pluck<T>(a: Record<string, T>, keys: string[]): Record<string, T> {
+    return Object.fromEntries(
+        Object.entries(a).filter(([k]) => keys.indexOf(k) !== -1),
+    );
+}
+
 async function setConfigContentsForPackage({
     configManager,
     packageLike,
@@ -53,14 +59,14 @@ async function setConfigContentsForPackage({
     internalPackages,
     bootstrapBuildPackageIdents,
     extraScripts,
-    preferredPackageVersions,
+    permittedPackageVersions,
 }: {
     configManager: ConfigManager;
     packageLike: PackageLike;
     repoRoot: PortablePath;
     repoMeta: RepoMeta;
     extraScripts: Record<string, string>;
-    preferredPackageVersions: Record<string, string>;
+    permittedPackageVersions: Record<string, string>;
     packageAuthor: string;
     internalPackages: PackageLike[];
     bootstrapBuildPackageIdents: Set<string>;
@@ -77,12 +83,33 @@ async function setConfigContentsForPackage({
                 packageDependencies.devImportsSet.has(
                     internalPackage.manifest.name.name,
                 ) ||
-                packageDependencies.devImportsSet.has(
+                packageDependencies.programImportsSet.has(
                     internalPackage.manifest.name.name,
                 )
             );
         },
     );
+    const isExternalPackageName = (packageName: string) =>
+        !internalPackages.some((p) => p.manifest.name.name === packageName);
+    const externalDevDependencies = [
+        ...packageDependencies.devImportsSet,
+    ].filter(isExternalPackageName);
+    const externalDependencies = [
+        ...packageDependencies.programImportsSet,
+    ].filter(isExternalPackageName);
+
+    const missingExternalPackages = [
+        ...externalDependencies,
+        ...externalDevDependencies,
+    ].filter(
+        (externalDependency) =>
+            !permittedPackageVersions.hasOwnProperty(externalDependency),
+    );
+    if (missingExternalPackages.length) {
+        throw new Error(
+            `preferred packages map was missing external dependencies: ${missingExternalPackages}`,
+        );
+    }
 
     /**
      * Package-relative slash-path
@@ -103,7 +130,11 @@ async function setConfigContentsForPackage({
         ),
     );
 
-    const basePackageJson = {
+    const packageJsonPPath = ppath.join(
+        packageLike.cwd,
+        filename('package.json'),
+    );
+    packageConfigEditor.updateIntendedContents(packageJsonPPath, {
         name: packageLike.manifest.name.name,
         version: '0.0.0',
         author: packageAuthor,
@@ -119,6 +150,10 @@ async function setConfigContentsForPackage({
         module: `lib/mjs/${kebabToCamel(packageLike.manifest.name.name)}.js`,
         types: `lib/types/${kebabToCamel(packageLike.manifest.name.name)}.d.ts`,
         input: `src/${kebabToCamel(packageLike.manifest.name.name)}.ts`,
+        scripts: {
+            test: 'echo "Error: run tests from root" && exit 1',
+            ...extraScripts,
+        },
         directories: {
             lib: 'lib',
         },
@@ -127,42 +162,37 @@ async function setConfigContentsForPackage({
             type: 'git',
             url: repoGitUrl,
         },
-        scripts: {
-            test: 'echo "Error: run tests from root" && exit 1',
-        },
         bugs: {
             url: repoIssuesUrl,
         },
-        // TODO probably better to error if preferredPackageVersions doesn't
-        // have any of the specified versions here.
+        dependencies: pluck(permittedPackageVersions, externalDependencies),
+        // TODO probably better to error if we error on missing verisons
         devDependencies: {
-            '@types/node':
-                preferredPackageVersions['@types/node'] ?? '^14.14.45',
-            eslint: preferredPackageVersions['eslint'] ?? '^7.26.0',
-            prettier: preferredPackageVersions['prettier'] ?? '^2.3.0',
-            typescript: preferredPackageVersions['typescript'] ?? '^4.2.4',
-            'npm-run-all': preferredPackageVersions['npm-run-all'] ?? '^4.1.5',
+            ...pluck(permittedPackageVersions, [
+                ...externalDevDependencies,
+                '@types/node',
+                'eslint',
+                'prettier',
+                'typescript',
+                'npm-run-all',
+            ]),
         },
-    };
+    });
 
     if (bootstrapBuildPackageIdents.has(packageLike.manifest.name.identHash)) {
         // This package needs to build with cjs/mjs/types using typescript,
         // rather than the standard esbp build which uses typescript only for types.
 
-        packageConfigEditor.updateIntendedContents(
-            ppath.join(packageLike.cwd, filename('package.json')),
-            {
-                ...basePackageJson,
-                scripts: {
-                    ...extraScripts,
-                    build: 'tsc -b ./tsconfig.json',
-                    'build:types': 'tsc -b ./tsconfig.types.json',
-                    'build:scripts': 'npm-run-all build:cjs build:mjs',
-                    'build:cjs': 'tsc -b ./tsconfig.cjs.json',
-                    'build:mjs': 'tsc -b ./tsconfig.mjs.json',
-                },
+        // these updates will merge with the base config we push earlier
+        packageConfigEditor.updateIntendedContents(packageJsonPPath, {
+            scripts: {
+                build: 'tsc -b ./tsconfig.json',
+                'build:types': 'tsc -b ./tsconfig.types.json',
+                'build:scripts': 'npm-run-all build:cjs build:mjs',
+                'build:cjs': 'tsc -b ./tsconfig.cjs.json',
+                'build:mjs': 'tsc -b ./tsconfig.mjs.json',
             },
-        );
+        });
 
         packageConfigEditor.updateIntendedContents(
             ppath.join(packageLike.cwd, filename('tsconfig.json')),
@@ -280,25 +310,20 @@ async function setConfigContentsForPackage({
         // This package needs to build types using typescript.
         // We will use esbp to build the concrete script outputs.
 
-        packageConfigEditor.updateIntendedContents(
-            ppath.join(packageLike.cwd, filename('package.json')),
-            {
-                ...basePackageJson,
-                scripts: {
-                    ...extraScripts,
-                    build: 'npm-run-all -p build:types build:scripts',
-                    'build:types': 'tsc -b ./tsconfig.json',
-                    'build:scripts': 'esbp',
-                    'build:cjs': 'esbp --cjs-only',
-                    'build:mjs': 'esbp --mjs-only',
-                },
-                devDependencies: {
-                    ...basePackageJson.devDependencies,
-                    esbp: 'workspace:*',
-                    esbuild: '^0.12.28',
-                },
+        // these updates will merge with the base config we push earlier
+        packageConfigEditor.updateIntendedContents(packageJsonPPath, {
+            scripts: {
+                build: 'npm-run-all -p build:types build:scripts',
+                'build:types': 'tsc -b ./tsconfig.json',
+                'build:scripts': 'esbp',
+                'build:cjs': 'esbp --cjs-only',
+                'build:mjs': 'esbp --mjs-only',
             },
-        );
+            devDependencies: {
+                esbp: 'workspace:*',
+                esbuild: '^0.12.28',
+            },
+        });
 
         packageConfigEditor.updateIntendedContents(
             ppath.join(packageLike.cwd, filename('tsconfig.json')),
@@ -318,19 +343,12 @@ async function setConfigContentsForPackage({
     }
 }
 
-/**
- * 'https://github.com/Adjective-Object/zi/tree/master/packages/';
-'https://github.com/Adjective-Object/zi/issues';
-'git@github.com:Adjective-Object/zi.git';
-'Maxwell Huang-Hobbs <mhuan13@gmail.com>';
- */
-
 export async function getIntendedConfigsForChildWorkspaces(
     configManager: ConfigManager,
     rootWorkspace: Workspace,
     options: {
         extraScripts?: Record<string, string>;
-        preferredPackageVersions?: Record<string, string>;
+        permittedPackageVersions?: Record<string, string>;
         repoMeta: {
             repoHomepageBaseUrl: string;
             repoIssuesUrl: string;
@@ -358,7 +376,7 @@ export async function getIntendedConfigsForChildWorkspaces(
             repoMeta: options.repoMeta,
             packageAuthor: options.packageAuthor,
             extraScripts: options?.extraScripts ?? {},
-            preferredPackageVersions: options?.preferredPackageVersions ?? {},
+            permittedPackageVersions: options?.permittedPackageVersions ?? {},
             internalPackages: childWorkspaces.map(assertHasNamedManifest),
             bootstrapBuildPackageIdents: new Set(
                 [...bootstrapBuildPackages].map(

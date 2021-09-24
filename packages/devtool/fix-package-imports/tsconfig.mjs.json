@@ -6,12 +6,8 @@
         "target": "esnext"
     },
     "extends": "../../../tsconfig.json",
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": [
         {
             "path": "../../nodejs/async-spawn/tsconfig.mjs.json"
@@ -24,6 +20,15 @@
         },
         {
             "path": "../../nodejs/mod-slash/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/intended-config/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
         }
     ]
 }
