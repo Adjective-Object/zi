@@ -336,10 +336,9 @@ export async function getIntendedConfigsForChildWorkspaces(
             repoRoot: rootWorkspace.cwd,
             repoMeta: {
                 repoHomepageBaseUrl:
-                    'https://github.com/Adjective-Object/draftsim/tree/master/packages/',
-                repoIssuesUrl:
-                    'https://github.com/Adjective-Object/draftsim/issues',
-                repoGitUrl: 'git@github.com:Adjective-Object/draftsim.git',
+                    'https://github.com/Adjective-Object/zi/tree/master/packages/',
+                repoIssuesUrl: 'https://github.com/Adjective-Object/zi/issues',
+                repoGitUrl: 'git@github.com:Adjective-Object/zi.git',
             },
             packageAuthor: 'Maxwell Huang-Hobbs <mhuan13@gmail.com>',
             extraScripts,
