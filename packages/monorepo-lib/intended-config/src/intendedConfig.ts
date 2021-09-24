@@ -53,12 +53,14 @@ async function setConfigContentsForPackage({
     internalPackages,
     bootstrapBuildPackageIdents,
     extraScripts,
+    preferredPackageVersions,
 }: {
     configManager: ConfigManager;
     packageLike: PackageLike;
     repoRoot: PortablePath;
     repoMeta: RepoMeta;
     extraScripts: Record<string, string>;
+    preferredPackageVersions: Record<string, string>;
     packageAuthor: string;
     internalPackages: PackageLike[];
     bootstrapBuildPackageIdents: Set<string>;
@@ -131,12 +133,15 @@ async function setConfigContentsForPackage({
         bugs: {
             url: repoIssuesUrl,
         },
+        // TODO probably better to error if preferredPackageVersions doesn't
+        // have any of the specified versions here.
         devDependencies: {
-            '@types/node': '^14.14.45',
-            eslint: '^7.26.0',
-            prettier: '^2.3.0',
-            typescript: '^4.2.4',
-            'npm-run-all': '^4.1.5',
+            '@types/node':
+                preferredPackageVersions['@types/node'] ?? '^14.14.45',
+            eslint: preferredPackageVersions['eslint'] ?? '^7.26.0',
+            prettier: preferredPackageVersions['prettier'] ?? '^2.3.0',
+            typescript: preferredPackageVersions['typescript'] ?? '^4.2.4',
+            'npm-run-all': preferredPackageVersions['npm-run-all'] ?? '^4.1.5',
         },
     };
 
@@ -313,10 +318,26 @@ async function setConfigContentsForPackage({
     }
 }
 
+/**
+ * 'https://github.com/Adjective-Object/zi/tree/master/packages/';
+'https://github.com/Adjective-Object/zi/issues';
+'git@github.com:Adjective-Object/zi.git';
+'Maxwell Huang-Hobbs <mhuan13@gmail.com>';
+ */
+
 export async function getIntendedConfigsForChildWorkspaces(
     configManager: ConfigManager,
     rootWorkspace: Workspace,
-    extraScripts: Record<string, string> = {},
+    options: {
+        extraScripts?: Record<string, string>;
+        preferredPackageVersions?: Record<string, string>;
+        repoMeta: {
+            repoHomepageBaseUrl: string;
+            repoIssuesUrl: string;
+            repoGitUrl: string;
+        };
+        packageAuthor: string;
+    },
 ) {
     const childWorkspaces = rootWorkspace.getRecursiveWorkspaceChildren();
 
@@ -334,14 +355,10 @@ export async function getIntendedConfigsForChildWorkspaces(
                 },
             },
             repoRoot: rootWorkspace.cwd,
-            repoMeta: {
-                repoHomepageBaseUrl:
-                    'https://github.com/Adjective-Object/zi/tree/master/packages/',
-                repoIssuesUrl: 'https://github.com/Adjective-Object/zi/issues',
-                repoGitUrl: 'git@github.com:Adjective-Object/zi.git',
-            },
-            packageAuthor: 'Maxwell Huang-Hobbs <mhuan13@gmail.com>',
-            extraScripts,
+            repoMeta: options.repoMeta,
+            packageAuthor: options.packageAuthor,
+            extraScripts: options?.extraScripts ?? {},
+            preferredPackageVersions: options?.preferredPackageVersions ?? {},
             internalPackages: childWorkspaces.map(assertHasNamedManifest),
             bootstrapBuildPackageIdents: new Set(
                 [...bootstrapBuildPackages].map(
