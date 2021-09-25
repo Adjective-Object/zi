@@ -370,7 +370,7 @@ export async function getIntendedConfigsForChildWorkspaces(
 
     await runWithConcurrentLimit(
         10,
-        childWorkspaces,
+        childWorkspaces.filter((f) => f != rootWorkspace),
         (childWorkspace: Workspace) => {
             return setConfigContentsForPackage({
                 configManager: configManager,
