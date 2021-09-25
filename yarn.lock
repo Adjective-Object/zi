@@ -2188,6 +2188,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "commander@npm:8.2.0"
+  checksum: e868805bc266777f7a9c8a740e15b9e02b8148d8251f577ea9b9ef373ac0bdeb77b9b60cfc033592c9e1affea89993be08c13c623f0c619f9bf152c0e4d12cb0
+  languageName: node
+  linkType: hard
+
 "comment-json@npm:*, comment-json@npm:^4.1.0, comment-json@npm:^4.1.1":
   version: 4.1.1
   resolution: "comment-json@npm:4.1.1"
@@ -3016,6 +3023,7 @@ __metadata:
     async-spawn: "workspace:*"
     builtin-modules: ^3.2.0
     colors: ^1.4.0
+    commander: ^8.2.0
     comment-json: ^4.1.0
     diff: ^5.0.0
     esbp: "workspace:*"
@@ -7314,7 +7322,6 @@ typescript@^4.4.3:
     eslint: ^7.32.0
     jest: ^27.0.6
     jest-cli: ^27.0.6
-    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     ts-jest: ^27.0.5
     ts-morph: ^11.0.3

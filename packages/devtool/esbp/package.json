@@ -2,9 +2,7 @@
     "name": "esbp",
     "main": "lib/cjs/esbp.js",
     "input": "src/esbp.ts",
-    "bin": {
-        "esbp": "lib/cjs/esbp.js"
-    },
+    "bin": "lib/cjs/esbp.js",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",

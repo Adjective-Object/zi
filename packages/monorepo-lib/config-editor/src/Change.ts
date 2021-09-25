@@ -1,7 +1,7 @@
 import 'colors';
 import * as CommentJson from 'comment-json';
 import * as Diff from 'diff';
-import { PortablePath, NodeFS } from '@yarnpkg/fslib';
+import { PortablePath, NodeFS, npath } from '@yarnpkg/fslib';
 import { recursivePatchCommentJson } from './recursivePatchCommentJson';
 import { isEqual } from 'lodash';
 
@@ -52,6 +52,10 @@ export class Change {
 
     public isEmpty(): boolean {
         return isEqual(this.mergedContent, this.originalFileContents);
+    }
+
+    public getPath(): string {
+        return npath.fromPortablePath(this.path);
     }
 
     public getTextDiff(): string {
