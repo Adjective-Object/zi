@@ -1,0 +1,23 @@
+{
+    "name": "semver-compare-range",
+    "main": "lib/cjs/semverCompareRange.js",
+    "module": "lib/mjs/semverCompareRange.ts",
+    "types": "lib/types/semverCompareRange.d.ts",
+    "input": "src/semverCompareRange.ts",
+    "scripts": {
+        "build": "tsc -b ./tsconfig.json",
+        "lint": "prettier --write src/**/*",
+        "fixlint": "prettier --check src/**/*"
+    },
+    "devDependencies": {
+        "@types/mz": "^2.7.3",
+        "@types/node": "^16.6.2",
+        "@types/semver": "^7.3.8",
+        "eslint": "^7.32.0",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
+    },
+    "dependencies": {
+        "semver": "^7.3.5"
+    }
+}
