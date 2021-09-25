@@ -326,7 +326,7 @@ async function setConfigContentsForPackage({
             },
             devDependencies: {
                 esbp: 'workspace:*',
-                esbuild: '^0.12.28',
+                ...pluck(permittedPackageVersions, ['npm-run-all']),
             },
         });
 
