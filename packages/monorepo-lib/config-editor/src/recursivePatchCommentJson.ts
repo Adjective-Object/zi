@@ -21,10 +21,6 @@ export function recursivePatchCommentJson(
         );
     }
 
-    // shallow copy this object
-    target = Object.assign({}, target);
-    console.log('recursivePatchCommentJson', target, edit);
-
     const keys = Object.keys(edit) as (keyof typeof edit)[];
     const primitiveKeys = keys.filter(
         (k) => !(edit[k as keyof typeof edit] instanceof Object),

@@ -14,7 +14,7 @@ export class Change {
         intendedContents: object,
     ) {
         this.mergedContent = recursivePatchCommentJson(
-            originalFileContents,
+            CommentJson.parse(CommentJson.stringify(originalFileContents)),
             intendedContents,
         );
     }
@@ -24,8 +24,15 @@ export class Change {
         intendedContents: Record<string | number, any>,
     ): Promise<Change> {
         try {
-            const content = await new NodeFS().readFilePromise(path, 'utf-8');
-            return new Change(path, content, intendedContents);
+            const fileContentString = (await new NodeFS().readFilePromise(
+                path,
+                'utf-8',
+            )) as unknown as string;
+            return new Change(
+                path,
+                CommentJson.parse(fileContentString),
+                intendedContents,
+            );
         } catch {
             return new Change(path, CommentJson.parse('{}'), intendedContents);
         }

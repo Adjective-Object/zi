@@ -47,8 +47,6 @@ async function main() {
         ...repoRootWorkspace.getRecursiveWorkspaceChildren(),
     ]);
 
-    console.log('found workspace dependencies:', externalDependencies);
-
     console.log('Generating intended configs');
     await getIntendedConfigsForChildWorkspaces(
         configManager,
