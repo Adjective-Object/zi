@@ -5,7 +5,7 @@ import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
 import { Workspace } from '@yarnpkg/core';
 import { compare as compareSemverRange } from 'semver-compare-range';
 
-function collectAllWorkspaceDependencies(
+function collectAllExternalDependencies(
     workspaces: Workspace[],
 ): Record<string, string> {
     const knownVersions: Map<string, string> = new Map();
@@ -17,8 +17,9 @@ function collectAllWorkspaceDependencies(
             const newVersion = version.range;
             const existingVersion = knownVersions.get(dependency);
             if (
-                !existingVersion ||
-                compareSemverRange(existingVersion, newVersion) < 0
+                !newVersion.startsWith('workspace:') &&
+                (!existingVersion ||
+                    compareSemverRange(existingVersion, newVersion) < 0)
             ) {
                 knownVersions.set(dependency, newVersion);
             }
@@ -32,10 +33,12 @@ async function main() {
     console.log('Finding repo roots');
     const repoRootWorkspace = await getRepoRootWorkspace();
     const configManager = new ConfigManager();
-    const rootWorkspaceDependencies = collectAllWorkspaceDependencies([
+    const externalDependencies = collectAllExternalDependencies([
         repoRootWorkspace,
         ...repoRootWorkspace.getRecursiveWorkspaceChildren(),
     ]);
+
+    console.log('found workspace dependencies:', externalDependencies);
 
     console.log('Generating intended configs');
     await getIntendedConfigsForChildWorkspaces(
@@ -43,7 +46,7 @@ async function main() {
         repoRootWorkspace,
         {
             extraScripts: {},
-            permittedPackageVersions: rootWorkspaceDependencies,
+            permittedPackageVersions: externalDependencies,
             repoMeta: {
                 repoHomepageBaseUrl:
                     'https://github.com/Adjective-Object/zi/tree/master/packages/',
