@@ -328,4 +328,25 @@ describe('recursivePatchCommentJson', () => {
             extends: '../../../tsconfig.json',
         });
     });
+
+    it.only('patches an array onto an empty object', () => {
+        expect(
+            recursivePatchCommentJson(
+                {},
+                {
+                    references: [
+                        { path: './tsconfig.types.json' },
+                        { path: './tsconfig.cjs.json' },
+                        { path: './tsconfig.mjs.json' },
+                    ],
+                },
+            ),
+        ).toEqual({
+            references: [
+                { path: './tsconfig.types.json' },
+                { path: './tsconfig.cjs.json' },
+                { path: './tsconfig.mjs.json' },
+            ],
+        });
+    });
 });

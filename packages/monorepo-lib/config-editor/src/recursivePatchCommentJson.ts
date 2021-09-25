@@ -3,8 +3,28 @@ import isEqual from 'lodash/isEqual';
 
 export function recursivePatchCommentJson(
     target: CommentJson.CommentJSONValue,
-    edit: Record<string, any> | Array<any>,
+    edit: Record<string, any>,
 ) {
+    if (Array.isArray(target) || Array.isArray(edit)) {
+        console.log('target', target);
+        console.log('edit', edit);
+        throw new Error(
+            'ILLEGAL CALL: recursivePatchCommentJson was passed an array',
+        );
+    }
+
+    if (!(typeof target === 'object')) {
+        console.log('target', target);
+        console.log('edit', edit);
+        throw new Error(
+            'ILLEGAL CALL: recursivePatchCommentJson was passed a non-object',
+        );
+    }
+
+    // shallow copy this object
+    target = Object.assign({}, target);
+    console.log('recursivePatchCommentJson', target, edit);
+
     const keys = Object.keys(edit) as (keyof typeof edit)[];
     const primitiveKeys = keys.filter(
         (k) => !(edit[k as keyof typeof edit] instanceof Object),
@@ -19,7 +39,7 @@ export function recursivePatchCommentJson(
         let oldArr = target[k];
         let newArr = edit[k];
         if (!oldArr || !Array.isArray(oldArr)) {
-            target = edit[k];
+            target[k] = edit[k];
             continue;
         } else {
             for (
