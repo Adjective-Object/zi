@@ -4,7 +4,8 @@ import { Change } from './Change';
 import { PackageLike } from './PackageLike';
 
 export class PackageConfigsManager {
-    private intendedContents: Map<PortablePath, object> = new Map();
+    private intendedContents: Map<PortablePath, Record<string | number, any>> =
+        new Map();
 
     constructor(private workspace: PackageLike) {}
 
@@ -30,11 +31,14 @@ export class PackageConfigsManager {
     public async generateChangeset(): Promise<Change[]> {
         const changes: Change[] = await Promise.all(
             [...this.intendedContents.entries()].map(
-                async ([relativePath, intendedContents]): Promise<Change> => {
+                async ([
+                    relativePath,
+                    intendedFileContent,
+                ]): Promise<Change> => {
                     // TODO log difference and write out to disk
                     return Change.againstDisk(
                         ppath.join(this.workspace.cwd, relativePath),
-                        intendedContents,
+                        intendedFileContent,
                     );
                 },
             ),

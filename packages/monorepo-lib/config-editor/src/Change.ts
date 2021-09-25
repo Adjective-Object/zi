@@ -13,18 +13,15 @@ export class Change {
         private originalFileContents: CommentJson.CommentJSONValue,
         intendedContents: object,
     ) {
-        const contentCopy = CommentJson.parse(
-            CommentJson.stringify(originalFileContents),
-        );
         this.mergedContent = recursivePatchCommentJson(
-            contentCopy,
+            originalFileContents,
             intendedContents,
         );
     }
 
     public static async againstDisk(
         path: PortablePath,
-        intendedContents: object,
+        intendedContents: Record<string | number, any>,
     ): Promise<Change> {
         try {
             const content = await new NodeFS().readFilePromise(path, 'utf-8');
