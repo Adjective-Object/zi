@@ -44,9 +44,14 @@ export type RepoMeta = {
     repoHomepageBaseUrl: string;
 };
 
-function pluck<T>(a: Record<string, T>, keys: string[]): Record<string, T> {
+function pluck<T>(
+    a: Record<string, T>,
+    keys: string[],
+): Record<string, Exclude<T, null>> {
     return Object.fromEntries(
-        Object.entries(a).filter(([k]) => keys.indexOf(k) !== -1),
+        Object.entries(a).filter(
+            ([k, v]) => keys.indexOf(k) !== -1 && v !== null,
+        ) as [string, Exclude<T, null>][],
     );
 }
 
@@ -348,7 +353,7 @@ export async function getIntendedConfigsForChildWorkspaces(
     rootWorkspace: Workspace,
     options: {
         extraScripts?: Record<string, string>;
-        permittedPackageVersions?: Record<string, string>;
+        permittedPackageVersions?: Record<string, string | null>;
         repoMeta: {
             repoHomepageBaseUrl: string;
             repoIssuesUrl: string;

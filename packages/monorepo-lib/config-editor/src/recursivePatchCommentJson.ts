@@ -63,7 +63,9 @@ export function recursivePatchCommentJson(
         (k) => !primitiveKeys.includes(k) && !arrayKeys.includes(k),
     );
     for (let complexKey of objectKeys) {
-        recursivePatchCommentJson(target[complexKey], edit[complexKey]);
+        if (target.hasOwnProperty(complexKey)) {
+            recursivePatchCommentJson(target[complexKey], edit[complexKey]);
+        } else [(target[complexKey] = edit[complexKey])];
     }
 
     return target;

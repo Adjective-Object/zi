@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@yarnpkg/core": "^3.0.0",
-        "@yarnpkg/fslib": "^2.6.0-rc.5",
+        "@yarnpkg/fslib": "^2.5.1",
         "async-spawn": "workspace:*",
         "builtin-modules": "^3.2.0",
         "colors": "^1.4.0",

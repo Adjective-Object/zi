@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@yarnpkg/core": "^3.0.0",
-        "@yarnpkg/fslib": "^2.6.0-rc.5",
+        "@yarnpkg/fslib": "^2.5.1",
         "colors": "^1.4.0",
         "comment-json": "^4.1.1",
         "diff": "^5.0.0",
