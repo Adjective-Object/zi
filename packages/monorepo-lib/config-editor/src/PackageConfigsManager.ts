@@ -32,7 +32,10 @@ export class PackageConfigsManager {
             [...this.intendedContents.entries()].map(
                 async ([relativePath, intendedContents]): Promise<Change> => {
                     // TODO log difference and write out to disk
-                    return Change.againstDisk(relativePath, intendedContents);
+                    return Change.againstDisk(
+                        ppath.join(this.workspace.cwd, relativePath),
+                        intendedContents,
+                    );
                 },
             ),
         );
