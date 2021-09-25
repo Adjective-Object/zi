@@ -34,6 +34,12 @@
         },
         {
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/semver-compare-range/tsconfig.cjs.json"
+        },
+        {
+            "path": "../../monorepo-lib/semver-compare-range/tsconfig.types.json"
         }
     ]
 }

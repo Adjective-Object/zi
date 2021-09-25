@@ -13,7 +13,7 @@
     "devDependencies": {
         "@types/jest": "^27.0.1",
         "@types/node": "^16.6.2",
-        "@yarnpkg/sdks": "^2.4.1-rc.4",
+        "@yarnpkg/sdks": "^2.4.1",
         "eslint": "^7.32.0",
         "fix-package-imports": "workspace:*",
         "jest": "^27.0.6",

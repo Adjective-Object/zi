@@ -55,7 +55,7 @@ function compareRangeToRange(aRange: string, bRange: string): 1 | -1 | 0 {
     return 0;
 }
 
-export function compareSemver(a: string, b: string): 1 | -1 | 0 {
+export function compare(a: string, b: string): 1 | -1 | 0 {
     const aAsSemver = semver.valid(a);
     const bAsSemver = semver.valid(b);
 

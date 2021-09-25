@@ -26,7 +26,8 @@
         "intended-config": "workspace:*",
         "list-internal-devdependencies": "workspace:*",
         "mod-slash": "workspace:*",
-        "run-with-concurrent-limit": "workspace:*"
+        "run-with-concurrent-limit": "workspace:*",
+        "semver-compare-range": "workspace:*"
     },
     "devDependencies": {
         "@types/builtin-modules": "^3.1.1",

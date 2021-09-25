@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "rootDir": "src",
-        "outDir": "lib/cjs"
+        "outDir": "lib/cjs",
+        "module": "CommonJS"
     },
     "include": ["./src"],
     "exclude": ["./lib"],

@@ -7,12 +7,8 @@
         "emitDeclarationOnly": true
     },
     "extends": "../../../tsconfig.json",
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": [
         {
             "path": "../../nodejs/async-spawn/tsconfig.types.json"
@@ -25,6 +21,9 @@
         },
         {
             "path": "../../nodejs/mod-slash/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/semver-compare-range/tsconfig.types.json"
         }
     ]
 }

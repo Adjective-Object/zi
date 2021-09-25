@@ -2,21 +2,40 @@ import { getIntendedConfigsForChildWorkspaces } from 'intended-config';
 import { getRepoRootWorkspace } from 'get-repo-root';
 import { ConfigManager, Change } from 'config-editor';
 import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
-import { Descriptor } from '@yarnpkg/core';
+import { Workspace } from '@yarnpkg/core';
+import { compare as compareSemverRange } from 'semver-compare-range';
+
+function collectAllWorkspaceDependencies(
+    workspaces: Workspace[],
+): Record<string, string> {
+    const knownVersions: Map<string, string> = new Map();
+    for (let workspace of workspaces) {
+        for (let [dependency, version] of [
+            ...workspace.manifest.devDependencies.entries(),
+            ...workspace.manifest.dependencies.entries(),
+        ]) {
+            const newVersion = version.range;
+            const existingVersion = knownVersions.get(dependency);
+            if (
+                !existingVersion ||
+                compareSemverRange(existingVersion, newVersion) < 0
+            ) {
+                knownVersions.set(dependency, newVersion);
+            }
+        }
+    }
+
+    return Object.fromEntries(knownVersions.entries());
+}
 
 async function main() {
     console.log('Finding repo roots');
     const repoRootWorkspace = await getRepoRootWorkspace();
     const configManager = new ConfigManager();
-    const rootWorkspaceDependencies = Object.fromEntries(
-        [
-            ...repoRootWorkspace.manifest.devDependencies.entries(),
-            ...repoRootWorkspace.manifest.dependencies.entries(),
-        ].map(([key, descriptor]: [string, Descriptor]) => [
-            key,
-            descriptor.range,
-        ]),
-    );
+    const rootWorkspaceDependencies = collectAllWorkspaceDependencies([
+        repoRootWorkspace,
+        ...repoRootWorkspace.getRecursiveWorkspaceChildren(),
+    ]);
 
     console.log('Generating intended configs');
     await getIntendedConfigsForChildWorkspaces(
