@@ -80,6 +80,7 @@ export class Change {
         return new NodeFS().writeFilePromise(
             this.path,
             CommentJson.stringify(this.mergedContent, null, 4),
+            'utf-8',
         );
     }
 }
