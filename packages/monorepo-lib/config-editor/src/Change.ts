@@ -27,7 +27,7 @@ export class Change {
         intendedContents: object,
     ): Promise<Change> {
         try {
-            const content = await new NodeFS().readFilePromise(path);
+            const content = await new NodeFS().readFilePromise(path, 'utf-8');
             return new Change(path, content, intendedContents);
         } catch {
             return new Change(path, CommentJson.parse('{}'), intendedContents);
