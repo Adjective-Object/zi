@@ -3,7 +3,8 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/mjs",
-        "module": "esnext"
+        "module": "esnext",
+        "composite": true
     },
     "include": [
         "./src"
@@ -13,10 +14,16 @@
     ],
     "references": [
         {
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.mjs.json"
+        },
+        {
             "path": "../../nodejs/async-spawn/tsconfig.mjs.json"
         },
         {
-            "path": "../../monorepo-lib/get-repo-root/tsconfig.mjs.json"
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.types.json"
         }
     ]
 }

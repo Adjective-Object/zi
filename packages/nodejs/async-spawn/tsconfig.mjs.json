@@ -3,7 +3,8 @@
         "rootDir": "src",
         "outDir": "lib/mjs",
         "strict": true,
-        "composite": true
+        "composite": true,
+        "module": "esnext"
     },
     "extends": "../../../tsconfig.json",
     "include": [

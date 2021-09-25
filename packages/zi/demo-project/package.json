@@ -4,13 +4,19 @@
     "module": "lib/mjs/demoProject.es.js",
     "types": "lib/demoProject.d.ts",
     "scripts": {
-        "build": "tsc -b ./tsconfig.json",
+        "build": "npm-run-all -p build:types build:scripts",
         "lint": "prettier --write src/**/*",
         "fixlint": "prettier --check src/**/*",
         "compile-closure": "zi-compile-closure -c tsconfig.json '**/src/**/*.tsx?'",
-        "dev": "vite"
+        "dev": "vite",
+        "build:types": "tsc -b ./tsconfig.json",
+        "build:scripts": "esbp",
+        "build:cjs": "esbp --cjs-only",
+        "build:mjs": "esbp --mjs-only"
     },
     "devDependencies": {
+        "esbp": "workspace:*",
+        "esbuild": "^0.12.28",
         "eslint": "^7.32.0",
         "prettier": "^2.3.2",
         "rollup": "^2.56.3",

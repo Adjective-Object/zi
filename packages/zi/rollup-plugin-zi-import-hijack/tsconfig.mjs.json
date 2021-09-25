@@ -16,6 +16,9 @@
     "references": [
         {
             "path": "../../nodejs/mod-slash/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
         }
     ]
 }

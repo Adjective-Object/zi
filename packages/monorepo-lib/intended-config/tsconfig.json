@@ -4,22 +4,19 @@
         "outDir": "lib/types"
     },
     "include": [],
-    "exclude": ["src", "node_modules"],
+    "exclude": [
+        "src",
+        "node_modules"
+    ],
     "references": [
         {
-            "path": "../config-editor/tsconfig.json"
+            "path": "./tsconfig.cjs.json"
         },
         {
-            "path": "../find-package-imports/tsconfig.json"
+            "path": "./tsconfig.mjs.json"
         },
         {
-            "path": "../list-internal-devdependencies/tsconfig.json"
-        },
-        {
-            "path": "../../nodejs/mod-slash/tsconfig.json"
-        },
-        {
-            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.json"
+            "path": "./tsconfig.types.json"
         }
     ],
     "extends": "../../../tsconfig.json"

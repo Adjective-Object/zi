@@ -8,5 +8,12 @@
     },
     "main": "lib/cjs/index.js",
     "module": "lib/mjs/index.js",
-    "input": "src/index.ts"
+    "input": "src/index.ts",
+    "scripts": {
+        "build": "tsc -b ./tsconfig.json",
+        "build:types": "tsc -b ./tsconfig.types.json",
+        "build:scripts": "npm-run-all build:cjs build:mjs",
+        "build:cjs": "tsc -b ./tsconfig.cjs.json",
+        "build:mjs": "tsc -b ./tsconfig.mjs.json"
+    }
 }

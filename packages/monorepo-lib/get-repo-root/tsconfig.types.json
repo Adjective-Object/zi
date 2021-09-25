@@ -4,7 +4,8 @@
         "rootDir": "src",
         "outDir": "lib/types",
         "module": "esnext",
-        "emitDeclarationOnly": true
+        "emitDeclarationOnly": true,
+        "composite": true
     },
     "include": [
         "./src"

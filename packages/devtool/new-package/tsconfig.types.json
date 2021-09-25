@@ -4,7 +4,8 @@
         "rootDir": "src",
         "outDir": "lib/types",
         "module": "esnext",
-        "emitDeclarationOnly": true
+        "emitDeclarationOnly": true,
+        "composite": true
     },
     "include": [
         "./src"
@@ -14,10 +15,10 @@
     ],
     "references": [
         {
-            "path": "../../nodejs/async-spawn/tsconfig.types.json"
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
         },
         {
-            "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
+            "path": "../../nodejs/async-spawn/tsconfig.types.json"
         }
     ]
 }

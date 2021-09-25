@@ -1,17 +1,16 @@
 {
     "compilerOptions": {
         "composite": true,
-        "outDir": "lib/types"
+        "outDir": "lib/types",
+        "rootDir": "src",
+        "emitDeclarationOnly": true
     },
-    "include": [],
+    "include": [
+        "./src"
+    ],
     "exclude": [
-        "src",
-        "node_modules"
+        "./lib"
     ],
-    "references": [
-        {
-            "path": "../zi-webextension-generic/tsconfig.json"
-        }
-    ],
+    "references": [],
     "extends": "../../../tsconfig.json"
 }

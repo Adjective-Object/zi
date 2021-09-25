@@ -2,7 +2,8 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/mjs",
-        "module": "esnext"
+        "module": "esnext",
+        "composite": true
     },
     "include": [
         "./src"
@@ -13,6 +14,9 @@
     "references": [
         {
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
         }
     ],
     "extends": "../../../tsconfig.json"

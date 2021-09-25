@@ -5,7 +5,7 @@
         "outDir": "lib/cjs",
         "strict": true,
         "composite": true,
-        "module": "CommonJs"
+        "module": "CommonJS"
     },
     "include": [
         "./src"
@@ -16,6 +16,9 @@
     "references": [
         {
             "path": "../../nodejs/mod-slash/tsconfig.cjs.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
         }
     ]
 }

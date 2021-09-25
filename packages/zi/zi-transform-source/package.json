@@ -4,9 +4,13 @@
     "module": "lib/mjs/ziTransformSource.es.js",
     "types": "lib/ziTransformSource.d.ts",
     "scripts": {
-        "build": "tsc -b ./tsconfig.json",
+        "build": "npm-run-all -p build:types build:scripts",
         "lint": "prettier --write src/**/*",
-        "fixlint": "prettier --check src/**/*"
+        "fixlint": "prettier --check src/**/*",
+        "build:types": "tsc -b ./tsconfig.json",
+        "build:scripts": "esbp",
+        "build:cjs": "esbp --cjs-only",
+        "build:mjs": "esbp --mjs-only"
     },
     "dependencies": {
         "ts-morph": "^11.0.3",
@@ -20,6 +24,8 @@
         "jest-cli": "^27.0.6",
         "prettier": "^2.3.2",
         "ts-jest": "^27.0.5",
-        "typescript": "^4.4.3"
+        "typescript": "^4.4.3",
+        "esbp": "workspace:*",
+        "esbuild": "^0.12.28"
     }
 }

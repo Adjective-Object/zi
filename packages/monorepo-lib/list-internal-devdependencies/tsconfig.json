@@ -15,7 +15,7 @@
             "path": "./tsconfig.mjs.json"
         },
         {
-            "path": "./tsconfig.mjs.json"
+            "path": "./tsconfig.types.json"
         }
     ]
 }

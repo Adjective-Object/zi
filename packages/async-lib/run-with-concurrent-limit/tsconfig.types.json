@@ -3,9 +3,18 @@
         "outDir": "lib/types",
         "rootDir": "src",
         "strict": true,
-        "emitDeclarationOnly": true
+        "emitDeclarationOnly": true,
+        "composite": true
     },
     "extends": "../../../tsconfig.json",
-    "includes": ["./src"],
-    "references": []
+    "includes": [
+        "./src"
+    ],
+    "references": [],
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ]
 }

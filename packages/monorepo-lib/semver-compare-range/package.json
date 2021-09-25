@@ -7,7 +7,11 @@
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
-        "fixlint": "prettier --check src/**/*"
+        "fixlint": "prettier --check src/**/*",
+        "build:types": "tsc -b ./tsconfig.types.json",
+        "build:scripts": "npm-run-all build:cjs build:mjs",
+        "build:cjs": "tsc -b ./tsconfig.cjs.json",
+        "build:mjs": "tsc -b ./tsconfig.mjs.json"
     },
     "devDependencies": {
         "@types/mz": "^2.7.3",

@@ -3,7 +3,8 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/cjs",
-        "module": "CommonJs"
+        "module": "CommonJS",
+        "composite": true
     },
     "include": [
         "./src"

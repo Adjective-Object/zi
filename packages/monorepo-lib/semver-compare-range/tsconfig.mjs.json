@@ -3,7 +3,8 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/mjs",
-        "module": "esnext"
+        "module": "esnext",
+        "composite": true
     },
     "include": [
         "./src"

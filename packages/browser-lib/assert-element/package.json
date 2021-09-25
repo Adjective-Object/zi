@@ -4,11 +4,17 @@
     "module": "lib/mjs/assertElement.es.js",
     "types": "lib/assertElement.d.ts",
     "scripts": {
-        "build": "tsc -b ./tsconfig.json",
+        "build": "npm-run-all -p build:types build:scripts",
         "lint": "prettier --write src/**/*",
-        "fixlint": "prettier --check src/**/*"
+        "fixlint": "prettier --check src/**/*",
+        "build:types": "tsc -b ./tsconfig.json",
+        "build:scripts": "esbp",
+        "build:cjs": "esbp --cjs-only",
+        "build:mjs": "esbp --mjs-only"
     },
     "devDependencies": {
+        "esbp": "workspace:*",
+        "esbuild": "^0.12.28",
         "eslint": "^7.32.0",
         "prettier": "^2.3.2",
         "typescript": "^4.4.3"

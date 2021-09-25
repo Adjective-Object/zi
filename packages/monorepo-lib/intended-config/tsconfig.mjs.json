@@ -3,28 +3,45 @@
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/mjs",
-        "module": "esnext"
+        "module": "esnext",
+        "composite": true
     },
-    "include": ["./src"],
-    "exclude": ["./lib"],
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
     "references": [
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.mjs.json"
+        },
         {
             "path": "../config-editor/tsconfig.mjs.json"
         },
         {
-            "path": "../../nodejs/async-spawn/tsconfig.mjs.json"
+            "path": "../find-package-imports/tsconfig.mjs.json"
         },
         {
-            "path": "../../monorepo-lib/get-repo-root/tsconfig.mjs.json"
+            "path": "../list-internal-devdependencies/tsconfig.mjs.json"
         },
         {
-            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.json"
+            "path": "../../nodejs/mod-slash/tsconfig.mjs.json"
         },
         {
-            "path": "../find-package-imports/tsconfig.json"
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
         },
         {
-            "path": "../find-package-imports/tsconfig.json"
+            "path": "../config-editor/tsconfig.types.json"
+        },
+        {
+            "path": "../find-package-imports/tsconfig.types.json"
+        },
+        {
+            "path": "../list-internal-devdependencies/tsconfig.types.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
         }
     ]
 }
