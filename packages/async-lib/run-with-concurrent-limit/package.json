@@ -1,7 +1,7 @@
 {
     "name": "run-with-concurrent-limit",
     "main": "lib/cjs/runWithConcurrentLimit.js",
-    "module": "lib/mjs/runWithConcurrentLimit.es.js",
+    "module": "lib/mjs/runWithConcurrentLimit.js",
     "types": "lib/types/runWithConcurrentLimit.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",

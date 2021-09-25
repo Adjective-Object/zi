@@ -3030,9 +3030,11 @@ __metadata:
     get-repo-root: "workspace:*"
     glob: ^7.1.7
     glob-promise: ^4.1.0
+    intended-config: "workspace:*"
     list-internal-devdependencies: "workspace:*"
     mod-slash: "workspace:*"
     prettier: ^2.3.0
+    run-with-concurrent-limit: "workspace:*"
     ts-node: ^9.1.1
     typescript: ^4.2.4
   bin:
@@ -3540,7 +3542,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"intended-config@workspace:packages/monorepo-lib/intended-config":
+"intended-config@workspace:*, intended-config@workspace:packages/monorepo-lib/intended-config":
   version: 0.0.0-use.local
   resolution: "intended-config@workspace:packages/monorepo-lib/intended-config"
   dependencies:

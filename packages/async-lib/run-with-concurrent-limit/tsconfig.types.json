@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "outDir": "lib/types",
+        "rootDir": "src",
         "strict": true,
         "emitDeclarationOnly": true
     },

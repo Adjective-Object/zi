@@ -16,6 +16,15 @@
         },
         {
             "path": "../../monorepo-lib/get-repo-root/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.json"
+        },
+        {
+            "path": "../find-package-imports/tsconfig.json"
+        },
+        {
+            "path": "../find-package-imports/tsconfig.json"
         }
     ]
 }

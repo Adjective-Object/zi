@@ -363,28 +363,35 @@ export async function getIntendedConfigsForChildWorkspaces(
         listInternalDevDependencies(rootWorkspace),
     );
 
-    await runWithConcurrentLimit(10, childWorkspaces, (childWorkspace) => {
-        return setConfigContentsForPackage({
-            configManager: configManager,
-            packageLike: {
-                cwd: childWorkspace.cwd,
-                manifest: {
-                    name: assertHasNamedManifest(childWorkspace).manifest.name,
+    await runWithConcurrentLimit(
+        10,
+        childWorkspaces,
+        (childWorkspace: Workspace) => {
+            return setConfigContentsForPackage({
+                configManager: configManager,
+                packageLike: {
+                    cwd: childWorkspace.cwd,
+                    manifest: {
+                        name: assertHasNamedManifest(childWorkspace).manifest
+                            .name,
+                    },
                 },
-            },
-            repoRoot: rootWorkspace.cwd,
-            repoMeta: options.repoMeta,
-            packageAuthor: options.packageAuthor,
-            extraScripts: options?.extraScripts ?? {},
-            permittedPackageVersions: options?.permittedPackageVersions ?? {},
-            internalPackages: childWorkspaces.map(assertHasNamedManifest),
-            bootstrapBuildPackageIdents: new Set(
-                [...bootstrapBuildPackages].map(
-                    (x) => assertHasNamedManifest(x).manifest.name.identHash,
+                repoRoot: rootWorkspace.cwd,
+                repoMeta: options.repoMeta,
+                packageAuthor: options.packageAuthor,
+                extraScripts: options?.extraScripts ?? {},
+                permittedPackageVersions:
+                    options?.permittedPackageVersions ?? {},
+                internalPackages: childWorkspaces.map(assertHasNamedManifest),
+                bootstrapBuildPackageIdents: new Set(
+                    [...bootstrapBuildPackages].map(
+                        (x) =>
+                            assertHasNamedManifest(x).manifest.name.identHash,
+                    ),
                 ),
-            ),
-        });
-    });
+            });
+        },
+    );
 
     return configManager;
 }

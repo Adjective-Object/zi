@@ -23,10 +23,10 @@
         "get-repo-root": "workspace:*",
         "glob": "^7.1.7",
         "glob-promise": "^4.1.0",
+        "intended-config": "workspace:*",
         "list-internal-devdependencies": "workspace:*",
-        "run-with-concurrent-limit": "workspace:*",
         "mod-slash": "workspace:*",
-        "intended-config": "workspace:*"
+        "run-with-concurrent-limit": "workspace:*"
     },
     "devDependencies": {
         "@types/builtin-modules": "^3.1.1",
