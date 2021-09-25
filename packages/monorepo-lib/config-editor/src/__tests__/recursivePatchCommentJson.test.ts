@@ -287,4 +287,45 @@ describe('recursivePatchCommentJson', () => {
             }"
         `);
     });
+
+    it('patches the references of an example tsconfig', () => {
+        expect(
+            recursivePatchCommentJson(
+                {
+                    compilerOptions: {
+                        composite: true,
+                        outDir: 'lib/types',
+                    },
+                    include: [],
+                    exclude: ['src', 'node_modules'],
+                    references: [
+                        { path: './tsconfig.types.json' },
+                        { path: './tsconfig.cjs.json' },
+                        { path: './tsconfig.mjs.json' },
+                    ],
+                    extends: '../../../tsconfig.json',
+                },
+                {
+                    references: [
+                        { path: './tsconfig.types.json' },
+                        { path: './tsconfig.cjs.json' },
+                        { path: './tsconfig.mjs.json' },
+                    ],
+                },
+            ),
+        ).toEqual({
+            compilerOptions: {
+                composite: true,
+                outDir: 'lib/types',
+            },
+            include: [],
+            exclude: ['src', 'node_modules'],
+            references: [
+                { path: './tsconfig.types.json' },
+                { path: './tsconfig.cjs.json' },
+                { path: './tsconfig.mjs.json' },
+            ],
+            extends: '../../../tsconfig.json',
+        });
+    });
 });
