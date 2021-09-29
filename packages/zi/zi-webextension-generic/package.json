@@ -23,7 +23,7 @@
     },
     "devDependencies": {
         "@types/jest": "^27.0.1",
-        "@types/node": "^16.7.1",
+        "@types/node": "^16.10.2",
         "@types/webextension-polyfill": "^0.8.0",
         "esbp": "workspace:*",
         "esbuild": "^0.12.28",

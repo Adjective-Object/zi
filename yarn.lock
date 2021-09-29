@@ -1194,7 +1194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^16.6.2":
+"@types/node@npm:*":
   version: 16.6.2
   resolution: "@types/node@npm:16.6.2"
   checksum: 2245e50058ac49ab3d76af5ded7fc655d783a88a800139dad6caaf962f15c909287853012c9461b49600741bcc2b09042f94ce734f0440b6ad444d838e62904a
@@ -1208,17 +1208,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.14.45":
-  version: 14.17.10
-  resolution: "@types/node@npm:14.17.10"
-  checksum: ec618cb3e0223e6707c97f88ab8525a2addecfa6dc7b7dfb9e6b56f144d8ac47083bfe3fd7a8040e5234f9b7d46c6a5c0bb24ed0129815b6efe82d0f4a55ba60
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^16.7.1":
-  version: 16.7.1
-  resolution: "@types/node@npm:16.7.1"
-  checksum: fcf1a2c7b1f19c2201574b2110176b49c6efd824a39b2ed8ac3e6688740e2a35bef95a3334dfa345f4bd4873fd8b79d8ac8cfcc9fcd3d2f4f8f993c2c37ce4ab
+"@types/node@npm:^16.10.2":
+  version: 16.10.2
+  resolution: "@types/node@npm:16.10.2"
+  checksum: 83c1c3c68e7500103908c3f16094e458879c840a719c15b6ea577f81fe1f24a1b3473bb6c8e8091fe79a82543ca7639c6b1088fcf80292ec091d1d1c9504a87e
   languageName: node
   linkType: hard
 
@@ -1680,7 +1673,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "async-spawn@workspace:packages/nodejs/async-spawn"
   dependencies:
-    "@types/node": ^14.14.45
+    "@types/node": ^16.10.2
     eslint: ^7.26.0
     prettier: ^2.3.0
     typescript: ^4.2.4
@@ -2120,13 +2113,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"collect-external-dependencies@workspace:packages/collect-external-dependencies":
+"collect-external-dependencies@workspace:packages/monorepo-lib/collect-external-dependencies":
   version: 0.0.0-use.local
-  resolution: "collect-external-dependencies@workspace:packages/collect-external-dependencies"
+  resolution: "collect-external-dependencies@workspace:packages/monorepo-lib/collect-external-dependencies"
   dependencies:
     "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     "@types/semver": ^7.3.8
     "@yarnpkg/core": ^3.0.0
     builtin-modules: ^3.2.0
@@ -2252,7 +2245,7 @@ __metadata:
   dependencies:
     "@types/jest": ^27.0.1
     "@types/lodash": ^4.14.173
-    "@types/node": ^16.6.2
+    "@types/node": ^16.10.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     colors: ^1.4.0
@@ -2262,6 +2255,8 @@ __metadata:
     jest: ^27.2.0
     jest-cli: ^27.2.0
     lodash: ^4.17.21
+    mkdirp: ^1.0.4
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   languageName: unknown
@@ -2439,7 +2434,7 @@ __metadata:
   resolution: "demo-project@workspace:packages/zi/demo-project"
   dependencies:
     "@types/jest": ^27.0.1
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
@@ -2639,7 +2634,7 @@ __metadata:
     "@types/jest": ^27.0.1
     "@types/mkdirp": ^1.0.2
     "@types/mz": ^2.7.3
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     case: ^1.6.3
@@ -3008,7 +3003,7 @@ __metadata:
   dependencies:
     "@types/jest": ^27.0.1
     "@types/lodash": ^4.14.173
-    "@types/node": ^16.6.2
+    "@types/node": ^16.10.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     colors: ^1.4.0
@@ -3019,6 +3014,7 @@ __metadata:
     jest: ^27.2.0
     jest-cli: ^27.2.0
     lodash: ^4.17.21
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   languageName: unknown
@@ -3042,7 +3038,7 @@ __metadata:
     "@types/comment-json": ^2.4.2
     "@types/diff": ^5.0.0
     "@types/jest": ^27.0.1
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     async-spawn: "workspace:*"
@@ -3208,14 +3204,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "get-repo-root@workspace:packages/monorepo-lib/get-repo-root"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.6.2
+    "@types/node": ^16.10.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     case: ^1.6.3
     commander: ^8.1.0
     eslint: ^7.32.0
     mz: ^2.7.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   languageName: unknown
@@ -3577,7 +3575,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "intended-config@workspace:packages/monorepo-lib/intended-config"
   dependencies:
-    "@types/node": ^16.6.2
+    "@types/jest": ^27.0.1
+    "@types/node": ^16.10.2
+    "@yarnpkg/core": ^3.0.0
+    "@yarnpkg/fslib": ^2.5.1
     config-editor: "workspace:*"
     eslint: ^7.32.0
     find-package-imports: "workspace:*"
@@ -4983,14 +4984,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "list-internal-devdependencies@workspace:packages/monorepo-lib/list-internal-devdependencies"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.6.2
+    "@types/node": ^16.10.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     case: ^1.6.3
     commander: ^8.1.0
     eslint: ^7.32.0
     mz: ^2.7.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   languageName: unknown
@@ -5287,7 +5290,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mod-slash@workspace:packages/nodejs/mod-slash"
   dependencies:
-    "@types/node": ^14.14.45
+    "@types/node": ^16.10.2
     eslint: ^7.26.0
     prettier: ^2.3.0
     typescript: ^4.2.4
@@ -5341,7 +5344,7 @@ __metadata:
   dependencies:
     "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     async-spawn: "workspace:*"
@@ -6134,7 +6137,7 @@ __metadata:
   resolution: "rollup-plugin-zi-import-hijack@workspace:packages/zi/rollup-plugin-zi-import-hijack"
   dependencies:
     "@types/jest": ^27.0.1
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     eslint: ^7.32.0
     mod-slash: "workspace:*"
     npm-run-all: ^4.1.5
@@ -6173,7 +6176,7 @@ __metadata:
   resolution: "run-with-concurrent-limit@workspace:packages/async-lib/run-with-concurrent-limit"
   dependencies:
     "@types/cli-progress": ^3.9.2
-    "@types/node": ^16.6.2
+    "@types/node": ^16.10.2
     cli-progress: ^3.9.1
     eslint: ^7.32.0
     prettier: ^2.3.2
@@ -6181,13 +6184,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"run-yarn-at-root@workspace:*, run-yarn-at-root@workspace:packages/run-yarn-at-root":
+"run-yarn-at-root@workspace:*, run-yarn-at-root@workspace:packages/monorepo-lib/run-yarn-at-root":
   version: 0.0.0-use.local
-  resolution: "run-yarn-at-root@workspace:packages/run-yarn-at-root"
+  resolution: "run-yarn-at-root@workspace:packages/monorepo-lib/run-yarn-at-root"
   dependencies:
     "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     "@types/semver": ^7.3.8
     "@yarnpkg/fslib": ^2.5.1
     eslint: ^7.32.0
@@ -6224,10 +6227,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "semver-compare-range@workspace:packages/monorepo-lib/semver-compare-range"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.6.2
+    "@types/node": ^16.10.2
     "@types/semver": ^7.3.8
     eslint: ^7.32.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     semver: ^7.3.5
     typescript: ^4.4.3
@@ -7346,7 +7351,7 @@ typescript@^4.4.3:
     "@types/cli-progress": ^3.9.2
     "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     cli-progress: ^3.9.1
     esbuild: ^0.12.28
     eslint: ^7.32.0
@@ -7368,7 +7373,7 @@ typescript@^4.4.3:
   resolution: "zi-transform-source@workspace:packages/zi/zi-transform-source"
   dependencies:
     "@types/jest": ^27.0.1
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
@@ -7389,7 +7394,7 @@ typescript@^4.4.3:
   dependencies:
     "@types/chrome": ^0.0.157
     "@types/jest": ^27.0.1
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     "@types/webextension-polyfill": ^0.8.0
     esbp: "workspace:*"
     esbuild: ^0.12.28
@@ -7407,7 +7412,7 @@ typescript@^4.4.3:
   resolution: "zi-webextension-generic@workspace:packages/zi/zi-webextension-generic"
   dependencies:
     "@types/jest": ^27.0.1
-    "@types/node": ^16.7.1
+    "@types/node": ^16.10.2
     "@types/webextension-polyfill": ^0.8.0
     assert-element: "workspace:*"
     esbp: "workspace:*"
@@ -7425,7 +7430,7 @@ typescript@^4.4.3:
   resolution: "zi@workspace:."
   dependencies:
     "@types/jest": ^27.0.1
-    "@types/node": ^16.6.2
+    "@types/node": ^16.10.2
     "@yarnpkg/sdks": ^2.4.1
     eslint: ^7.32.0
     fix-package-imports: "workspace:*"
