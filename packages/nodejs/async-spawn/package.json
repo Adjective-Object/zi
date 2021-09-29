@@ -1,19 +1,40 @@
 {
     "name": "async-spawn",
     "devDependencies": {
+        "@types/jest": "^27.0.1",
         "@types/node": "^16.10.2",
-        "eslint": "^7.26.0",
-        "prettier": "^2.3.0",
-        "typescript": "^4.2.4"
+        "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
     },
-    "main": "lib/cjs/index.js",
-    "module": "lib/mjs/index.js",
-    "input": "src/index.ts",
+    "main": "lib/cjs/asyncSpawn.js",
+    "module": "lib/mjs/asyncSpawn.js",
+    "input": "src/asyncSpawn.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "build:types": "tsc -b ./tsconfig.types.json",
         "build:scripts": "npm-run-all build:cjs build:mjs",
         "build:cjs": "tsc -b ./tsconfig.cjs.json",
-        "build:mjs": "tsc -b ./tsconfig.mjs.json"
+        "build:mjs": "tsc -b ./tsconfig.mjs.json",
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/nodejs/async-spawn",
+    "license": "UNLICENSED",
+    "types": "lib/types/asyncSpawn.d.ts",
+    "files": [
+        "lib"
+    ],
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
     }
 }

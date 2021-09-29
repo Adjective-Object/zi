@@ -16,6 +16,9 @@
     "references": [
         {
             "path": "../semver-compare-range/tsconfig.cjs.json"
+        },
+        {
+            "path": "../semver-compare-range/tsconfig.types.json"
         }
     ]
 }

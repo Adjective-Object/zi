@@ -1,0 +1,16 @@
+{
+    "extends": "../../../tsconfig.json",
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [],
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/types",
+        "composite": true,
+        "emitDeclarationOnly": true
+    }
+}

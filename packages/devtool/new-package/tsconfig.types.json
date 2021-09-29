@@ -18,6 +18,9 @@
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
         },
         {
+            "path": "../../monorepo-lib/collect-external-dependencies/tsconfig.types.json"
+        },
+        {
             "path": "../../monorepo-lib/config-editor/tsconfig.types.json"
         },
         {

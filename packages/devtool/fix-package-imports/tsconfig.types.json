@@ -25,6 +25,9 @@
         },
         {
             "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/run-yarn-at-root/tsconfig.types.json"
         }
     ]
 }

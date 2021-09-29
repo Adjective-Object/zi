@@ -1653,6 +1653,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "assert-element@workspace:packages/browser-lib/assert-element"
   dependencies:
+    "@types/jest": ^27.0.1
+    "@types/node": ^16.10.2
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
@@ -1673,10 +1675,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "async-spawn@workspace:packages/nodejs/async-spawn"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/node": ^16.10.2
-    eslint: ^7.26.0
-    prettier: ^2.3.0
-    typescript: ^4.2.4
+    eslint: ^7.32.0
+    npm-run-all: ^4.1.5
+    prettier: ^2.3.2
+    typescript: ^4.4.3
   languageName: unknown
   linkType: soft
 
@@ -2744,7 +2748,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^7.26.0, eslint@npm:^7.32.0":
+"eslint@npm:^7.32.0":
   version: 7.32.0
   resolution: "eslint@npm:7.32.0"
   dependencies:
@@ -5283,10 +5287,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "mod-slash@workspace:packages/nodejs/mod-slash"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/node": ^16.10.2
-    eslint: ^7.26.0
-    prettier: ^2.3.0
-    typescript: ^4.2.4
+    eslint: ^7.32.0
+    npm-run-all: ^4.1.5
+    prettier: ^2.3.2
+    typescript: ^4.4.3
   languageName: unknown
   linkType: soft
 
@@ -5826,7 +5832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.3.0, prettier@npm:^2.3.2":
+"prettier@npm:^2.3.2":
   version: 2.3.2
   resolution: "prettier@npm:2.3.2"
   bin:
@@ -6169,9 +6175,11 @@ __metadata:
   resolution: "run-with-concurrent-limit@workspace:packages/async-lib/run-with-concurrent-limit"
   dependencies:
     "@types/cli-progress": ^3.9.2
+    "@types/jest": ^27.0.1
     "@types/node": ^16.10.2
     cli-progress: ^3.9.1
     eslint: ^7.32.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   languageName: unknown
@@ -6970,16 +6978,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-typescript@^4.2.4:
-  version: 4.3.5
-  resolution: "typescript@npm:4.3.5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: bab033b5e2b0790dd35b77fd005df976ef80b8d84fd2c6e63cc31808151875beae9216e5a315fe7068e8499905c3c354248fe83272cdfc13b7705635f0c66c97
-  languageName: node
-  linkType: hard
-
 typescript@^4.4.3:
   version: 4.4.3
   resolution: "typescript@npm:4.4.3"
@@ -6987,16 +6985,6 @@ typescript@^4.4.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 05823f21796d450531a7e4ab299715d38fd9ded0e4ce7400876053f4b5166ca3dde7a68cecfe72d9086039f03c0b6edba36516fb10ed83c5837d9600532ea4c2
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^4.2.4#~builtin<compat/typescript>":
-  version: 4.3.5
-  resolution: "typescript@patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: bc2c4fdf0f1557fdafe4ef74848c72ebd9c8c60829568248f869121aea2bb20e16649a252431d0acb185ec118143be22bed73d08f64379557810d82756afedde
   languageName: node
   linkType: hard
 

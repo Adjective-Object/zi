@@ -1,9 +1,16 @@
 {
-    "include": [
-        "./src"
+    "include": [],
+    "exclude": [
+        "src"
     ],
-    "exclude": [],
-    "references": [],
+    "references": [
+        {
+            "path": "./tsconfig.cjs.json"
+        },
+        {
+            "path": "./tsconfig.types.json"
+        }
+    ],
     "compilerOptions": {
         "composite": true,
         "rootDir": "src",

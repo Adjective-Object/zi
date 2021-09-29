@@ -4,13 +4,13 @@
     "module": "lib/mjs/ziTransformSource.js",
     "types": "lib/types/ziTransformSource.d.ts",
     "scripts": {
-        "build": "npm-run-all -p build:types build:scripts",
+        "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
         "fixlint": "prettier --check src/**/*",
-        "build:types": "tsc -b ./tsconfig.json",
-        "build:scripts": "esbp",
-        "build:cjs": "esbp --cjs-only",
-        "build:mjs": "esbp --mjs-only",
+        "build:types": "tsc -b ./tsconfig.types.json",
+        "build:scripts": "npm-run-all build:cjs build:mjs",
+        "build:cjs": "tsc -b ./tsconfig.cjs.json",
+        "build:mjs": "tsc -b ./tsconfig.mjs.json",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {

@@ -5,12 +5,17 @@
         "rootDir": "src",
         "emitDeclarationOnly": true
     },
-    "include": [
-        "./src"
-    ],
+    "include": [],
     "exclude": [
-        "./lib"
+        "node_modules"
     ],
-    "references": [],
+    "references": [
+        {
+            "path": "./tsconfig.cjs.json"
+        },
+        {
+            "path": "./tsconfig.types.json"
+        }
+    ],
     "extends": "../../../tsconfig.json"
 }

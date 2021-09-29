@@ -3,12 +3,12 @@
     "version": "0.0.0",
     "description": "A fork of npm:slash with module:true",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/draftsim#readme",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/nodejs/mod-slash",
     "license": "UNLICENSED",
-    "main": "lib/cjs/index.js",
-    "module": "lib/mjs/index.js",
-    "types": "lib/types/index.d.ts",
-    "input": "src/index.ts",
+    "main": "lib/cjs/modSlash.js",
+    "module": "lib/mjs/modSlash.js",
+    "types": "lib/types/modSlash.d.ts",
+    "input": "src/modSlash.ts",
     "directories": {
         "lib": "lib",
         "test": "__tests__"
@@ -18,7 +18,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Adjective-Object/draftsim.git"
+        "url": "git@github.com:Adjective-Object/zi.git"
     },
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1",
@@ -29,12 +29,14 @@
         "build:mjs": "tsc -b ./tsconfig.mjs.json"
     },
     "bugs": {
-        "url": "https://github.com/Adjective-Object/draftsim/issues"
+        "url": "https://github.com/Adjective-Object/zi/issues"
     },
     "devDependencies": {
+        "@types/jest": "^27.0.1",
         "@types/node": "^16.10.2",
-        "eslint": "^7.26.0",
-        "prettier": "^2.3.0",
-        "typescript": "^4.2.4"
+        "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
     }
 }

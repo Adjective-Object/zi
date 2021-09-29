@@ -4,15 +4,15 @@
     "module": "lib/mjs/demoProject.js",
     "types": "lib/types/demoProject.d.ts",
     "scripts": {
-        "build": "npm-run-all -p build:types build:scripts",
+        "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
         "fixlint": "prettier --check src/**/*",
         "compile-closure": "zi-compile-closure -c tsconfig.json '**/src/**/*.tsx?'",
         "dev": "vite",
-        "build:types": "tsc -b ./tsconfig.json",
-        "build:scripts": "esbp",
-        "build:cjs": "esbp --cjs-only",
-        "build:mjs": "esbp --mjs-only",
+        "build:types": "tsc -b ./tsconfig.types.json",
+        "build:scripts": "npm-run-all build:cjs build:mjs",
+        "build:cjs": "tsc -b ./tsconfig.cjs.json",
+        "build:mjs": "tsc -b ./tsconfig.mjs.json",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "devDependencies": {
