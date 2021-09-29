@@ -17,7 +17,7 @@
         "@yarnpkg/core": "^3.0.0",
         "@yarnpkg/fslib": "^2.5.1",
         "case": "^1.6.3",
-        "commander": "^8.1.0",
+        "commander": "^8.2.0",
         "comment-json": "^4.1.1",
         "esbuild": "^0.12.28",
         "fdir": "^5.1.0",

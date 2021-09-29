@@ -16,7 +16,7 @@
         "@yarnpkg/core": "^3.0.0",
         "@yarnpkg/fslib": "^2.5.1",
         "case": "^1.6.3",
-        "commander": "^8.1.0",
+        "commander": "^8.2.0",
         "mz": "^2.7.0"
     },
     "devDependencies": {

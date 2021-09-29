@@ -6,12 +6,8 @@
         "composite": true
     },
     "extends": "../../../tsconfig.json",
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": [
         {
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.cjs.json"
@@ -33,6 +29,18 @@
         },
         {
             "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/run-yarn-at-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/semver-compare-range/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/run-yarn-at-root/tsconfig.cjs.json"
+        },
+        {
+            "path": "../../monorepo-lib/semver-compare-range/tsconfig.cjs.json"
         },
         {
             "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
