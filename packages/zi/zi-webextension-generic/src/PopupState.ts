@@ -1,6 +1,8 @@
+import { ClosureLoadState } from './ClosureLoadState';
+
 export type PopupState = {
     baseUrl: string;
-    isClosureLoaded: boolean;
+    closureLoadState: ClosureLoadState;
     closureId: string | null;
     bannerMessage?: {
         class: 'error' | 'info';

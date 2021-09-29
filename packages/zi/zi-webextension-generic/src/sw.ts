@@ -1,4 +1,5 @@
 import type { Browser } from 'webextension-polyfill';
+import { ClosureLoadState } from './ClosureLoadState';
 import { isKnownMessage } from './isKnownMessage';
 import type { StatsForPopoupMessage as StateForPopoupMessage } from './messageDefinitions';
 
@@ -8,12 +9,21 @@ type ZiClosure = {
 };
 type ExtensionState = {
     closure: ZiClosure | null;
+    closureLoadState: ClosureLoadState;
     baseUrl: string;
 };
+
+async function fetchClosure(state: ExtensionState): Promise<ZiClosure> {
+    const result = fetch(new URL('/zi-closure.json', state.baseUrl).toString());
+    const resultJson = (await result).json();
+    // TODO validate
+    return resultJson;
+}
 
 export function serviceWorkerMain(browser: Browser) {
     const state: ExtensionState = {
         closure: null,
+        closureLoadState: 'unloaded',
         baseUrl: 'http://localhost:3000',
     };
 
@@ -34,6 +44,28 @@ export function serviceWorkerMain(browser: Browser) {
                         state.baseUrl = message.newBaseUrl;
                         return port.postMessage(getStateMessage());
                     }
+                    case 'reload_closure': {
+                        if (
+                            ['failed', 'unloaded'].includes(
+                                state.closureLoadState,
+                            )
+                        ) {
+                            state.closureLoadState = 'pending';
+                            fetchClosure(state).then(
+                                (closure: ZiClosure) => {
+                                    state.closure = closure;
+                                    state.closureLoadState = 'success';
+                                    port.postMessage(getStateMessage());
+                                },
+                                (e: any) => {
+                                    console.error(e);
+                                    state.closureLoadState = 'failed';
+                                    port.postMessage(getStateMessage());
+                                },
+                            );
+                            return;
+                        }
+                    }
                 }
             } else {
                 throw new Error(
@@ -46,7 +78,7 @@ export function serviceWorkerMain(browser: Browser) {
     function getStateMessage(): StateForPopoupMessage {
         return {
             type: 'state_for_popup',
-            isClosureLoaded: state.closure !== null,
+            closureLoadState: state.closureLoadState,
             closureId: state.closure?.id ?? null,
             baseUrl: state.baseUrl,
         };

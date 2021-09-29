@@ -1,0 +1,20 @@
+{
+    "extends": "../../../tsconfig.json",
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../zi-webextension-generic/tsconfig.types.json"
+        }
+    ],
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/types",
+        "composite": true,
+        "emitDeclarationOnly": true
+    }
+}

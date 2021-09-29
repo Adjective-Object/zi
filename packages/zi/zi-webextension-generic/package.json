@@ -1,11 +1,15 @@
 {
     "name": "zi-webextension-generic",
-    "main": "./lib/ziWebextensionGeneric.js",
-    "module": "./lib/ziWebextensionGeneric.es.js",
-    "types": "./lib/ziWebextensionGeneric.d.ts",
+    "main": "lib/cjs/ziWebextensionGeneric.js",
+    "module": "lib/mjs/ziWebextensionGeneric.js",
+    "types": "lib/types/ziWebextensionGeneric.d.ts",
     "exports": {
-        "./lib/sw": "./lib/sw.js",
-        "./lib/popup": "./lib/popup.js"
+        ".": "./lib/mjs/ziWebextensionGeneric.js",
+        "./lib/sw": "./lib/mjs/sw.js",
+        "./lib/popup": "./lib/mjs/popup.js",
+        "./lib/cjs": "./lib/cjs/ziWebextensionGeneric.js",
+        "./lib/cjs/sw": "./lib/cjs/sw.js",
+        "./lib/cjs/popup": "./lib/cjs/popup.js"
     },
     "scripts": {
         "build": "npm-run-all -p build:types build:scripts",
@@ -14,18 +18,40 @@
         "build:types": "tsc -b ./tsconfig.json",
         "build:scripts": "esbp",
         "build:cjs": "esbp --cjs-only",
-        "build:mjs": "esbp --mjs-only"
+        "build:mjs": "esbp --mjs-only",
+        "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "devDependencies": {
+        "@types/jest": "^27.0.1",
+        "@types/node": "^16.7.1",
         "@types/webextension-polyfill": "^0.8.0",
         "esbp": "workspace:*",
         "esbuild": "^0.12.28",
         "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
         "prettier": "^2.3.2",
         "typescript": "^4.4.3"
     },
     "dependencies": {
         "assert-element": "workspace:*",
         "webextension-polyfill": "^0.8.0"
+    },
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/zi/zi-webextension-generic",
+    "license": "UNLICENSED",
+    "input": "src/ziWebextensionGeneric.ts",
+    "files": [
+        "lib"
+    ],
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
     }
 }

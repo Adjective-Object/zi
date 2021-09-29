@@ -3,17 +3,17 @@
         "rootDir": "src",
         "outDir": "lib/mjs",
         "strictNullChecks": true,
-        "module": "esnext"
+        "module": "esnext",
+        "composite": true
     },
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./lib"
-    ],
+    "include": ["./src"],
+    "exclude": ["./lib"],
     "references": [
         {
             "path": "../../browser-lib/assert-element/tsconfig.mjs.json"
+        },
+        {
+            "path": "../../browser-lib/assert-element/tsconfig.types.json"
         }
     ],
     "extends": "../../../tsconfig.json"

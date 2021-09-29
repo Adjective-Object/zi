@@ -15,5 +15,7 @@
             "128": "/images/zi-128.png"
         }
     },
-    "permissions": ["webRequest", "http://localhost:*"]
+    "permissions": [
+        "webRequest"
+    ]
 }

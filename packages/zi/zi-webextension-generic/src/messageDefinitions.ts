@@ -13,7 +13,12 @@ export type SetBaseUrlMessage = {
     newBaseUrl: string;
 };
 
+export type ReloadClosure = {
+    type: 'reload_closure';
+};
+
 export type KnownMessage =
     | PopupReadyMessage
     | StatsForPopoupMessage
-    | SetBaseUrlMessage;
+    | SetBaseUrlMessage
+    | ReloadClosure;

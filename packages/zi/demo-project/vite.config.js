@@ -1,5 +1,4 @@
 const { resolve } = require('path');
-const ziPlugin = require('rollup-plugin-zi-import-hijack');
 
 module.exports = {
     base: '/',
@@ -10,5 +9,4 @@ module.exports = {
             },
         },
     },
-    plugins: [ziPlugin()],
 };

@@ -1,16 +1,14 @@
 {
-    "compilerOptions": {
-        "composite": true,
-        "outDir": "lib/types",
-        "rootDir": "src",
-        "emitDeclarationOnly": true
-    },
     "include": [
         "./src"
     ],
-    "exclude": [
-        "./lib"
-    ],
+    "exclude": [],
     "references": [],
+    "compilerOptions": {
+        "composite": true,
+        "rootDir": "src",
+        "outDir": "lib/types",
+        "emitDeclarationOnly": true
+    },
     "extends": "../../../tsconfig.json"
 }

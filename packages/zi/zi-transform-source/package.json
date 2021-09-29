@@ -1,8 +1,8 @@
 {
     "name": "zi-transform-source",
     "main": "lib/cjs/ziTransformSource.js",
-    "module": "lib/mjs/ziTransformSource.es.js",
-    "types": "lib/ziTransformSource.d.ts",
+    "module": "lib/mjs/ziTransformSource.js",
+    "types": "lib/types/ziTransformSource.d.ts",
     "scripts": {
         "build": "npm-run-all -p build:types build:scripts",
         "lint": "prettier --write src/**/*",
@@ -10,21 +10,43 @@
         "build:types": "tsc -b ./tsconfig.json",
         "build:scripts": "esbp",
         "build:cjs": "esbp --cjs-only",
-        "build:mjs": "esbp --mjs-only"
+        "build:mjs": "esbp --mjs-only",
+        "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
         "ts-morph": "^11.0.3",
-        "tsconfig-paths": "^3.10.1"
+        "tsconfig-paths": "^3.10.1",
+        "typescript": "^4.4.3"
     },
     "devDependencies": {
         "@types/jest": "^27.0.1",
-        "@types/node": "^16.6.2",
+        "@types/node": "^16.7.1",
+        "esbp": "workspace:*",
+        "esbuild": "^0.12.28",
         "eslint": "^7.32.0",
         "jest": "^27.0.6",
         "jest-cli": "^27.0.6",
+        "npm-run-all": "^4.1.5",
         "prettier": "^2.3.2",
         "ts-jest": "^27.0.5",
-        "typescript": "^4.4.3",
-        "esbuild": "^0.12.28"
+        "typescript": "^4.4.3"
+    },
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/zi/zi-transform-source",
+    "license": "UNLICENSED",
+    "input": "src/ziTransformSource.ts",
+    "files": [
+        "lib"
+    ],
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
     }
 }

@@ -1663,6 +1663,7 @@ __metadata:
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   languageName: unknown
@@ -2119,6 +2120,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"collect-external-dependencies@workspace:packages/collect-external-dependencies":
+  version: 0.0.0-use.local
+  resolution: "collect-external-dependencies@workspace:packages/collect-external-dependencies"
+  dependencies:
+    "@types/jest": ^27.0.1
+    "@types/mz": ^2.7.3
+    "@types/node": ^16.7.1
+    "@types/semver": ^7.3.8
+    "@yarnpkg/core": ^3.0.0
+    builtin-modules: ^3.2.0
+    esbp: "workspace:*"
+    eslint: ^7.32.0
+    npm-run-all: ^4.1.5
+    prettier: ^2.3.2
+    typescript: ^4.4.3
+  languageName: unknown
+  linkType: soft
+
 "collect-v8-coverage@npm:^1.0.0":
   version: 1.0.1
   resolution: "collect-v8-coverage@npm:1.0.1"
@@ -2419,9 +2438,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "demo-project@workspace:packages/zi/demo-project"
   dependencies:
+    "@types/jest": ^27.0.1
+    "@types/node": ^16.7.1
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     rollup: ^2.56.3
     rollup-plugin-zi-import-hijack: "workspace:*"
@@ -2614,9 +2636,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "esbp@workspace:packages/devtool/esbp"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/mkdirp": ^1.0.2
     "@types/mz": ^2.7.3
-    "@types/node": ^16.6.2
+    "@types/node": ^16.7.1
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     case: ^1.6.3
@@ -2627,6 +2650,7 @@ __metadata:
     fdir: ^5.1.0
     mkdirp: ^1.0.4
     mz: ^2.7.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   bin:
@@ -3017,7 +3041,8 @@ __metadata:
     "@types/builtin-modules": ^3.1.1
     "@types/comment-json": ^2.4.2
     "@types/diff": ^5.0.0
-    "@types/node": ^14.14.45
+    "@types/jest": ^27.0.1
+    "@types/node": ^16.7.1
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     async-spawn: "workspace:*"
@@ -3028,18 +3053,21 @@ __metadata:
     diff: ^5.0.0
     esbp: "workspace:*"
     esbuild: ^0.12.28
-    eslint: ^7.26.0
+    eslint: ^7.32.0
     get-repo-root: "workspace:*"
     glob: ^7.1.7
     glob-promise: ^4.1.0
     intended-config: "workspace:*"
     list-internal-devdependencies: "workspace:*"
+    mkdirp: ^1.0.4
     mod-slash: "workspace:*"
-    prettier: ^2.3.0
+    npm-run-all: ^4.1.5
+    prettier: ^2.3.2
     run-with-concurrent-limit: "workspace:*"
+    run-yarn-at-root: "workspace:*"
     semver-compare-range: "workspace:*"
     ts-node: ^9.1.1
-    typescript: ^4.2.4
+    typescript: ^4.4.3
   bin:
     fixrefs: lib/cjs/fixPackageImports.js
   languageName: unknown
@@ -5311,16 +5339,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "new-package@workspace:packages/devtool/new-package"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.6.2
+    "@types/node": ^16.7.1
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
     async-spawn: "workspace:*"
     case: ^1.6.3
-    commander: ^8.1.0
+    commander: ^8.2.0
     eslint: ^7.32.0
     get-repo-root: "workspace:*"
+    mkdirp: ^1.0.4
     mz: ^2.7.0
+    nanoid: ^3.1.25
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   bin:
@@ -6101,9 +6133,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "rollup-plugin-zi-import-hijack@workspace:packages/zi/rollup-plugin-zi-import-hijack"
   dependencies:
+    "@types/jest": ^27.0.1
     "@types/node": ^16.7.1
     eslint: ^7.32.0
     mod-slash: "workspace:*"
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     rollup: ^2.56.3
     tsconfig-paths: ^3.10.1
@@ -6142,6 +6176,22 @@ __metadata:
     "@types/node": ^16.6.2
     cli-progress: ^3.9.1
     eslint: ^7.32.0
+    prettier: ^2.3.2
+    typescript: ^4.4.3
+  languageName: unknown
+  linkType: soft
+
+"run-yarn-at-root@workspace:*, run-yarn-at-root@workspace:packages/run-yarn-at-root":
+  version: 0.0.0-use.local
+  resolution: "run-yarn-at-root@workspace:packages/run-yarn-at-root"
+  dependencies:
+    "@types/jest": ^27.0.1
+    "@types/mz": ^2.7.3
+    "@types/node": ^16.7.1
+    "@types/semver": ^7.3.8
+    "@yarnpkg/fslib": ^2.5.1
+    eslint: ^7.32.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
   languageName: unknown
@@ -7294,14 +7344,16 @@ typescript@^4.4.3:
   resolution: "zi-compile-closure@workspace:packages/zi/zi-compile-closure"
   dependencies:
     "@types/cli-progress": ^3.9.2
+    "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
-    "@types/node": ^16.6.2
+    "@types/node": ^16.7.1
     cli-progress: ^3.9.1
     esbuild: ^0.12.28
     eslint: ^7.32.0
     fdir: ^5.1.0
     get-options: ^1.2.0
     nanoid: ^3.1.25
+    npm-run-all: ^4.1.5
     picomatch: ^2.3.0
     prettier: ^2.3.2
     run-with-concurrent-limit: "workspace:*"
@@ -7316,12 +7368,13 @@ typescript@^4.4.3:
   resolution: "zi-transform-source@workspace:packages/zi/zi-transform-source"
   dependencies:
     "@types/jest": ^27.0.1
-    "@types/node": ^16.6.2
+    "@types/node": ^16.7.1
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
     jest: ^27.0.6
     jest-cli: ^27.0.6
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     ts-jest: ^27.0.5
     ts-morph: ^11.0.3
@@ -7335,10 +7388,13 @@ typescript@^4.4.3:
   resolution: "zi-webextension-chrome@workspace:packages/zi/zi-webextension-chrome"
   dependencies:
     "@types/chrome": ^0.0.157
+    "@types/jest": ^27.0.1
+    "@types/node": ^16.7.1
     "@types/webextension-polyfill": ^0.8.0
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
     webextension-polyfill: ^0.8.0
@@ -7350,11 +7406,14 @@ typescript@^4.4.3:
   version: 0.0.0-use.local
   resolution: "zi-webextension-generic@workspace:packages/zi/zi-webextension-generic"
   dependencies:
+    "@types/jest": ^27.0.1
+    "@types/node": ^16.7.1
     "@types/webextension-polyfill": ^0.8.0
     assert-element: "workspace:*"
     esbp: "workspace:*"
     esbuild: ^0.12.28
     eslint: ^7.32.0
+    npm-run-all: ^4.1.5
     prettier: ^2.3.2
     typescript: ^4.4.3
     webextension-polyfill: ^0.8.0

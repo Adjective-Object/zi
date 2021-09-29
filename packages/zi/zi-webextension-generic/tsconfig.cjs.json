@@ -3,7 +3,8 @@
         "rootDir": "src",
         "outDir": "lib/cjs",
         "strictNullChecks": true,
-        "module": "CommonJs"
+        "module": "CommonJS",
+        "composite": true
     },
     "include": [
         "./src"
@@ -14,6 +15,9 @@
     "references": [
         {
             "path": "../../browser-lib/assert-element/tsconfig.cjs.json"
+        },
+        {
+            "path": "../../browser-lib/assert-element/tsconfig.types.json"
         }
     ],
     "extends": "../../../tsconfig.json"

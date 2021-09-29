@@ -4,6 +4,7 @@ const KNOWN_MESSAGE_TYPES: KnownMessage['type'][] = [
     'state_for_popup',
     'popup_ready',
     'set_base_url',
+    'reload_closure',
 ];
 
 export function isKnownMessage(message: any): message is KnownMessage {
