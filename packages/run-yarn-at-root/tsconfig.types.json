@@ -1,0 +1,17 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/types",
+        "module": "esnext",
+        "emitDeclarationOnly": true,
+        "composite": true
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": []
+}

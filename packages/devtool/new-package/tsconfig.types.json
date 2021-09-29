@@ -15,7 +15,16 @@
     ],
     "references": [
         {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/config-editor/tsconfig.types.json"
+        },
+        {
             "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
         },
         {
             "path": "../../nodejs/async-spawn/tsconfig.types.json"

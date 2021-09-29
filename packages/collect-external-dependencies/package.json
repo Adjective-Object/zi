@@ -1,0 +1,49 @@
+{
+    "name": "collect-external-dependencies",
+    "main": "lib/cjs/collectExternalDependencies.js",
+    "module": "lib/mjs/collectExternalDependencies.js",
+    "types": "lib/types/collectExternalDependencies.d.ts",
+    "input": "src/collectExternalDependencies.ts",
+    "scripts": {
+        "build": "npm-run-all -p build:types build:scripts",
+        "lint": "prettier --write src/**/*",
+        "fixlint": "prettier --check src/**/*",
+        "build:types": "tsc -b ./tsconfig.json",
+        "build:scripts": "esbp",
+        "build:cjs": "esbp --cjs-only",
+        "build:mjs": "esbp --mjs-only",
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "devDependencies": {
+        "@types/jest": "^27.0.1",
+        "@types/mz": "^2.7.3",
+        "@types/node": "^16.7.1",
+        "@types/semver": "^7.3.8",
+        "esbp": "workspace:*",
+        "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
+    },
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/monorepo-lib/collect-external-dependencies",
+    "license": "UNLICENSED",
+    "files": [
+        "lib"
+    ],
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
+    },
+    "dependencies": {
+        "@yarnpkg/core": "^3.0.0",
+        "builtin-modules": "^3.2.0"
+    }
+}

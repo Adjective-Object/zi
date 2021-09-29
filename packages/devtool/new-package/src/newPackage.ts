@@ -1,5 +1,5 @@
 import commander from 'commander';
-import { Project } from '@yarnpkg/core';
+import { IdentHash, Project, Workspace } from '@yarnpkg/core';
 import {
     ppath,
     toFilename,
@@ -10,25 +10,33 @@ import {
 } from '@yarnpkg/fslib';
 import { asyncSpawn } from 'async-spawn';
 import { getRepoRootWorkspace } from 'get-repo-root';
+import { collectAllExternalDependencies } from 'collect-external-dependencies';
+import { setConfigContentsForPackage } from 'intended-config';
+import { ConfigManager, Change, PackageLike } from 'config-editor';
+import { nanoid } from 'nanoid';
+import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
+import mkdirp from 'mkdirp';
 
-function kebabToCamel(kebab: string): string {
-    const [firstWord, ...restWords] = kebab.split('-');
-    return (
-        firstWord.toLocaleLowerCase() +
-        restWords.map((w) => w[0].toUpperCase() + w.substr(1)).join('')
-    );
-}
-
-async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
+async function bootstrapPackage(
+    repoRootWorkspace: Workspace,
+    allowedExternalDependenices: Record<string, string>,
+    packageSpecifierStr: string,
+) {
+    const configManager = new ConfigManager();
     const packageSpecifier = ppath.join(
         ...packageSpecifierStr.split(ppath.sep).map(toFilename),
     );
-    const destinationDirectory = ppath.dirname(packageSpecifier);
+    const packageDestinationDirectory = ppath.join(
+        repoRootWorkspace.project.topLevelWorkspace.cwd,
+        toFilename('packages'),
+        npath.toPortablePath(packageSpecifier),
+    );
     const intendedPackageName = ppath.basename(packageSpecifier);
 
     console.log('creating new package', intendedPackageName);
 
-    const children = project.topLevelWorkspace.getRecursiveWorkspaceChildren();
+    const children =
+        repoRootWorkspace.project.topLevelWorkspace.getRecursiveWorkspaceChildren();
     for (let child of children) {
         if (child.manifest.name?.name === intendedPackageName) {
             console.error(
@@ -38,136 +46,68 @@ async function bootstrapPackage(project: Project, packageSpecifierStr: string) {
         }
     }
 
-    const fs = new NodeFS();
+    // Create a fake package that we can use to ask the intended
+    // config generator what it wants
+    const packageLike: PackageLike = {
+        manifest: {
+            name: {
+                name: intendedPackageName,
+                identHash: nanoid() as IdentHash,
+            },
+        },
+        cwd: ppath.resolve(packageDestinationDirectory),
+    };
 
-    // check if the packages directory path is a directory
-    const packagesDirectory = ppath.join(
-        project.topLevelWorkspace.cwd,
-        toFilename('packages'),
-    );
-    let dirStat: Stats;
-    try {
-        dirStat = await fs.statPromise(packagesDirectory);
-    } catch (e) {
-        console.error(`Error while statting ${packagesDirectory}: ${e}`);
-        return 1;
-    }
-    if (!dirStat.isDirectory) {
-        console.error(`Path ${packagesDirectory} was not a directory`);
-        return 1;
-    }
+    // generate the configs
+    console.log('Generating intended configs');
+    await setConfigContentsForPackage({
+        configManager,
+        packageLike,
+        repoRoot: repoRootWorkspace.cwd,
+        repoMeta: {
+            repoHomepageBaseUrl:
+                'https://github.com/Adjective-Object/zi/tree/master/packages/',
+            repoIssuesUrl: 'https://github.com/Adjective-Object/zi/issues',
+            repoGitUrl: 'git@github.com:Adjective-Object/zi.git',
+        },
+        packageAuthor: 'Maxwell Huang-Hobbs <mhuan13@gmail.com>',
+        internalPackages: repoRootWorkspace.getRecursiveWorkspaceChildren(),
+        // TODO update this once I un-break esbp builds
+        isBootstrapBuildPackage: true,
+        extraScripts: {},
+        permittedPackageVersions: allowedExternalDependenices,
+    });
 
-    // Make the destination directory
-    const newPackageDirectory: PortablePath = ppath.join(
-        packagesDirectory,
-        destinationDirectory,
-        intendedPackageName,
-    );
+    // write the intended configs
+    console.log('Writing configs');
+    const changeset = await configManager.generateChangeset();
+    await runWithConcurrentLimit(10, changeset, (c) => {
+        console.log('writing', c.getPath());
+        return c.write();
+    });
 
-    // check if the package destination path already exists
-    if (await fs.existsPromise(newPackageDirectory)) {
-        console.error(`Path ${newPackageDirectory} already existed`);
-        return 1;
-    }
-
-    const srcDir: PortablePath = ppath.join(
-        newPackageDirectory,
-        toFilename('src'),
-    );
-    await fs.mkdirpPromise(srcDir);
-
-    // copying the source package to the destination
-    const templateDirPath = ppath.join(
-        npath.toPortablePath(__dirname),
-        toFilename('..'),
-        toFilename('..'),
-        toFilename('new-package-template'),
-    );
-    const templateContents = await fs.readdirPromise(templateDirPath);
-    const camelCaseName = kebabToCamel(intendedPackageName);
-    await Promise.all(
-        templateContents.map(async (fileName) => {
-            const templateFilePath = ppath.join(templateDirPath, fileName);
-            const templateFileDestinationPath = ppath.join(
-                newPackageDirectory,
-                fileName.startsWith('_')
-                    ? toFilename(fileName.substring(1))
-                    : fileName,
-            );
-            if (fileName === '_package.json') {
-                console.log('  templating and copying package.json...');
-                // ts not picking up the overloaded file definition..
-                const templatePackageJson = JSON.parse(
-                    (await fs.readFilePromise(
-                        templateFilePath,
-                        'utf-8',
-                    )) as unknown as string,
-                );
-                await fs.writeFilePromise(
-                    templateFileDestinationPath,
-                    JSON.stringify(
-                        {
-                            name: intendedPackageName,
-                            main: `lib/${camelCaseName}.js`,
-                            module: `lib/${camelCaseName}.es.js`,
-                            types: `lib/${camelCaseName}.d.ts`,
-                            ...templatePackageJson,
-                        },
-                        null,
-                        4,
-                    ),
-                );
-            } else if (fileName === '_tsconfig.json') {
-                console.log('  templating and copying tsconfig.json...');
-                // ts not picking up the overloaded file definition..
-                const templatePackageJson = JSON.parse(
-                    (await fs.readFilePromise(
-                        templateFilePath,
-                        'utf-8',
-                    )) as unknown as string,
-                );
-                await fs.writeFilePromise(
-                    templateFileDestinationPath,
-                    JSON.stringify(
-                        {
-                            ...templatePackageJson,
-                            extends: ppath.join(
-                                ...destinationDirectory
-                                    .split(ppath.sep)
-                                    .map(() => toFilename('..')),
-                                toFilename('..'),
-                                toFilename('..'),
-                                toFilename('tsconfig.json'),
-                            ),
-                        },
-                        null,
-                        4,
-                    ),
-                );
-            } else {
-                console.log(`  copying ${fileName}...`);
-                await fs.copyPromise(
-                    templateFilePath,
-                    templateFileDestinationPath,
-                );
-            }
-        }),
-    );
-
-    console.log('  creating source entrypoint...');
-    await fs.mkdirpPromise(ppath.join(destinationDirectory, toFilename('src')));
-    await fs.writeFilePromise(
+    // generate the source file
+    const generatedPackageJson = configManager
+        .getManagerForPackageLike(packageLike)
+        .getIntendedContents(
+            ppath.join(packageLike.cwd, npath.toPortablePath('package.json')),
+        );
+    // get the output path or a fallback
+    const entrypointScriptPath =
         ppath.join(
-            newPackageDirectory,
+            packageLike.cwd,
             toFilename('src'),
-            toFilename(`${camelCaseName}.ts`),
-        ),
-        '',
-    );
+            generatedPackageJson?.input,
+        ) ||
+        ppath.join(packageLike.cwd, toFilename('src'), toFilename('index.js'));
+    console.log(`Writing source entrypoint to ${entrypointScriptPath}`);
+    const fs = new NodeFS();
+    await mkdirp(npath.fromPortablePath(ppath.dirname(entrypointScriptPath)));
+    await fs.writeFilePromise(entrypointScriptPath, 'export {}\n');
 
     console.log(
         'finished creating package at',
-        ppath.relative(ppath.cwd(), newPackageDirectory),
+        ppath.relative(ppath.cwd(), packageLike.cwd),
     );
 
     return 0;
@@ -183,12 +123,17 @@ async function main(): Promise<number> {
     // check for an existing workspace
     const repoRootWorkspace = await getRepoRootWorkspace();
     let exitCode: number = 0;
+    const allowedExternalDependenices = await collectAllExternalDependencies([
+        repoRootWorkspace,
+        ...repoRootWorkspace.getRecursiveWorkspaceChildren(),
+    ]);
 
     for (let packageSpecifier of program.args) {
         exitCode =
             exitCode == 0
                 ? await bootstrapPackage(
-                      repoRootWorkspace.project,
+                      repoRootWorkspace,
+                      allowedExternalDependenices,
                       packageSpecifier,
                   )
                 : exitCode;
@@ -222,10 +167,11 @@ async function main(): Promise<number> {
     return exitCode;
 }
 
-main()
-    .then((exitCode: number) => process.exit(exitCode))
-    .catch((e) => {
+main().then(
+    (exitCode: number) => process.exit(exitCode),
+    (e) => {
         console.log('exiting due to error:');
         console.error(e);
         process.exit(1);
-    });
+    },
+);

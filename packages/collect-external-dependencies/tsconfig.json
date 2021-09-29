@@ -1,0 +1,14 @@
+{
+    "include": [
+        "./src"
+    ],
+    "exclude": [],
+    "references": [],
+    "compilerOptions": {
+        "composite": true,
+        "rootDir": "src",
+        "outDir": "lib/types",
+        "emitDeclarationOnly": true
+    },
+    "extends": "../../tsconfig.json"
+}

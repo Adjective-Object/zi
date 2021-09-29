@@ -1,0 +1,21 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/cjs",
+        "module": "CommonJS",
+        "strict": true,
+        "composite": true
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../semver-compare-range/tsconfig.cjs.json"
+        }
+    ]
+}

@@ -2,7 +2,7 @@
     "name": "fix-package-imports",
     "main": "lib/cjs/fixPackageImports.js",
     "module": "lib/mjs/fixPackageImports.js",
-    "types": "lib/types/fixPackageImports.d.js",
+    "types": "lib/types/fixPackageImports.d.ts",
     "input": "src/fixPackageImports.ts",
     "bin": {
         "fixrefs": "lib/cjs/fixPackageImports.js"
@@ -14,7 +14,8 @@
         "build:types": "tsc -b ./tsconfig.types.json",
         "build:scripts": "npm-run-all build:cjs build:mjs",
         "build:cjs": "tsc -b ./tsconfig.cjs.json",
-        "build:mjs": "tsc -b ./tsconfig.mjs.json"
+        "build:mjs": "tsc -b ./tsconfig.mjs.json",
+        "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
         "@yarnpkg/core": "^3.0.0",
@@ -30,20 +31,41 @@
         "glob-promise": "^4.1.0",
         "intended-config": "workspace:*",
         "list-internal-devdependencies": "workspace:*",
+        "mkdirp": "^1.0.4",
         "mod-slash": "workspace:*",
         "run-with-concurrent-limit": "workspace:*",
+        "run-yarn-at-root": "workspace:*",
         "semver-compare-range": "workspace:*"
     },
     "devDependencies": {
         "@types/builtin-modules": "^3.1.1",
         "@types/comment-json": "^2.4.2",
         "@types/diff": "^5.0.0",
-        "@types/node": "^14.14.45",
+        "@types/jest": "^27.0.1",
+        "@types/node": "^16.7.1",
         "esbp": "workspace:*",
         "esbuild": "^0.12.28",
-        "eslint": "^7.26.0",
-        "prettier": "^2.3.0",
+        "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.3.2",
         "ts-node": "^9.1.1",
-        "typescript": "^4.2.4"
+        "typescript": "^4.4.3"
+    },
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/devtool/fix-package-imports",
+    "license": "UNLICENSED",
+    "files": [
+        "lib"
+    ],
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
     }
 }

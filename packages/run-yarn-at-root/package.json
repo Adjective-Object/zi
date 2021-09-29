@@ -1,10 +1,9 @@
 {
-    "name": "new-package",
-    "main": "lib/cjs/newPackage.js",
-    "input": "src/newPackage.ts",
-    "bin": {
-        "newpackage": "lib/cjs/newPackage.js"
-    },
+    "name": "run-yarn-at-root",
+    "main": "lib/cjs/runYarnAtRoot.js",
+    "module": "lib/mjs/runYarnAtRoot.js",
+    "types": "lib/types/runYarnAtRoot.d.ts",
+    "input": "src/runYarnAtRoot.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
@@ -15,21 +14,11 @@
         "build:mjs": "tsc -b ./tsconfig.mjs.json",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
-    "dependencies": {
-        "@yarnpkg/core": "^3.0.0",
-        "@yarnpkg/fslib": "^2.5.1",
-        "async-spawn": "workspace:*",
-        "case": "^1.6.3",
-        "commander": "^8.2.0",
-        "get-repo-root": "workspace:*",
-        "mkdirp": "^1.0.4",
-        "mz": "^2.7.0",
-        "nanoid": "^3.1.25"
-    },
     "devDependencies": {
         "@types/jest": "^27.0.1",
         "@types/mz": "^2.7.3",
         "@types/node": "^16.7.1",
+        "@types/semver": "^7.3.8",
         "eslint": "^7.32.0",
         "npm-run-all": "^4.1.5",
         "prettier": "^2.3.2",
@@ -37,10 +26,8 @@
     },
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/devtool/new-package",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/monorepo-lib/run-yarn-at-root",
     "license": "UNLICENSED",
-    "module": "lib/mjs/newPackage.js",
-    "types": "lib/types/newPackage.d.ts",
     "files": [
         "lib"
     ],
@@ -53,5 +40,8 @@
     },
     "bugs": {
         "url": "https://github.com/Adjective-Object/zi/issues"
+    },
+    "dependencies": {
+        "@yarnpkg/fslib": "^2.5.1"
     }
 }

@@ -27,9 +27,6 @@
             "path": "../../monorepo-lib/intended-config/tsconfig.mjs.json"
         },
         {
-            "path": "../../monorepo-lib/semver-compare-range/tsconfig.mjs.json"
-        },
-        {
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
         },
         {
@@ -40,9 +37,6 @@
         },
         {
             "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
-        },
-        {
-            "path": "../../monorepo-lib/semver-compare-range/tsconfig.types.json"
         }
     ]
 }

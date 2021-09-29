@@ -6,7 +6,10 @@ import { Workspace } from '@yarnpkg/core';
 import { compare as compareSemverRange } from 'semver-compare-range';
 import builtins from 'builtin-modules';
 import { Command } from 'commander';
+import { runYarnAndWarn } from 'run-yarn-at-root';
 import * as path from 'path';
+import { NodeFS, npath, ppath } from '@yarnpkg/fslib';
+import mkdirp from 'mkdirp';
 
 function collectAllExternalDependencies(
     workspaces: Workspace[],
@@ -101,9 +104,57 @@ async function main(): Promise<number> {
         await runWithConcurrentLimit(
             10,
             changes,
-            (change: Change) => change.write(),
+            async (change: Change) => {
+                // If we are changing the input field of the package,
+                // we need to move the old input file to its new location
+                if (change.getPath().endsWith('package.json')) {
+                    const oldInputPath = change.originalFileContents?.input;
+                    const newInputPath = change.mergedContent?.input;
+                    if (
+                        typeof oldInputPath === 'string' &&
+                        typeof newInputPath === 'string' &&
+                        newInputPath !== oldInputPath
+                    ) {
+                        // console.log(
+                        //     `${change.getPath()}: moving old input ${oldInputPath} to ${newInputPath}`,
+                        // );
+                        const inPathFull = ppath.join(
+                            ppath.dirname(
+                                npath.toPortablePath(change.getPath()),
+                            ),
+                            npath.toPortablePath(oldInputPath),
+                        );
+                        const outPathFull = ppath.join(
+                            ppath.dirname(
+                                npath.toPortablePath(change.getPath()),
+                            ),
+                            npath.toPortablePath(newInputPath),
+                        );
+                        const fs = new NodeFS();
+                        if (await fs.existsPromise(inPathFull)) {
+                            await mkdirp(
+                                npath.dirname(
+                                    npath.fromPortablePath(outPathFull),
+                                ),
+                            );
+                            await fs.movePromise(inPathFull, outPathFull);
+                        }
+                    }
+                }
+
+                // write the change to disk
+                await change.write();
+            },
             true, // progressBar
         );
+
+        if (
+            changes.some(
+                (change) => change.getPath().indexOf('package.json') !== -1,
+            )
+        ) {
+            return await runYarnAndWarn();
+        }
     }
 
     return 0;
