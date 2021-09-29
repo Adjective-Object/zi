@@ -4,13 +4,14 @@ import * as Diff from 'diff';
 import { PortablePath, NodeFS, npath } from '@yarnpkg/fslib';
 import { recursivePatchCommentJson } from './recursivePatchCommentJson';
 import { isEqual } from 'lodash';
+import mkdirp from 'mkdirp';
 
 export class Change {
     mergedContent: any;
 
     private constructor(
         private path: PortablePath,
-        private originalFileContents: CommentJson.CommentJSONValue,
+        public originalFileContents: CommentJson.CommentJSONValue,
         intendedContents: object,
     ) {
         this.mergedContent = recursivePatchCommentJson(
@@ -85,6 +86,7 @@ export class Change {
     }
 
     public async write(): Promise<void> {
+        await mkdirp(npath.dirname(npath.fromPortablePath(this.path)));
         return new NodeFS().writeFilePromise(
             this.path,
             CommentJson.stringify(this.mergedContent, null, 4),

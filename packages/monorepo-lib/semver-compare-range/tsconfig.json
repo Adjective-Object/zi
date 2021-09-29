@@ -1,7 +1,4 @@
 {
-    "compilerOptions": {
-        "composite": true
-    },
     "include": [],
     "exclude": [
         "src",
@@ -17,5 +14,8 @@
         {
             "path": "./tsconfig.types.json"
         }
-    ]
+    ],
+    "compilerOptions": {
+        "composite": true
+    }
 }

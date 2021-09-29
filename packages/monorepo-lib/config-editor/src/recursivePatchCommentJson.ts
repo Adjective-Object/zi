@@ -6,16 +6,12 @@ export function recursivePatchCommentJson(
     edit: Record<string, any>,
 ) {
     if (Array.isArray(target) || Array.isArray(edit)) {
-        console.log('target', target);
-        console.log('edit', edit);
         throw new Error(
             'ILLEGAL CALL: recursivePatchCommentJson was passed an array',
         );
     }
 
     if (!(typeof target === 'object')) {
-        console.log('target', target);
-        console.log('edit', edit);
         throw new Error(
             'ILLEGAL CALL: recursivePatchCommentJson was passed a non-object',
         );

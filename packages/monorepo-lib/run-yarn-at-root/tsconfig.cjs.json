@@ -1,0 +1,30 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/cjs",
+        "module": "CommonJS",
+        "strict": true,
+        "composite": true
+    },
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../get-repo-root/tsconfig.cjs.json"
+        },
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.cjs.json"
+        },
+        {
+            "path": "../get-repo-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.types.json"
+        }
+    ]
+}

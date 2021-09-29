@@ -1,5 +1,5 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "../../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/types",
@@ -13,5 +13,12 @@
     "exclude": [
         "./lib"
     ],
-    "references": []
+    "references": [
+        {
+            "path": "../get-repo-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../nodejs/async-spawn/tsconfig.types.json"
+        }
+    ]
 }

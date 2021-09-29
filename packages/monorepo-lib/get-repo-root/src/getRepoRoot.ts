@@ -14,7 +14,7 @@ export async function getRepoRootWorkspace(): Promise<Workspace> {
             strict: false,
         },
     );
-    const { project, workspace } = await Project.find(configuration, cwd);
+    const { project } = await Project.find(configuration, cwd);
 
     return project.topLevelWorkspace;
 }

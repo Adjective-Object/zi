@@ -9,16 +9,17 @@ export class PackageConfigsManager {
 
     constructor(private workspace: PackageLike) {}
 
-    updateIntendedContents(
-        relativePath: PortablePath,
-        intendedJsonContents: object,
-    ) {
-        const pathKey = this._getPathKey(relativePath);
-        const existing = this.intendedContents.get(relativePath) ?? {};
+    updateIntendedContents(path: PortablePath, intendedJsonContents: object) {
+        const pathKey = this._getPathKey(path);
+        const existing = this.intendedContents.get(pathKey) ?? {};
         this.intendedContents.set(
             pathKey,
             merge(existing, intendedJsonContents),
         );
+    }
+
+    getIntendedContents(relativePath: PortablePath) {
+        return this.intendedContents.get(this._getPathKey(relativePath));
     }
 
     private _getPathKey(relativePath: string): PortablePath {

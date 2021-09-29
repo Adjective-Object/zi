@@ -38,6 +38,16 @@ function kebabToCamel(kebab: string): string {
     );
 }
 
+function undefinedIfEmpty<T extends Record<string | number, any>>(
+    a: T,
+): T | undefined {
+    if (Object.keys(a).length === 0) {
+        return undefined;
+    } else {
+        return a;
+    }
+}
+
 export type RepoMeta = {
     repoGitUrl: string;
     repoIssuesUrl: string;
@@ -55,14 +65,14 @@ function pluck<T>(
     );
 }
 
-async function setConfigContentsForPackage({
+export async function setConfigContentsForPackage({
     configManager,
     packageLike,
     repoRoot,
     repoMeta: { repoGitUrl, repoIssuesUrl, repoHomepageBaseUrl },
     packageAuthor,
     internalPackages,
-    bootstrapBuildPackageIdents,
+    isBootstrapBuildPackage,
     extraScripts,
     permittedPackageVersions,
 }: {
@@ -74,7 +84,7 @@ async function setConfigContentsForPackage({
     permittedPackageVersions: Record<string, string>;
     packageAuthor: string;
     internalPackages: PackageLike[];
-    bootstrapBuildPackageIdents: Set<string>;
+    isBootstrapBuildPackage: boolean;
 }) {
     const packageConfigEditor =
         configManager.getManagerForPackageLike(packageLike);
@@ -112,7 +122,7 @@ async function setConfigContentsForPackage({
     );
     if (missingExternalPackages.length) {
         throw new Error(
-            `preferred packages map was missing external dependencies: ${missingExternalPackages}`,
+            `preferred packages map was missing external dependencies: ${missingExternalPackages} requested by ${packageLike.manifest.name.name}`,
         );
     }
 
@@ -170,21 +180,24 @@ async function setConfigContentsForPackage({
         bugs: {
             url: repoIssuesUrl,
         },
-        dependencies: pluck(permittedPackageVersions, externalDependencies),
+        dependencies: undefinedIfEmpty(
+            pluck(permittedPackageVersions, externalDependencies),
+        ),
         // TODO probably better to error if we error on missing verisons
-        devDependencies: {
+        devDependencies: undefinedIfEmpty({
             ...pluck(permittedPackageVersions, [
                 ...externalDevDependencies,
                 '@types/node',
+                '@types/jest',
                 'eslint',
                 'prettier',
                 'typescript',
                 'npm-run-all',
             ]),
-        },
+        }),
     });
 
-    if (bootstrapBuildPackageIdents.has(packageLike.manifest.name.identHash)) {
+    if (isBootstrapBuildPackage) {
         // This package needs to build with cjs/mjs/types using typescript,
         // rather than the standard esbp build which uses typescript only for types.
 
@@ -319,7 +332,7 @@ async function setConfigContentsForPackage({
         packageConfigEditor.updateIntendedContents(packageJsonPPath, {
             scripts: {
                 build: 'npm-run-all -p build:types build:scripts',
-                'build:types': 'tsc -b ./tsconfig.json',
+                'build:types': 'tsc -b ./tsconfig.types.json',
                 'build:scripts': 'esbp',
                 'build:cjs': 'esbp --cjs-only',
                 'build:mjs': 'esbp --mjs-only',
@@ -331,7 +344,7 @@ async function setConfigContentsForPackage({
         });
 
         packageConfigEditor.updateIntendedContents(
-            ppath.join(packageLike.cwd, filename('tsconfig.json')),
+            ppath.join(packageLike.cwd, filename('tsconfig.types.json')),
             {
                 compilerOptions: {
                     rootDir: 'src',
@@ -342,7 +355,14 @@ async function setConfigContentsForPackage({
                 extends: childToRootTsconfigJson,
                 include: ['./src'],
                 exclude: ['./lib'],
-                references: [],
+                references: childInternalDependencies.map(
+                    (internalDependencyWorkspace) => ({
+                        path: prsPath(
+                            internalDependencyWorkspace,
+                            'tsconfig.types.json',
+                        ),
+                    }),
+                ),
             },
         );
     }
@@ -364,21 +384,23 @@ export async function getIntendedConfigsForChildWorkspaces(
 ) {
     const childWorkspaces = rootWorkspace.getRecursiveWorkspaceChildren();
 
-    const bootstrapBuildPackages = new Set(
-        listInternalDevDependencies(rootWorkspace),
+    const bootstrapBuildPackageHashes = new Set(
+        [...listInternalDevDependencies(rootWorkspace)].map(
+            (x) => assertHasNamedManifest(x).manifest.name.identHash,
+        ),
     );
 
     await runWithConcurrentLimit(
         10,
         childWorkspaces.filter((f) => f != rootWorkspace),
         (childWorkspace: Workspace) => {
+            const cw = assertHasNamedManifest(childWorkspace);
             return setConfigContentsForPackage({
                 configManager: configManager,
                 packageLike: {
                     cwd: childWorkspace.cwd,
                     manifest: {
-                        name: assertHasNamedManifest(childWorkspace).manifest
-                            .name,
+                        name: cw.manifest.name,
                     },
                 },
                 repoRoot: rootWorkspace.cwd,
@@ -388,12 +410,11 @@ export async function getIntendedConfigsForChildWorkspaces(
                 permittedPackageVersions:
                     options?.permittedPackageVersions ?? {},
                 internalPackages: childWorkspaces.map(assertHasNamedManifest),
-                bootstrapBuildPackageIdents: new Set(
-                    [...bootstrapBuildPackages].map(
-                        (x) =>
-                            assertHasNamedManifest(x).manifest.name.identHash,
-                    ),
-                ),
+                // TODO re-enable this once I unbreak esbp.
+                isBootstrapBuildPackage: true,
+                // isBootstrapBuildPackage: bootstrapBuildPackageHashes.has(
+                //     cw.manifest.name.identHash,
+                // ),
             });
         },
     );

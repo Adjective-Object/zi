@@ -1,8 +1,4 @@
 {
-    "compilerOptions": {
-        "composite": true,
-        "outDir": "lib/types"
-    },
     "include": [],
     "exclude": [
         "src",
@@ -19,5 +15,7 @@
             "path": "./tsconfig.types.json"
         }
     ],
-    "extends": "../../../tsconfig.json"
+    "compilerOptions": {
+        "composite": true
+    }
 }

@@ -1,7 +1,7 @@
 {
     "name": "get-repo-root",
     "main": "lib/cjs/getRepoRoot.js",
-    "module": "lib/mjs/getRepoRoot.ts",
+    "module": "lib/mjs/getRepoRoot.js",
     "types": "lib/types/getRepoRoot.d.ts",
     "input": "src/getRepoRoot.ts",
     "scripts": {
@@ -11,7 +11,8 @@
         "build:types": "tsc -b ./tsconfig.types.json",
         "build:scripts": "npm-run-all build:cjs build:mjs",
         "build:cjs": "tsc -b ./tsconfig.cjs.json",
-        "build:mjs": "tsc -b ./tsconfig.mjs.json"
+        "build:mjs": "tsc -b ./tsconfig.mjs.json",
+        "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
         "@yarnpkg/core": "^3.0.0",
@@ -21,10 +22,29 @@
         "mz": "^2.7.0"
     },
     "devDependencies": {
+        "@types/jest": "^27.0.1",
         "@types/mz": "^2.7.3",
-        "@types/node": "^16.6.2",
+        "@types/node": "^16.7.1",
         "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
         "prettier": "^2.3.2",
         "typescript": "^4.4.3"
+    },
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/monorepo-lib/get-repo-root",
+    "license": "UNLICENSED",
+    "files": [
+        "lib"
+    ],
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
     }
 }
