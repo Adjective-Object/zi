@@ -46,6 +46,9 @@
         },
         {
             "path": "../../monorepo-lib/run-yarn-at-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/semver-compare-range/tsconfig.types.json"
         }
     ]
 }
