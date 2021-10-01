@@ -1,5 +1,6 @@
 import type { Browser } from 'webextension-polyfill';
 import { ClosureLoadState } from './ClosureLoadState';
+import { getClosureUrl } from './getClosureUrl';
 import { isKnownMessage } from './isKnownMessage';
 import type { StatsForPopoupMessage as StateForPopoupMessage } from './messageDefinitions';
 
@@ -14,7 +15,8 @@ type ExtensionState = {
 };
 
 async function fetchClosure(state: ExtensionState): Promise<ZiClosure> {
-    const result = fetch(new URL('/zi-closure.json', state.baseUrl).toString());
+    const closureUrl = getClosureUrl(state);
+    const result = fetch(closureUrl);
     const resultJson = (await result).json();
     // TODO validate
     return resultJson;
@@ -51,6 +53,7 @@ export function serviceWorkerMain(browser: Browser) {
                             )
                         ) {
                             state.closureLoadState = 'pending';
+                            port.postMessage(getStateMessage());
                             fetchClosure(state).then(
                                 (closure: ZiClosure) => {
                                     state.closure = closure;
