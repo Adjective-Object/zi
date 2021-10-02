@@ -2,11 +2,11 @@
     "name": "zi-chrome",
     "description": "Serve scripts from a prebuilt cache",
     "version": "1.0",
-    "manifest_version": 3,
+    "manifest_version": 2,
     "background": {
         "service_worker": "dist/sw.js"
     },
-    "action": {
+    "browser_action": {
         "default_popup": "/pages/popup.html",
         "default_icon": {
             "16": "/images/zi-16.png",
@@ -15,7 +15,5 @@
             "128": "/images/zi-128.png"
         }
     },
-    "permissions": [
-        "webRequest"
-    ]
+    "permissions": ["<all_urls>", "webRequest", "webRequestBlocking"]
 }

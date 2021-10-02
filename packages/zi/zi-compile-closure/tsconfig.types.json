@@ -13,6 +13,9 @@
     "references": [
         {
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
         }
     ],
     "include": [

@@ -17,7 +17,13 @@
             "path": "../../browser-lib/assert-element/tsconfig.cjs.json"
         },
         {
+            "path": "../zi-closure/tsconfig.cjs.json"
+        },
+        {
             "path": "../../browser-lib/assert-element/tsconfig.types.json"
+        },
+        {
+            "path": "../zi-closure/tsconfig.types.json"
         }
     ],
     "extends": "../../../tsconfig.json"

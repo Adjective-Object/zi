@@ -5,6 +5,7 @@ import { transform } from 'esbuild';
 import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
 import { nanoid } from 'nanoid';
 import { relative as relativePath } from 'path';
+import { slash } from 'mod-slash';
 
 const readFile = promisify(readFileCb);
 const stat = promisify(statCb);
@@ -73,7 +74,7 @@ export async function run({
                     );
                     await outStreamWrite(
                         `${JSON.stringify(
-                            relativePath(rootDir, crawlPath),
+                            slash(relativePath(rootDir, crawlPath)),
                         )}: ${JSON.stringify(transformResult.code)},\n`,
                     );
                 } catch (e) {

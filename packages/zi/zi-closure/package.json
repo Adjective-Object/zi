@@ -1,0 +1,40 @@
+{
+    "name": "zi-closure",
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/zi/zi-closure",
+    "license": "UNLICENSED",
+    "main": "lib/cjs/ziClosure.js",
+    "module": "lib/mjs/ziClosure.js",
+    "types": "lib/types/ziClosure.d.ts",
+    "input": "src/ziClosure.ts",
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "build": "tsc -b ./tsconfig.json",
+        "build:types": "tsc -b ./tsconfig.types.json",
+        "build:scripts": "npm-run-all build:cjs build:mjs",
+        "build:cjs": "tsc -b ./tsconfig.cjs.json",
+        "build:mjs": "tsc -b ./tsconfig.mjs.json"
+    },
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
+    },
+    "devDependencies": {
+        "@types/jest": "^27.0.1",
+        "@types/node": "^16.10.2",
+        "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
+    }
+}

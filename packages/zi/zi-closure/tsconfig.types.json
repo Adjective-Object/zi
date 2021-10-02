@@ -6,14 +6,7 @@
     "exclude": [
         "./lib"
     ],
-    "references": [
-        {
-            "path": "../../browser-lib/assert-element/tsconfig.types.json"
-        },
-        {
-            "path": "../zi-closure/tsconfig.types.json"
-        }
-    ],
+    "references": [],
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/types",

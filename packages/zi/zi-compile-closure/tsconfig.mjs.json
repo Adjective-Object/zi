@@ -16,7 +16,13 @@
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.mjs.json"
         },
         {
+            "path": "../../nodejs/mod-slash/tsconfig.mjs.json"
+        },
+        {
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
+        },
+        {
+            "path": "../../nodejs/mod-slash/tsconfig.types.json"
         }
     ],
     "extends": "../../../tsconfig.json"
