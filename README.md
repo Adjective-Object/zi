@@ -8,3 +8,10 @@ yarn install
 # non-bootstrap packages
 yarn workspace esbp build -v
 ```
+
+## Building extensions
+
+```
+yarn workspace zi-webextension-chrome build --watch
+yarn workspace zi-webextension-chrome bundle --watch
+```
