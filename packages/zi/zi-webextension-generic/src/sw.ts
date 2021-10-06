@@ -4,7 +4,7 @@ import { ClosureLoadState } from './ClosureLoadState';
 import { getClosureUrl } from './getClosureUrl';
 import { isKnownMessage } from './isKnownMessage';
 import type { StatsForPopoupMessage as StateForPopoupMessage } from './messageDefinitions';
-import { getFromClosure } from 'zi-closure';
+import { getItemFromClosure } from 'zi-closure';
 
 type ZiClosure = {
     id: string;
@@ -94,7 +94,10 @@ export function serviceWorkerMain(browser: Browser) {
                 `got request for ${details.url} (${parsedUrl.pathname})`,
             );
             if (state.closure) {
-                const closureEntry = getFromClosure(state.closure);
+                const closureEntry = getItemFromClosure(
+                    state.closure,
+                    parsedUrl.pathname,
+                );
                 if (closureEntry) {
                     // intercept the request and serve from closure
                 }
