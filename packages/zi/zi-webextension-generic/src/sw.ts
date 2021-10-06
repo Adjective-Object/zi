@@ -24,7 +24,20 @@ async function fetchClosure(state: ExtensionState): Promise<ZiClosure> {
     return resultJson;
 }
 
-export function serviceWorkerMain(browser: Browser) {
+export type RequestInterceptorCleanupFn = () => void;
+
+export type RequestInterceptorRegisterFn = (
+    baseUrl: string,
+    getEntryFromClosure: (path: string) => string | null,
+) => RequestInterceptorCleanupFn;
+export interface IRequestInterceptor {
+    register: RequestInterceptorRegisterFn;
+}
+
+export function serviceWorkerMain(
+    browser: Browser,
+    requestInterceptor: IRequestInterceptor,
+) {
     const state: ExtensionState = observable({
         closure: null,
         closureLoadState: 'unloaded',
@@ -80,59 +93,20 @@ export function serviceWorkerMain(browser: Browser) {
         });
     });
 
-    console.log('registering a reaction');
+    console.log('setting up reaction to register an interceptor');
     // Listen to outgoing requests and intercept ones to baseUrl://
     // that exist within the closure
-    let oldListener:
-        | ((details: WebRequest.OnBeforeRequestDetailsType) => void)
-        | null;
+    let cleanupRequestInterceptor: RequestInterceptorCleanupFn | null = null;
     autorun(() => {
-        console.log('registering listener on', state.baseUrl);
-        function listener(
-            details: WebRequest.OnBeforeRequestDetailsType,
-        ): WebRequest.BlockingResponseOrPromise {
-            const parsedUrl = new URL(details.url);
-
-            if (state.closure) {
-                const closureEntry = getItemFromClosure(
-                    state.closure,
-                    parsedUrl.pathname,
-                );
-                if (closureEntry) {
-                    // intercept the request and serve from closure
-                    const redirectUrl = `data:text/javascript;base64,${btoa(
-                        closureEntry,
-                    )}`;
-                    console.log(
-                        `intercepted request for ${details.url} (${parsedUrl.pathname}):`,
-                        redirectUrl,
-                    );
-                    return {
-                        redirectUrl,
-                    };
-                } else {
-                    console.log(
-                        `passthrough request for ${details.url} (${parsedUrl.pathname})`,
-                    );
-                }
-            }
-            return {};
-        }
-        if (oldListener) {
-            browser.webRequest.onBeforeRequest.removeListener(oldListener);
-        }
-        oldListener = listener;
-        browser.webRequest.onBeforeRequest.addListener(
-            listener,
-            {
-                /**
-                 * A list of URLs or URL patterns. Requests that cannot match any of the URLs will be filtered out.
-                 */
-                urls: [`${state.baseUrl}/*`],
-                types: ['script'],
-            },
-            ['blocking'],
+        let newCleanup = requestInterceptor.register(
+            state.baseUrl,
+            (pathName: string) =>
+                state.closure && getItemFromClosure(state.closure, pathName),
         );
+        if (cleanupRequestInterceptor) {
+            cleanupRequestInterceptor();
+        }
+        cleanupRequestInterceptor = newCleanup;
     });
 
     function getStateMessage(): StateForPopoupMessage {

@@ -6,8 +6,10 @@ export type ZiClosure = {
     /**
      * Record of relative path : transpiled file content
      */
-    closure: Record<string, string>;
+    closure: Record<string, ZiClosureEntry>;
 };
+
+export type ZiClosureEntry = string;
 
 export function getItemFromClosure(
     closure: ZiClosure,
