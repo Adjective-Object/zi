@@ -7,7 +7,7 @@
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
         "fixlint": "prettier --check src/**/*",
-        "compile-closure": "zi-compile-closure -c tsconfig.json '**/src/**/*.tsx?'",
+        "compile-closure": "zi-compile-closure -c tsconfig.json '**/src/**/*@(.ts|.tsx)'",
         "dev": "vite",
         "build:types": "tsc -b ./tsconfig.types.json",
         "build:scripts": "npm-run-all build:cjs build:mjs",
