@@ -74,7 +74,7 @@ export async function run({
                     );
                     await outStreamWrite(
                         `${JSON.stringify(
-                            slash(relativePath(rootDir, crawlPath)),
+                            '/' + slash(relativePath(rootDir, crawlPath)),
                         )}: ${JSON.stringify(transformResult.code)},\n`,
                     );
                 } catch (e) {
