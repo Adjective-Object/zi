@@ -24,15 +24,14 @@ yarn workspace new-package build
 
 ```sh
 yarn workspace zi-compile-closure build
-yarn workspace zi-webextension-chrome build:mjs --watch
-yarn workspace zi-webextension-chrome bundle --watch
+yarn workspace zi-webextension-firefox build:mjs --watch
+yarn workspace zi-webextension-firefox bundle --watch
 ```
 
-### Install in edge
+### Install in Firefox
 
--   Go to `edge://extensions/`
--   turn on developer mode
--   "Load Unpacked" and point to `packages/zi/zi-webextension-generic`
+-   Go to `about:debugging#/runtime/this-firefox` in firefox
+-   "Load Temporary Add-On" and select `packages/zi/zi-webextension-firefox/manifest.json`
 
 ### Set up the demo app
 

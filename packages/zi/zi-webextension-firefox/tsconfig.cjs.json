@@ -1,10 +1,5 @@
 {
-    "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "lib/cjs",
-        "module": "CommonJS",
-        "composite": true
-    },
+    "extends": "../../../tsconfig.json",
     "include": [
         "./src"
     ],
@@ -25,5 +20,10 @@
             "path": "../zi-webextension-generic/tsconfig.types.json"
         }
     ],
-    "extends": "../../../tsconfig.json"
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/cjs",
+        "composite": true,
+        "module": "CommonJS"
+    }
 }

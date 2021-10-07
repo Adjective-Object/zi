@@ -1,10 +1,5 @@
 {
-    "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "lib/cjs",
-        "module": "CommonJS",
-        "composite": true
-    },
+    "extends": "../../../tsconfig.json",
     "include": [
         "./src"
     ],
@@ -13,10 +8,10 @@
     ],
     "references": [
         {
-            "path": "../zi-closure/tsconfig.cjs.json"
+            "path": "../zi-closure/tsconfig.mjs.json"
         },
         {
-            "path": "../zi-webextension-generic/tsconfig.cjs.json"
+            "path": "../zi-webextension-generic/tsconfig.mjs.json"
         },
         {
             "path": "../zi-closure/tsconfig.types.json"
@@ -25,5 +20,10 @@
             "path": "../zi-webextension-generic/tsconfig.types.json"
         }
     ],
-    "extends": "../../../tsconfig.json"
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/mjs",
+        "composite": true,
+        "module": "esnext"
+    }
 }

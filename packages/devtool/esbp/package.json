@@ -19,7 +19,7 @@
         "case": "^1.6.3",
         "commander": "^8.2.0",
         "comment-json": "^4.1.1",
-        "esbuild": "^0.12.28",
+        "esbuild": "^0.13.4",
         "fdir": "^5.1.0",
         "mkdirp": "^1.0.4",
         "mz": "^2.7.0"

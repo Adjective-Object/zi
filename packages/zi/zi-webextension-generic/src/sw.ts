@@ -1,5 +1,5 @@
-import { autorun, observable, reaction } from 'mobx';
-import type { Browser, WebRequest } from 'webextension-polyfill';
+import { autorun, observable } from 'mobx';
+import type { Browser } from 'webextension-polyfill';
 import { ClosureLoadState } from './ClosureLoadState';
 import { getClosureUrl } from './getClosureUrl';
 import { isKnownMessage } from './isKnownMessage';
@@ -36,12 +36,13 @@ export interface IRequestInterceptor {
 
 export function serviceWorkerMain(
     browser: Browser,
+    initialBaseUrl: string,
     requestInterceptor: IRequestInterceptor,
 ) {
     const state: ExtensionState = observable({
         closure: null,
         closureLoadState: 'unloaded',
-        baseUrl: 'http://localhost:3000',
+        baseUrl: initialBaseUrl,
     });
 
     browser.runtime.onInstalled.addListener(() => {

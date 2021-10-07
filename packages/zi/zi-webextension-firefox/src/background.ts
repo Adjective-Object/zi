@@ -1,10 +1,12 @@
 import { serviceWorkerMain } from 'zi-webextension-generic';
 import type { Browser } from 'webextension-polyfill';
-import { ChromeDebuggerInterceptor } from './ChromeDebuggerInterceptor';
+import { FirefoxFilterRequestDataInterceptor } from './FirefoxFilterRequestDataInterceptor';
+
+declare const browser: Browser;
 serviceWorkerMain(
-    chrome as unknown as Browser,
+    browser,
     'http://localhost:3000',
-    new ChromeDebuggerInterceptor(chrome),
+    new FirefoxFilterRequestDataInterceptor(browser),
 );
 
 (self as any).onfetch = function onFetch(fetchEvent: any) {

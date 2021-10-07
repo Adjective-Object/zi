@@ -13,7 +13,13 @@
     ],
     "references": [
         {
+            "path": "../zi-closure/tsconfig.mjs.json"
+        },
+        {
             "path": "../zi-webextension-generic/tsconfig.mjs.json"
+        },
+        {
+            "path": "../zi-closure/tsconfig.types.json"
         },
         {
             "path": "../zi-webextension-generic/tsconfig.types.json"
