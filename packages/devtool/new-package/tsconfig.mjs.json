@@ -32,6 +32,9 @@
             "path": "../../monorepo-lib/intended-config/tsconfig.mjs.json"
         },
         {
+            "path": "../../monorepo-lib/resolve-package-stub/tsconfig.mjs.json"
+        },
+        {
             "path": "../../nodejs/async-spawn/tsconfig.mjs.json"
         },
         {
@@ -51,6 +54,9 @@
         },
         {
             "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/resolve-package-stub/tsconfig.types.json"
         },
         {
             "path": "../../nodejs/async-spawn/tsconfig.types.json"

@@ -17,6 +17,7 @@ import { nanoid } from 'nanoid';
 import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
 import mkdirp from 'mkdirp';
 import { getMonorepoConfig } from 'get-monorepo-config';
+import { resolvePackageStub } from 'resolve-package-stub';
 
 async function bootstrapPackage(
     fs: FakeFS<PortablePath>,
@@ -25,24 +26,19 @@ async function bootstrapPackage(
     packageSpecifierStr: string,
 ) {
     const configManager = new ConfigManager();
-    const packageSpecifier = ppath.join(
-        ...packageSpecifierStr.split(ppath.sep).map(toFilename),
+    const { packageName, packageDir } = resolvePackageStub(
+        repoRootWorkspace,
+        packageSpecifierStr,
     );
-    const packageDestinationDirectory = ppath.join(
-        repoRootWorkspace.project.topLevelWorkspace.cwd,
-        toFilename('packages'),
-        npath.toPortablePath(packageSpecifier),
-    );
-    const intendedPackageName = ppath.basename(packageSpecifier);
 
-    console.log('creating new package', intendedPackageName);
+    console.log('creating new package', packageName);
 
     const children =
         repoRootWorkspace.project.topLevelWorkspace.getRecursiveWorkspaceChildren();
     for (let child of children) {
-        if (child.manifest.name?.name === intendedPackageName) {
+        if (child.manifest.name?.name === packageName) {
             console.error(
-                `Workspace already has a package named ${intendedPackageName} at path ${child.cwd}`,
+                `Workspace already has a package named ${packageName} at path ${child.cwd}`,
             );
             return 1;
         }
@@ -53,11 +49,11 @@ async function bootstrapPackage(
     const packageLike: PackageLike = {
         manifest: {
             name: {
-                name: intendedPackageName,
+                name: packageName,
                 identHash: nanoid() as IdentHash,
             },
         },
-        cwd: ppath.resolve(packageDestinationDirectory),
+        cwd: ppath.resolve(packageDir),
     };
 
     // generate the configs
