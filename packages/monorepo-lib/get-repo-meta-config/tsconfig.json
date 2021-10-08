@@ -1,0 +1,21 @@
+{
+    "include": [],
+    "exclude": [
+        "src",
+        "node_modules"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.cjs.json"
+        },
+        {
+            "path": "./tsconfig.mjs.json"
+        },
+        {
+            "path": "./tsconfig.types.json"
+        }
+    ],
+    "compilerOptions": {
+        "composite": true
+    }
+}

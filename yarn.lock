@@ -3410,6 +3410,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-repo-meta-config@workspace:packages/monorepo-lib/get-repo-meta-config":
+  version: 0.0.0-use.local
+  resolution: "get-repo-meta-config@workspace:packages/monorepo-lib/get-repo-meta-config"
+  dependencies:
+    "@types/jest": ^27.0.1
+    "@types/node": ^16.10.2
+    eslint: ^7.32.0
+    npm-run-all: ^4.1.5
+    prettier: ^2.3.2
+    typescript: ^4.4.3
+  languageName: unknown
+  linkType: soft
+
 "get-repo-root@workspace:*, get-repo-root@workspace:packages/monorepo-lib/get-repo-root":
   version: 0.0.0-use.local
   resolution: "get-repo-root@workspace:packages/monorepo-lib/get-repo-root"
