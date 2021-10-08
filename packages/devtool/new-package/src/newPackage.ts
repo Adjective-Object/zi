@@ -93,16 +93,19 @@ async function bootstrapPackage(
             ppath.join(packageLike.cwd, npath.toPortablePath('package.json')),
         );
     // get the output path or a fallback
-    const entrypointScriptPath =
-        ppath.join(
-            packageLike.cwd,
-            toFilename('src'),
-            generatedPackageJson?.input,
-        ) ||
-        ppath.join(packageLike.cwd, toFilename('src'), toFilename('index.js'));
+    const entrypointScriptPath = generatedPackageJson?.input
+        ? ppath.join(packageLike.cwd, generatedPackageJson?.input)
+        : ppath.join(
+              packageLike.cwd,
+              toFilename('src'),
+              toFilename('index.js'),
+          );
     console.log(`Writing source entrypoint to ${entrypointScriptPath}`);
     const fs = new NodeFS();
-    await mkdirp(npath.fromPortablePath(ppath.dirname(entrypointScriptPath)));
+    const resolvedDir = npath.resolve(
+        npath.fromPortablePath(ppath.dirname(entrypointScriptPath)),
+    );
+    await mkdirp(resolvedDir);
     await fs.writeFilePromise(entrypointScriptPath, 'export {}\n');
 
     console.log(
