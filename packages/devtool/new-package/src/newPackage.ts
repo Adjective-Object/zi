@@ -1,23 +1,25 @@
 import commander from 'commander';
-import { IdentHash, Project, Workspace } from '@yarnpkg/core';
+import { IdentHash, Workspace } from '@yarnpkg/core';
 import {
     ppath,
     toFilename,
-    Stats,
     NodeFS,
-    PortablePath,
     npath,
+    FakeFS,
+    PortablePath,
 } from '@yarnpkg/fslib';
 import { asyncSpawn } from 'async-spawn';
 import { getRepoRootWorkspace } from 'get-repo-root';
 import { collectAllExternalDependencies } from 'collect-external-dependencies';
 import { setConfigContentsForPackage } from 'intended-config';
-import { ConfigManager, Change, PackageLike } from 'config-editor';
+import { ConfigManager, PackageLike } from 'config-editor';
 import { nanoid } from 'nanoid';
 import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
 import mkdirp from 'mkdirp';
+import { getMonorepoConfig } from 'get-monorepo-config';
 
 async function bootstrapPackage(
+    fs: FakeFS<PortablePath>,
     repoRootWorkspace: Workspace,
     allowedExternalDependenices: Record<string, string>,
     packageSpecifierStr: string,
@@ -64,13 +66,7 @@ async function bootstrapPackage(
         configManager,
         packageLike,
         repoRoot: repoRootWorkspace.cwd,
-        repoMeta: {
-            repoHomepageBaseUrl:
-                'https://github.com/Adjective-Object/zi/tree/master/packages/',
-            repoIssuesUrl: 'https://github.com/Adjective-Object/zi/issues',
-            repoGitUrl: 'git@github.com:Adjective-Object/zi.git',
-        },
-        packageAuthor: 'Maxwell Huang-Hobbs <mhuan13@gmail.com>',
+        ...(await getMonorepoConfig(fs)),
         internalPackages: repoRootWorkspace.getRecursiveWorkspaceChildren(),
         // TODO update this once I un-break esbp builds
         isBootstrapBuildPackage: true,
@@ -101,7 +97,6 @@ async function bootstrapPackage(
               toFilename('index.js'),
           );
     console.log(`Writing source entrypoint to ${entrypointScriptPath}`);
-    const fs = new NodeFS();
     const resolvedDir = npath.resolve(
         npath.fromPortablePath(ppath.dirname(entrypointScriptPath)),
     );
@@ -117,6 +112,8 @@ async function bootstrapPackage(
 }
 
 async function main(): Promise<number> {
+    const fs = new NodeFS();
+
     const packageVersion = require('../../package.json').version || 'pre-alpha';
     const program = commander.program
         .version(packageVersion)
@@ -135,6 +132,7 @@ async function main(): Promise<number> {
         exitCode =
             exitCode == 0
                 ? await bootstrapPackage(
+                      fs,
                       repoRootWorkspace,
                       allowedExternalDependenices,
                       packageSpecifier,

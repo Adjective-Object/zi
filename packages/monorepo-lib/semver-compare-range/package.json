@@ -29,7 +29,7 @@
     },
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/monorepo-lib/semver-compare-range",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/monorepo-lib/semver-compare-range",
     "license": "UNLICENSED",
     "files": [
         "lib"

@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "description": "A fork of npm:slash with module:true",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/nodejs/mod-slash",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/nodejs/mod-slash",
     "license": "UNLICENSED",
     "main": "lib/cjs/modSlash.js",
     "module": "lib/mjs/modSlash.js",

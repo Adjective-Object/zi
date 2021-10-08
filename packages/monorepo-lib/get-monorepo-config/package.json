@@ -1,13 +1,13 @@
 {
-    "name": "get-repo-meta-config",
+    "name": "get-monorepo-config",
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/monorepo-lib/get-repo-meta-config",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/monorepo-lib/get-monorepo-config",
     "license": "UNLICENSED",
-    "main": "lib/cjs/getRepoMetaConfig.js",
-    "module": "lib/mjs/getRepoMetaConfig.js",
-    "types": "lib/types/getRepoMetaConfig.d.ts",
-    "input": "src/getRepoMetaConfig.ts",
+    "main": "lib/cjs/getMonorepoConfig.js",
+    "module": "lib/mjs/getMonorepoConfig.js",
+    "types": "lib/types/getMonorepoConfig.d.ts",
+    "input": "src/getMonorepoConfig.ts",
     "files": [
         "lib"
     ],
@@ -36,5 +36,8 @@
         "npm-run-all": "^4.1.5",
         "prettier": "^2.3.2",
         "typescript": "^4.4.3"
+    },
+    "dependencies": {
+        "@yarnpkg/fslib": "^2.5.1"
     }
 }

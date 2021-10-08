@@ -37,7 +37,7 @@
     },
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/devtool/new-package",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/devtool/new-package",
     "license": "UNLICENSED",
     "module": "lib/mjs/newPackage.js",
     "types": "lib/types/newPackage.d.ts",

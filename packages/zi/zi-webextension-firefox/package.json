@@ -2,7 +2,7 @@
     "name": "zi-webextension-firefox",
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/zi/zi-webextension-firefox",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/zi/zi-webextension-firefox",
     "license": "UNLICENSED",
     "main": "lib/cjs/ziWebextensionFirefox.js",
     "module": "lib/mjs/ziWebextensionFirefox.js",

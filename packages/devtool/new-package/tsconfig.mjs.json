@@ -23,6 +23,9 @@
             "path": "../../monorepo-lib/config-editor/tsconfig.mjs.json"
         },
         {
+            "path": "../../monorepo-lib/get-monorepo-config/tsconfig.mjs.json"
+        },
+        {
             "path": "../../monorepo-lib/get-repo-root/tsconfig.mjs.json"
         },
         {
@@ -39,6 +42,9 @@
         },
         {
             "path": "../../monorepo-lib/config-editor/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/get-monorepo-config/tsconfig.types.json"
         },
         {
             "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"

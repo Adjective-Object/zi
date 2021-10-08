@@ -33,7 +33,7 @@
     },
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/zi/zi-transform-source",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/zi/zi-transform-source",
     "license": "UNLICENSED",
     "input": "src/ziTransformSource.ts",
     "files": [

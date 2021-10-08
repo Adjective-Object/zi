@@ -9,6 +9,7 @@ import { Command } from 'commander';
 import { runYarnAndWarn } from 'run-yarn-at-root';
 import * as path from 'path';
 import { NodeFS, npath, ppath } from '@yarnpkg/fslib';
+import { getMonorepoConfig } from 'get-monorepo-config';
 import mkdirp from 'mkdirp';
 
 function collectAllExternalDependencies(
@@ -54,6 +55,8 @@ async function main(): Promise<number> {
     const opts = program.opts();
     console.log('opts', opts);
 
+    const fs = new NodeFS();
+
     console.log('Finding repo roots');
     const repoRootWorkspace = await getRepoRootWorkspace();
     const configManager = new ConfigManager();
@@ -67,15 +70,8 @@ async function main(): Promise<number> {
         configManager,
         repoRootWorkspace,
         {
-            extraScripts: {},
             permittedPackageVersions: externalDependencies,
-            repoMeta: {
-                repoHomepageBaseUrl:
-                    'https://github.com/Adjective-Object/zi/tree/master/packages/',
-                repoIssuesUrl: 'https://github.com/Adjective-Object/zi/issues',
-                repoGitUrl: 'git@github.com:Adjective-Object/zi.git',
-            },
-            packageAuthor: 'Maxwell Huang-Hobbs <mhuan13@gmail.com>',
+            ...(await getMonorepoConfig(fs)),
         },
     );
 
@@ -130,7 +126,6 @@ async function main(): Promise<number> {
                             ),
                             npath.toPortablePath(newInputPath),
                         );
-                        const fs = new NodeFS();
                         if (await fs.existsPromise(inPathFull)) {
                             await mkdirp(
                                 npath.dirname(

@@ -32,7 +32,7 @@
     },
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/monorepo-lib/intended-config",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/monorepo-lib/intended-config",
     "license": "UNLICENSED",
     "files": [
         "lib"

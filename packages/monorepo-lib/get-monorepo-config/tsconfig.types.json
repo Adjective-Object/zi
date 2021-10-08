@@ -6,11 +6,15 @@
     "exclude": [
         "./lib"
     ],
-    "references": [],
+    "references": [
+        {
+            "path": "../get-repo-root/tsconfig.types.json"
+        }
+    ],
     "compilerOptions": {
         "rootDir": "src",
-        "outDir": "lib/cjs",
+        "outDir": "lib/types",
         "composite": true,
-        "module": "CommonJS"
+        "emitDeclarationOnly": true
     }
 }

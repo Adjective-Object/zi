@@ -2,7 +2,7 @@
     "name": "zi-closure",
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/zi/zi-closure",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/zi/zi-closure",
     "license": "UNLICENSED",
     "main": "lib/cjs/ziClosure.js",
     "module": "lib/mjs/ziClosure.js",

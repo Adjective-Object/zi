@@ -1,9 +1,6 @@
 {
     "include": [],
-    "exclude": [
-        "src",
-        "node_modules"
-    ],
+    "exclude": ["src", "node_modules"],
     "references": [
         {
             "path": "./tsconfig.cjs.json"
@@ -16,6 +13,7 @@
         }
     ],
     "compilerOptions": {
-        "composite": true
+        "composite": true,
+        "strictNullChecks": true
     }
 }

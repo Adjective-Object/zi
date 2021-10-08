@@ -21,7 +21,7 @@
     },
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/nodejs/async-spawn",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/nodejs/async-spawn",
     "license": "UNLICENSED",
     "types": "lib/types/asyncSpawn.d.ts",
     "files": [

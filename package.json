@@ -1,9 +1,10 @@
 {
     "name": "zi",
     "version": "0.0.1",
-    "author": "Max Huang-Hobbs <mhuan13@gmail.com>",
-    "license": "GPL-3.0",
-    "repository": "github:Adjective-Object/zi",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "license": "UNLICENSED",
+    "issues": "https://github.com/Adjective-Object/zi/issues",
+    "repository": "git@github.com:Adjective-Object/zi.git",
     "scripts": {
         "fixpnp": "pnpify --sdk vscode"
     },

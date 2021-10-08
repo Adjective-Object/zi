@@ -1,0 +1,23 @@
+{
+    "extends": "../../../tsconfig.json",
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../get-repo-root/tsconfig.cjs.json"
+        },
+        {
+            "path": "../get-repo-root/tsconfig.types.json"
+        }
+    ],
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/cjs",
+        "composite": true,
+        "module": "CommonJS"
+    }
+}

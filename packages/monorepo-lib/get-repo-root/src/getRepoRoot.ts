@@ -1,5 +1,5 @@
 import { Configuration, Project, Workspace } from '@yarnpkg/core';
-import { ppath } from '@yarnpkg/fslib';
+import { PortablePath, ppath } from '@yarnpkg/fslib';
 
 export async function getRepoRootWorkspace(): Promise<Workspace> {
     // check for an existing workspace
@@ -17,4 +17,8 @@ export async function getRepoRootWorkspace(): Promise<Workspace> {
     const { project } = await Project.find(configuration, cwd);
 
     return project.topLevelWorkspace;
+}
+
+export async function getRepoRootPPath(): Promise<PortablePath> {
+    return (await getRepoRootWorkspace()).cwd;
 }

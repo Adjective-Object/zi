@@ -27,7 +27,7 @@
     },
     "version": "0.0.0",
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
-    "homepage": "https://github.com/Adjective-Object/zi/tree/master/packages/packages/async-lib/run-with-concurrent-limit",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/async-lib/run-with-concurrent-limit",
     "license": "UNLICENSED",
     "input": "src/runWithConcurrentLimit.ts",
     "files": [

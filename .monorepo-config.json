@@ -1,0 +1,10 @@
+{
+    "extraScripts": {},
+    "repoMeta": {
+        "repoHomepageBaseUrl": "https://github.com/Adjective-Object/zi/tree/main/packages/",
+        "repoIssuesUrl": "https://github.com/Adjective-Object/zi/issues",
+        "repoGitUrl": "git@github.com:Adjective-Object/zi.git"
+    },
+    "packageAuthor": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "license": "UNLICENSED"
+}
