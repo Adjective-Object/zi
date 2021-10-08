@@ -1,0 +1,41 @@
+{
+    "extends": "../../../tsconfig.json",
+    "include": [
+        "./src"
+    ],
+    "exclude": [
+        "./lib"
+    ],
+    "references": [
+        {
+            "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/collect-external-dependencies/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/config-editor/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/get-monorepo-config/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/get-repo-root/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/intended-config/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/resolve-package-stub/tsconfig.types.json"
+        },
+        {
+            "path": "../../monorepo-lib/run-yarn-at-root/tsconfig.types.json"
+        }
+    ],
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib/types",
+        "composite": true,
+        "emitDeclarationOnly": true
+    }
+}

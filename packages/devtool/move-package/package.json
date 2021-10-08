@@ -1,0 +1,50 @@
+{
+    "name": "move-package",
+    "version": "0.0.0",
+    "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
+    "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/devtool/move-package",
+    "license": "UNLICENSED",
+    "main": "lib/cjs/movePackage.js",
+    "module": "lib/mjs/movePackage.js",
+    "types": "lib/types/movePackage.d.ts",
+    "input": "src/movePackage.ts",
+    "bin": {
+        "newpackage": "lib/cjs/newPackage.js"
+    },
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "build": "tsc -b ./tsconfig.json",
+        "build:types": "tsc -b ./tsconfig.types.json",
+        "build:scripts": "npm-run-all build:cjs build:mjs",
+        "build:cjs": "tsc -b ./tsconfig.cjs.json",
+        "build:mjs": "tsc -b ./tsconfig.mjs.json"
+    },
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Adjective-Object/zi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Adjective-Object/zi/issues"
+    },
+    "devDependencies": {
+        "@types/jest": "^27.0.1",
+        "@types/node": "^16.10.2",
+        "eslint": "^7.32.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.3.2",
+        "typescript": "^4.4.3"
+    },
+    "dependencies": {
+        "@yarnpkg/core": "^3.0.0",
+        "@yarnpkg/fslib": "^2.5.1",
+        "commander": "^8.2.0",
+        "mkdirp": "^1.0.4",
+        "nanoid": "^3.1.25"
+    }
+}
