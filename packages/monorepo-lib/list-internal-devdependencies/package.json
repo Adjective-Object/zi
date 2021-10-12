@@ -2,6 +2,8 @@
     "name": "list-internal-devdependencies",
     "main": "lib/cjs/listInternalDevdependencies.js",
     "input": "src/listInternalDevdependencies.ts",
+    "module": "lib/mjs/listInternalDevdependencies.js",
+    "types": "lib/types/listInternalDevdependencies.d.ts",
     "scripts": {
         "build": "tsc -b ./tsconfig.json",
         "lint": "prettier --write src/**/*",
@@ -32,8 +34,6 @@
     "author": "Maxwell Huang-Hobbs <mhuan13@gmail.com>",
     "homepage": "https://github.com/Adjective-Object/zi/tree/main/packages/packages/monorepo-lib/list-internal-devdependencies",
     "license": "UNLICENSED",
-    "module": "lib/mjs/listInternalDevdependencies.js",
-    "types": "lib/types/listInternalDevdependencies.d.ts",
     "files": [
         "lib"
     ],
