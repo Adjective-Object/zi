@@ -1,23 +1,16 @@
 # zi
 
-Setup:
-
-```sh
-yarn install
-# bootstrap the internal tooling used to build
-# non-bootstrap packages
-yarn workspace esbp build -v
-```
-
 ## Setup
+
+A proof of concept to prebuild a set of files and intercept requests to them. For use when building a large project with vite.
 
 ### Set up the workspace
 
 ```sh
 yarn install
 # optional: build devtools
-yarn workspace fix-package-imports build
-yarn workspace new-package build
+yarn workspace fix-package-imports build:cjs --verbose
+yarn workspace new-package build:cjs --verbose
 ```
 
 ### Build the zi CLI tool and extension
@@ -37,6 +30,7 @@ yarn workspace zi-webextension-firefox bundle --watch
 
 ```sh
 yarn workspace demo-project build:mjs --watch
+yarn workspace demo-project compile-closure
 yarn workspace demo-project vite
 ```
 

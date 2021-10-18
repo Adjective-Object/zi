@@ -1,12 +1,15 @@
 import getOpts from 'get-options';
 import { run } from './ziCompileClosure';
 
+const FALSE_OPTIONS = ['no', 'false'];
+
 async function main() {
     const optionsObject = {
         '-c, --config': '<tsconfig.json>',
         '-o, --output': '<outputPath>',
         '-r, --root': '<rootDir>',
         '-j, --concurrency': '<concurrency>',
+        '-s, --preProcessSass': '<yes|no|true|false>',
         '-h, --help': '',
     };
     const parsedOptions = getOpts(process.argv, optionsObject);
@@ -31,6 +34,9 @@ async function main() {
         rootDir: parsedOptions.options.root ?? process.cwd(),
         progressBar: true,
         concurrency: parseInt(parsedOptions.options.concurrency) || 200,
+        preProcessSass: !FALSE_OPTIONS.includes(
+            parsedOptions.options.preProcessSass,
+        ),
     };
     console.log('running with options', runOptions);
     await run(runOptions);
