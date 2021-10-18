@@ -1,11 +1,13 @@
 import getOpts from 'get-options';
 import { run } from './ziCompileClosure';
+import { getZiConfigFromDisk } from 'zi-config';
 
 const FALSE_OPTIONS = ['no', 'false'];
 
 async function main() {
     const optionsObject = {
-        '-c, --config': '<tsconfig.json>',
+        '-c, --config': '<zi-config.json>',
+        '-t, --tsconfig': '<tsconfig.json>',
         '-o, --output': '<outputPath>',
         '-r, --root': '<rootDir>',
         '-j, --concurrency': '<concurrency>',
@@ -27,16 +29,24 @@ async function main() {
     if (args.length === 0) {
         throw new Error('Got empty args array, expected a list globs to build');
     }
+    const { closure: closureOptions, entry } = await getZiConfigFromDisk(
+        process.cwd(),
+        parsedOptions.options.config,
+    );
     const runOptions = {
-        tsconfigPath: parsedOptions.options.config ?? 'tsconfig.json',
-        outputPath: parsedOptions.options.output ?? 'zi-closure.json',
-        inputGlobsOrFiles: args,
-        rootDir: parsedOptions.options.root ?? process.cwd(),
+        tsconfigPath:
+            parsedOptions.options.tsconfig ?? closureOptions.tsconfigPath,
+        outputPath: parsedOptions.options.output ?? closureOptions.outputPath,
+        inputGlobsOrFiles: args.length ? args : closureOptions.inputPatterns,
+        rootDir: parsedOptions.options.root ?? closureOptions.rootDir,
         progressBar: true,
-        concurrency: parseInt(parsedOptions.options.concurrency) || 200,
-        preProcessSass: !FALSE_OPTIONS.includes(
-            parsedOptions.options.preProcessSass,
-        ),
+        concurrency:
+            parseInt(parsedOptions.options.concurrency) ||
+            closureOptions.concurrency,
+        preProcessSass: parsedOptions.options.preProcessSass
+            ? !FALSE_OPTIONS.includes(parsedOptions.options.preProcessSass)
+            : closureOptions.preProcessSass,
+        entry,
     };
     console.log('running with options', runOptions);
     await run(runOptions);

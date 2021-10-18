@@ -19,10 +19,22 @@
             "path": "../../nodejs/mod-slash/tsconfig.cjs.json"
         },
         {
+            "path": "../zi-closure/tsconfig.cjs.json"
+        },
+        {
+            "path": "../zi-config/tsconfig.cjs.json"
+        },
+        {
             "path": "../../async-lib/run-with-concurrent-limit/tsconfig.types.json"
         },
         {
             "path": "../../nodejs/mod-slash/tsconfig.types.json"
+        },
+        {
+            "path": "../zi-closure/tsconfig.types.json"
+        },
+        {
+            "path": "../zi-config/tsconfig.types.json"
         }
     ],
     "extends": "../../../tsconfig.json"

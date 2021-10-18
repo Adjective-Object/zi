@@ -6,11 +6,7 @@
     "exclude": [
         "./lib"
     ],
-    "references": [
-        {
-            "path": "../zi-config/tsconfig.types.json"
-        }
-    ],
+    "references": [],
     "compilerOptions": {
         "rootDir": "src",
         "outDir": "lib/types",

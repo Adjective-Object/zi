@@ -4,13 +4,15 @@ import { promisify } from 'util';
 import { fdir } from 'fdir';
 import { Loader, transform } from 'esbuild';
 import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
-import { nanoid } from 'nanoid';
+import type { ZiClosure } from 'zi-closure';
 import { relative as relativePath } from 'path';
 import { slash } from 'mod-slash';
 import { renderSync as renderSassSync } from 'sass';
 import * as CommentJson from 'comment-json';
 import flowRemoveTypes from 'flow-remove-types';
+import type { ZiEntrypointOptions } from 'zi-config';
 import 'colors';
+import { nanoid } from 'nanoid';
 
 export type RunOptions = {
     tsconfigPath: string;
@@ -20,6 +22,7 @@ export type RunOptions = {
     concurrency: number;
     progressBar: boolean;
     preProcessSass: boolean;
+    entry: ZiEntrypointOptions;
 };
 
 const readFile = promisify(readFileCb);
@@ -141,6 +144,7 @@ export async function run(options: RunOptions) {
         rootDir,
         concurrency,
         progressBar,
+        entry,
     } = options;
     const tsconfigRaw = await readFile(tsconfigPath, 'utf-8').then(JSON.parse);
     const outStream = createWriteStream(outputPath);
@@ -155,9 +159,19 @@ export async function run(options: RunOptions) {
             });
         });
 
+    const closureMeta: ZiClosure['meta'] = {
+        compilation: {
+            timestamp: new Date().toISOString(),
+            id: nanoid(),
+        },
+        entry,
+    };
+
     // identify the closure with a random ID so the service worker
     // can detect if it is out of sync with the main app
-    await outStreamWrite(`{"id": "${nanoid()}", "closure": {\n`);
+    await outStreamWrite(
+        `{"meta": ${JSON.stringify(closureMeta)}, "closure": {\n`,
+    );
 
     // check if the list is globs or files
     const inputIsFiles = (

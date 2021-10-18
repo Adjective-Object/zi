@@ -5,11 +5,8 @@ import { getClosureUrl } from './getClosureUrl';
 import { isKnownMessage } from './isKnownMessage';
 import type { StatsForPopoupMessage as StateForPopoupMessage } from './messageDefinitions';
 import { getItemFromClosure } from 'zi-closure';
+import type { ZiClosure } from 'zi-closure';
 
-type ZiClosure = {
-    id: string;
-    closure: Record<string, string>;
-};
 type ExtensionState = {
     closure: ZiClosure | null;
     closureLoadState: ClosureLoadState;
@@ -18,8 +15,11 @@ type ExtensionState = {
 
 async function fetchClosure(state: ExtensionState): Promise<ZiClosure> {
     const closureUrl = getClosureUrl(state);
-    const result = fetch(closureUrl);
-    const resultJson = (await result).json();
+    console.log('fetching closure @', closureUrl);
+    const result = await fetch(closureUrl);
+    console.log('fetched, starting json parse!');
+    const resultJson = await result.json();
+    console.log('parse complete!');
     // TODO validate
     return resultJson;
 }
@@ -114,7 +114,7 @@ export function serviceWorkerMain(
         return {
             type: 'state_for_popup',
             closureLoadState: state.closureLoadState,
-            closureId: state.closure?.id ?? null,
+            closureId: state.closure?.meta.compilation.id ?? null,
             baseUrl: state.baseUrl,
         };
     }

@@ -16,6 +16,12 @@
         },
         {
             "path": "../../nodejs/mod-slash/tsconfig.types.json"
+        },
+        {
+            "path": "../zi-closure/tsconfig.types.json"
+        },
+        {
+            "path": "../zi-config/tsconfig.types.json"
         }
     ],
     "include": [

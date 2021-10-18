@@ -1,10 +1,18 @@
+import type { ZiEntrypointOptions } from 'zi-config';
+
 export type ZiClosure = {
     /**
-     * unique ID of this compiled closure. Not stable against content
+     * Metadata about this closure
      */
-    id: string;
+    meta: {
+        compilation: {
+            id: string;
+            timestamp: string;
+        };
+        entry: ZiEntrypointOptions;
+    };
     /**
-     * Record of relative path : transpiled file content
+     * Record of relative path : transpiled file content in this closure
      */
     closure: Record<string, ZiClosureEntry>;
 };
