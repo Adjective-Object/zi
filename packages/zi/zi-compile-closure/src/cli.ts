@@ -1,36 +1,30 @@
 import getOpts from 'get-options';
+import { Command } from 'commander';
 import { run } from './ziCompileClosure';
 import { getZiConfigFromDisk } from 'zi-config';
 
 const FALSE_OPTIONS = ['no', 'false'];
 
 async function main() {
-    const optionsObject = {
-        '-c, --config': '<zi-config.json>',
-        '-t, --tsconfig': '<tsconfig.json>',
-        '-o, --output': '<outputPath>',
-        '-r, --root': '<rootDir>',
-        '-j, --concurrency': '<concurrency>',
-        '-s, --preProcessSass': '<yes|no|true|false>',
-        '-h, --help': '',
-    };
-    const parsedOptions = getOpts(process.argv, optionsObject);
-    if ('help' in parsedOptions.options) {
-        console.log('Usage: zi-compile-closure <options> <sourceGlobs>');
-        console.log('\n  options:');
-        for (let [k, v] of Object.entries(optionsObject)) {
-            console.log(`  ${k}: ${v}`);
-        }
-        process.exit(0);
-    }
-    const args = parsedOptions.argv.slice(
-        parsedOptions.argv.indexOf(__filename) + 1,
-    );
+    const program = new Command()
+        .version('0.0.1')
+        .option('-c, --config <zi-config.json>')
+        .option('-t, --tsconfig <tsconfig.json>')
+        .option('-o, --output <outputPath>')
+        .option('-r, --root <rootDir>')
+        .option('-j, --concurrency <concurrency>')
+        .option('-s, --preProcessSass <yes|no|true|false>')
+        .option('-p, --progressBar <yes|no|true|false>')
+        .parse(process.argv);
+
+    const opts = program.opts();
+    const args = program.args;
+
     const {
         closure: closureOptions,
         entry,
         fromFilePath,
-    } = await getZiConfigFromDisk(process.cwd(), parsedOptions.options.config);
+    } = await getZiConfigFromDisk(process.cwd(), opts.config);
 
     console.log(`loaded config from ${fromFilePath}`);
 
@@ -43,18 +37,17 @@ async function main() {
     }
 
     const runOptions = {
-        tsconfigPath:
-            parsedOptions.options.tsconfig ?? closureOptions.tsconfigPath,
-        outputPath: parsedOptions.options.output ?? closureOptions.outputPath,
-        inputGlobsOrFiles: args.length ? args : closureOptions.inputPatterns,
-        rootDir: parsedOptions.options.root ?? closureOptions.rootDir,
-        progressBar: true,
-        concurrency:
-            parseInt(parsedOptions.options.concurrency) ||
-            closureOptions.concurrency,
-        preProcessSass: parsedOptions.options.preProcessSass
-            ? !FALSE_OPTIONS.includes(parsedOptions.options.preProcessSass)
+        tsconfigPath: opts.tsconfig ?? closureOptions.tsconfigPath,
+        outputPath: opts.output ?? closureOptions.outputPath,
+        inputPatterns,
+        rootDir: opts.root ?? closureOptions.rootDir,
+        progressBar: !FALSE_OPTIONS.includes(opts.progressBar),
+        concurrency: parseInt(opts.concurrency) || closureOptions.concurrency,
+        preProcessSass: opts.preProcessSass
+            ? !FALSE_OPTIONS.includes(opts.preProcessSass)
             : closureOptions.preProcessSass,
+        expectErrorOn: closureOptions.expectErrorOn,
+        expectWarningOn: closureOptions.expectWarningOn,
         entry,
     };
     console.log('running with options', runOptions);

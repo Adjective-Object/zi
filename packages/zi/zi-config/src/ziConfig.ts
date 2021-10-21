@@ -62,6 +62,20 @@ export type ZiClosureOptions = {
      * judged against the rootDir.
      */
     inputPatterns: string[];
+    /**
+     * globs that we expect to have problems compiling.
+     * Intended for use suppressing errors from
+     * node_modules files, since some of those files
+     * are not transpileable (e.g. preamble / outro script fragments)
+     */
+    expectErrorOn: string[];
+    /**
+     * globs that we expect to have problems compiling.
+     * Intended for use suppressing errors from
+     * node_modules files, since some of those files
+     * are not transpileable (e.g. preamble / outro script fragments)
+     */
+    expectWarningOn: string[];
 };
 
 export type ZiConfig = {
@@ -87,6 +101,8 @@ const DEFAULT_CONFIG: ZiConfig = {
         concurrency: 200,
         preProcessSass: true,
         inputPatterns: ['**/*.js', '**/*.ts'],
+        expectErrorOn: [],
+        expectWarningOn: [],
     },
 };
 
@@ -113,9 +129,9 @@ function validateAndMerge<T extends Record<string, any>>(
     return Object.fromEntries(
         Object.entries(base).map(([k, v]) => {
             if (real.hasOwnProperty(k)) {
-                return JSON.parse(JSON.stringify(real[k]));
+                return [k, JSON.parse(JSON.stringify(real[k]))];
             } else {
-                return JSON.parse(JSON.stringify(v));
+                return [k, JSON.parse(JSON.stringify(v))];
             }
         }),
     ) as T;
@@ -132,7 +148,7 @@ function cleanupConfig(configCandidate: any): ZiConfig {
             'entry',
         ),
         closure: validateAndMerge(
-            configCandidate.closureOptions,
+            configCandidate.closure,
             DEFAULT_CONFIG.closure,
             'closureOptions',
         ),

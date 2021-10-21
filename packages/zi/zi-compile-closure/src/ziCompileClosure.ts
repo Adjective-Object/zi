@@ -13,15 +13,19 @@ import flowRemoveTypes from 'flow-remove-types';
 import type { ZiEntrypointOptions } from 'zi-config';
 import 'colors';
 import { nanoid } from 'nanoid';
+import * as path from 'path';
+import picomatch from 'picomatch';
 
 export type RunOptions = {
     tsconfigPath: string;
     outputPath: string;
-    inputGlobsOrFiles: string[];
     rootDir: string;
     concurrency: number;
-    progressBar: boolean;
     preProcessSass: boolean;
+    inputPatterns: string[];
+    expectErrorOn: string[];
+    expectWarningOn: string[];
+    progressBar: boolean;
     entry: ZiEntrypointOptions;
 };
 
@@ -52,15 +56,15 @@ function formatSingleErrorOrWarning(
 function formatError(filePath: string, e: any) {
     if (e.errors?.length || e.warnings?.length) {
         return (
-            e.errors
+            (e.errors ?? [])
                 .map(
                     (error: any) =>
                         `ERROR: ${formatSingleErrorOrWarning(filePath, error)}`
                             .red,
                 )
                 .join('  \n') +
-            (e.warnings.length && e.errors.length ? '\n' : '') +
-            e.warnings
+            (e.warnings?.length && e.errors?.length ? '\n' : '') +
+            (e.warnings ?? [])
                 .map(
                     (warning: any) =>
                         `WARNING: ${formatSingleErrorOrWarning(
@@ -136,15 +140,54 @@ function getLoaderFromExtension(fPath: string): Loader | undefined {
     }
 }
 
+function checkPathMatchesNoPatterns(
+    patternStrings: string[],
+    patternMatchers: picomatch.Matcher[],
+    rootDir: string,
+    crawlPathAbs: string,
+) {
+    if (patternStrings.length !== patternMatchers.length) {
+        throw new Error('mismatch between patternStrings and patternMatchers');
+    }
+    for (let i = 0; i < patternMatchers.length; i++) {
+        if (patternMatchers[i](path.relative(rootDir, crawlPathAbs))) {
+            const matchedPatternStr = patternStrings[i];
+            console.error(
+                'Error pattern '.yellow +
+                    `"${matchedPatternStr}"`.blue +
+                    ' matched path '.yellow +
+                    `"${path.relative(process.cwd(), crawlPathAbs)}"`.blue +
+                    ' but transpilation did not error or warn.\n'.yellow +
+                    '    Remove or update this entry in .ziconfig.expectErrorOn'
+                        .yellow,
+            );
+        }
+    }
+}
+
+async function matcherOrPathChecker(rootDir: string, patternOrPath: string) {
+    try {
+        const resolvedJoinedPath = path.resolve(rootDir, patternOrPath);
+        await stat(resolvedJoinedPath);
+        // statPromise throws ENOENT when the file does not exist
+        // so here we know the file is at least present
+        return (p: string) => path.resolve(rootDir, p) === resolvedJoinedPath;
+    } catch (e) {
+        return picomatch(patternOrPath);
+    }
+}
+
 export async function run(options: RunOptions) {
     const {
         tsconfigPath,
         outputPath,
-        inputGlobsOrFiles,
+        inputPatterns,
         rootDir,
         concurrency,
         progressBar,
         entry,
+        expectErrorOn,
+        expectWarningOn,
     } = options;
     const tsconfigRaw = await readFile(tsconfigPath, 'utf-8').then(JSON.parse);
     const outStream = createWriteStream(outputPath);
@@ -176,20 +219,48 @@ export async function run(options: RunOptions) {
     // check if the list is globs or files
     const inputIsFiles = (
         await Promise.all(
-            inputGlobsOrFiles.map(async (path) => {
+            inputPatterns.map(async (path) => {
                 const pathStat = await stat(path).catch(() => null);
                 return pathStat?.isFile;
             }),
         )
     ).every((x) => x);
 
+    const resolvedRootDir = path.resolve(rootDir);
+    const correctedInputGlobs = inputPatterns.map((globPattern) =>
+        slash(path.join(resolvedRootDir, globPattern)),
+    );
+
+    // build the set of error and warning pattern checkers
+    const expectErrorPatterns: ((path: string) => boolean)[] = [];
+    const expectWarningPatterns: ((path: string) => boolean)[] = [];
+    await Promise.all([
+        runWithConcurrentLimit(
+            Math.ceil(concurrency / 2),
+            expectErrorOn,
+            async (x) => {
+                expectErrorPatterns.push(
+                    await matcherOrPathChecker(rootDir, x),
+                );
+            },
+        ),
+        runWithConcurrentLimit(
+            Math.ceil(concurrency / 2),
+            expectWarningOn,
+            async (x) => {
+                expectWarningPatterns.push(
+                    await matcherOrPathChecker(rootDir, x),
+                );
+            },
+        ),
+    ]);
+
     const fileList = inputIsFiles
-        ? inputGlobsOrFiles // glob files with fdir
+        ? inputPatterns // glob files with fdir
         : await (new fdir()
-              .glob(...inputGlobsOrFiles)
+              .glob(...correctedInputGlobs)
               .withSymlinks()
-              .withBasePath()
-              .crawl(rootDir)
+              .crawl(resolvedRootDir)
               .withPromise() as Promise<string[]>);
 
     if (fileList.length) {
@@ -198,6 +269,7 @@ export async function run(options: RunOptions) {
             concurrency,
             fileList,
             async (crawlPath: string) => {
+                const crawlPathRootRelative = path.relative(rootDir, crawlPath);
                 try {
                     const fileContent = await getFileContent(
                         options,
@@ -207,6 +279,7 @@ export async function run(options: RunOptions) {
                         tsconfigRaw,
                         loader: getLoaderFromExtension(crawlPath),
                     });
+
                     if (transformResult.code.length) {
                         // don't write into the closure if the file was empty
                         // (e.g. it was a type-only file)
@@ -216,12 +289,77 @@ export async function run(options: RunOptions) {
                             )}: ${JSON.stringify(transformResult.code)},\n`,
                         );
                     }
+
+                    if (transformResult.warnings.length) {
+                        const shouldSuppressWarnings =
+                            expectWarningPatterns.some((x) =>
+                                x(crawlPathRootRelative),
+                            );
+                        if (!shouldSuppressWarnings) {
+                            console.error(
+                                `\n${formatError(
+                                    crawlPathRootRelative,
+                                    transformResult,
+                                )}`,
+                            );
+                        }
+                    } else {
+                        // compilation succeded without warning -- check that
+                        // it didn't match any of the expected warning patterns
+                        checkPathMatchesNoPatterns(
+                            expectWarningOn,
+                            expectWarningPatterns,
+                            rootDir,
+                            crawlPath,
+                        );
+                    }
+
+                    // compilation succeded without error -- check that
+                    // it didn't match any of the expected error patterns
+                    checkPathMatchesNoPatterns(
+                        expectErrorOn,
+                        expectErrorPatterns,
+                        rootDir,
+                        crawlPath,
+                    );
                 } catch (e) {
-                    console.error(`\n${formatError(crawlPath, e)}`);
+                    const errLike = e as {
+                        warnings?: HasLocation[];
+                        errors?: HasLocation[];
+                    };
+                    const unexpectedErrorLike = {
+                        warnings:
+                            errLike?.warnings?.length &&
+                            !expectWarningPatterns.some((x) =>
+                                x(crawlPathRootRelative),
+                            )
+                                ? errLike.warnings
+                                : [],
+                        errors:
+                            errLike?.errors?.length &&
+                            !expectErrorPatterns.some((x) =>
+                                x(crawlPathRootRelative),
+                            )
+                                ? errLike.errors
+                                : [],
+                    };
+                    if (
+                        unexpectedErrorLike.errors.length ||
+                        unexpectedErrorLike.warnings.length
+                    ) {
+                        console.error(
+                            `\n${formatError(
+                                crawlPathRootRelative,
+                                unexpectedErrorLike,
+                            )}`,
+                        );
+                    }
                 }
             },
             progressBar, // progress
         );
+    } else {
+        console.warn('Found no files matching input globs!');
     }
 
     // write a single line with no trailing comma
