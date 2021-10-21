@@ -65,6 +65,7 @@ export type ZiClosureOptions = {
 };
 
 export type ZiConfig = {
+    fromFilePath?: string;
     entry: ZiEntrypointOptions;
     closure: ZiClosureOptions;
 };
@@ -163,10 +164,14 @@ export async function getZiConfigFromDisk(
             `failed to find ${ziConfigFileName} in any parent directory of ${startingDir}`,
         );
     } else {
-        return cleanupConfig(
-            CommentJson.parse(
+        const cleanConfig = cleanupConfig({
+            ...CommentJson.parse(
                 await readFilePromise(lastPathCandidate, 'utf-8'),
             ),
-        );
+        });
+        return {
+            fromFilePath: lastPathCandidate,
+            ...cleanConfig,
+        };
     }
 }

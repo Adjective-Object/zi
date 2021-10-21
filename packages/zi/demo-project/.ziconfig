@@ -1,0 +1,8 @@
+{
+    "closure": {
+        "inputPatterns": [
+            "**/src/**/*@(.ts|.tsx)"
+        ],
+        "tsconfigPath": "tsconfig.json"
+    }
+}

@@ -26,13 +26,22 @@ async function main() {
     const args = parsedOptions.argv.slice(
         parsedOptions.argv.indexOf(__filename) + 1,
     );
-    if (args.length === 0) {
-        throw new Error('Got empty args array, expected a list globs to build');
+    const {
+        closure: closureOptions,
+        entry,
+        fromFilePath,
+    } = await getZiConfigFromDisk(process.cwd(), parsedOptions.options.config);
+
+    console.log(`loaded config from ${fromFilePath}`);
+
+    const inputPatterns = args.length ? args : closureOptions.inputPatterns;
+
+    if (inputPatterns.length == 0) {
+        throw new Error(
+            'Got empty set of input patterns array, expected a list globs to build or a list of input patterns in the zi config.',
+        );
     }
-    const { closure: closureOptions, entry } = await getZiConfigFromDisk(
-        process.cwd(),
-        parsedOptions.options.config,
-    );
+
     const runOptions = {
         tsconfigPath:
             parsedOptions.options.tsconfig ?? closureOptions.tsconfigPath,
