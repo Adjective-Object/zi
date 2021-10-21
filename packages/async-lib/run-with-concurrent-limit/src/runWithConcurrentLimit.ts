@@ -14,7 +14,7 @@ export async function runWithConcurrentLimit<I>(
     if (progress) {
         progressBar = new CliProgress.SingleBar(
             {
-                etaBuffer: maxBatchSize,
+                etaBuffer: maxBatchSize * 2,
             },
             CliProgress.Presets.shades_grey,
         );
