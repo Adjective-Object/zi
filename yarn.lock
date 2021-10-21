@@ -1224,6 +1224,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/picomatch@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@types/picomatch@npm:2.3.0"
+  checksum: dde9572b6ca775185bd27a04ab050961f3e59b51863b1883669dcbf010aab394037af201ad9aa89373d9141cf1f5ba1f81266d3af09dfca5879298c128af928d
+  languageName: node
+  linkType: hard
+
 "@types/prettier@npm:^2.1.5":
   version: 2.3.2
   resolution: "@types/prettier@npm:2.3.2"
@@ -3306,7 +3313,7 @@ __metadata:
     eslint: ^7.32.0
     get-repo-root: "workspace:*"
     glob: ^7.1.7
-    glob-promise: ^4.1.0
+    glob-promise: ^4.2.0
     intended-config: "workspace:*"
     list-internal-devdependencies: "workspace:*"
     mkdirp: ^1.0.4
@@ -3543,7 +3550,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-promise@npm:^4.1.0, glob-promise@npm:^4.2.0":
+"glob-promise@npm:^4.2.0":
   version: 4.2.0
   resolution: "glob-promise@npm:4.2.0"
   dependencies:
@@ -7793,6 +7800,7 @@ typescript@^4.4.3:
     "@types/jest": ^27.0.1
     "@types/mz": ^2.7.3
     "@types/node": ^16.10.2
+    "@types/picomatch": ^2.3.0
     "@types/sass": ^1.16.1
     cli-progress: ^3.9.1
     colors: ^1.4.0

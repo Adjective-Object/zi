@@ -28,7 +28,7 @@
         "diff": "^5.0.0",
         "get-repo-root": "workspace:*",
         "glob": "^7.1.7",
-        "glob-promise": "^4.1.0",
+        "glob-promise": "^4.2.0",
         "intended-config": "workspace:*",
         "list-internal-devdependencies": "workspace:*",
         "mkdirp": "^1.0.4",
