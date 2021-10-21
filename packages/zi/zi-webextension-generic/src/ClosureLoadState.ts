@@ -1,1 +1,5 @@
-export type ClosureLoadState = 'unloaded' | 'success' | 'failed' | 'pending';
+export type ClosureLoadState =
+    | { type: 'unloaded' }
+    | { type: 'success' }
+    | { type: 'failed' }
+    | { type: 'pending'; processedFiles?: number };

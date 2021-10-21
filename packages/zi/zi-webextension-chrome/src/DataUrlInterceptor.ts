@@ -1,22 +1,24 @@
 import type { Browser, WebRequest } from 'webextension-polyfill';
-import { ZiClosureEntry } from 'zi-closure';
 import type {
     RequestInterceptorCleanupFn,
     IRequestInterceptor,
+    IZiWorkerBridge,
 } from 'zi-webextension-generic';
 
 export class DataUrlInterceptor implements IRequestInterceptor {
     constructor(private browser: Browser) {}
 
-    register(
-        baseUrl: string,
-        getEntryFromClosure: (closurePath: string) => ZiClosureEntry,
-    ): RequestInterceptorCleanupFn {
-        function listener(
+    register({
+        baseUrl,
+        getEntryFromClosure,
+        shouldInterceptMainPage,
+        getUpdatedDocument,
+    }: IZiWorkerBridge): RequestInterceptorCleanupFn {
+        async function listener(
             details: WebRequest.OnBeforeRequestDetailsType,
-        ): WebRequest.BlockingResponseOrPromise {
+        ): Promise<WebRequest.BlockingResponse> {
             const parsedUrl = new URL(details.url);
-            const closureEntry = getEntryFromClosure(parsedUrl.pathname);
+            const closureEntry = await getEntryFromClosure(parsedUrl.pathname);
 
             if (closureEntry) {
                 // intercept the request and serve from closure

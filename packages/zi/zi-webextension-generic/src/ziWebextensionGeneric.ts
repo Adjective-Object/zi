@@ -1,2 +1,2 @@
-export * from './sw';
-export * from './popup';
+export * from './ziWebextensionGenericWorker';
+export * from './ziWebextensionGenericPopup';

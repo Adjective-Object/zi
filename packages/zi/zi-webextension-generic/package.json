@@ -5,11 +5,11 @@
     "types": "lib/types/ziWebextensionGeneric.d.ts",
     "exports": {
         ".": "./lib/mjs/ziWebextensionGeneric.js",
-        "./lib/sw": "./lib/mjs/sw.js",
-        "./lib/popup": "./lib/mjs/popup.js",
+        "./lib/ziWebextensionGenericWorker": "./lib/mjs/ziWebextensionGenericWorker.js",
+        "./lib/ziWebextensionGenericPopup": "./lib/mjs/ziWebextensionGenericPopup.js",
         "./lib/cjs": "./lib/cjs/ziWebextensionGeneric.js",
-        "./lib/cjs/sw": "./lib/cjs/sw.js",
-        "./lib/cjs/popup": "./lib/cjs/popup.js"
+        "./lib/cjs/ziWebextensionGenericWorker": "./lib/cjs/ziWebextensionGenericWorker.js",
+        "./lib/cjs/ziWebextensionGenericPopup": "./lib/cjs/ziWebextensionGenericPopup.js"
     },
     "scripts": {
         "build": "tsc -b ./tsconfig.json",

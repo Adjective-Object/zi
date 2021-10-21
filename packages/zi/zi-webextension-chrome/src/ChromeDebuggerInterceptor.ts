@@ -1,17 +1,14 @@
 import type { Browser, WebRequest } from 'webextension-polyfill';
-import { ZiClosureEntry } from 'zi-closure';
 import type {
     RequestInterceptorCleanupFn,
     IRequestInterceptor,
+    IZiWorkerBridge,
 } from 'zi-webextension-generic';
 
 export class ChromeDebuggerInterceptor implements IRequestInterceptor {
     constructor(private chromeBrowser: typeof chrome) {}
 
-    register(
-        baseUrl: string,
-        getEntryFromClosure: (closurePath: string) => ZiClosureEntry,
-    ): RequestInterceptorCleanupFn {
+    register({}: IZiWorkerBridge): RequestInterceptorCleanupFn {
         // this.chromeBrowser.debugger.getTargets((targets) => {
         //     console.log('found targets', targets);
         //     let target = targets[0]; // TODO find the target somehow?

@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import { fdir } from 'fdir';
 import { Loader, transform } from 'esbuild';
 import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
-import type { ZiClosure } from 'zi-closure';
+import { serializeStreamEntry, ZiClosureMeta } from 'zi-closure';
 import { relative as relativePath } from 'path';
 import { slash } from 'mod-slash';
 import { renderSync as renderSassSync } from 'sass';
@@ -202,7 +202,7 @@ export async function run(options: RunOptions) {
             });
         });
 
-    const closureMeta: ZiClosure['meta'] = {
+    const closureMeta: ZiClosureMeta = {
         compilation: {
             timestamp: new Date().toISOString(),
             id: nanoid(),
@@ -212,9 +212,7 @@ export async function run(options: RunOptions) {
 
     // identify the closure with a random ID so the service worker
     // can detect if it is out of sync with the main app
-    await outStreamWrite(
-        `{"meta": ${JSON.stringify(closureMeta)}, "closure": {\n`,
-    );
+    await outStreamWrite(serializeStreamEntry('meta', closureMeta));
 
     // check if the list is globs or files
     const inputIsFiles = (
@@ -280,13 +278,16 @@ export async function run(options: RunOptions) {
                         loader: getLoaderFromExtension(crawlPath),
                     });
 
+                    // don't write into the closure if the file was empty
+                    // (e.g. it was a type-only file)
                     if (transformResult.code.length) {
-                        // don't write into the closure if the file was empty
-                        // (e.g. it was a type-only file)
+                        const entryName =
+                            '/' + slash(relativePath(rootDir, crawlPath));
                         await outStreamWrite(
-                            `${JSON.stringify(
-                                '/' + slash(relativePath(rootDir, crawlPath)),
-                            )}: ${JSON.stringify(transformResult.code)},\n`,
+                            serializeStreamEntry(
+                                entryName,
+                                transformResult.code,
+                            ),
                         );
                     }
 

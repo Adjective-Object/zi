@@ -15,5 +15,11 @@
             "128": "/images/zi-128.png"
         }
     },
-    "permissions": ["<all_urls>", "webRequest", "webRequestBlocking"]
+    "permissions": [
+        "<all_urls>",
+        "webRequest",
+        "webRequestBlocking",
+        "storage",
+        "unlimitedStorage"
+    ]
 }

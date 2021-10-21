@@ -66,8 +66,14 @@ const BundleInfo = observer(function BundleInfo(props: {
     const closureLoadState = props.state.closureLoadState;
     return (
         <div>
-            <div>Closure Load State?: {closureLoadState}</div>
-            {closureLoadState === 'failed' ? (
+            <div>
+                Closure Load State?:{' '}
+                {closureLoadState.type === 'pending' &&
+                closureLoadState.processedFiles
+                    ? `pending (${closureLoadState.processedFiles} files)`
+                    : closureLoadState.type}
+            </div>
+            {closureLoadState.type === 'failed' ? (
                 <div>
                     Was closure available at{' '}
                     <a href={getClosureUrl(props.state)}>
