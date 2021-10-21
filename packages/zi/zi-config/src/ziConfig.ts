@@ -1,6 +1,7 @@
 import { readFile as readFileCb, stat as statCb } from 'fs';
 import type { Stats } from 'fs';
 import { promisify } from 'util';
+import * as CommentJson from 'comment-json';
 import path from 'path';
 
 const readFilePromise = promisify(readFileCb);
@@ -12,7 +13,7 @@ export type ZiEntrypointOptions = {
      *
      * When a script is intercepted, any
      * entrypoint scripts will be substituted
-     * for any
+     * for according to scriptOverrideMap
      */
     entrypointPaths: string[];
 
@@ -163,7 +164,9 @@ export async function getZiConfigFromDisk(
         );
     } else {
         return cleanupConfig(
-            JSON.parse(await readFilePromise(lastPathCandidate, 'utf-8')),
+            CommentJson.parse(
+                await readFilePromise(lastPathCandidate, 'utf-8'),
+            ),
         );
     }
 }
