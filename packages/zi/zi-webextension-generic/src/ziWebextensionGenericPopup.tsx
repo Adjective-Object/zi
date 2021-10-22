@@ -69,8 +69,16 @@ const BundleInfo = observer(function BundleInfo(props: {
             <div>
                 Closure Load State?:{' '}
                 {closureLoadState.type === 'pending' &&
-                closureLoadState.processedFiles
-                    ? `pending (${closureLoadState.processedFiles} files)`
+                closureLoadState.processedFiles &&
+                closureLoadState.totalFileCount
+                    ? `pending (${closureLoadState.processedFiles} / ${
+                          closureLoadState.totalFileCount
+                      } files (${
+                          Math.round(
+                              (1000 * closureLoadState.processedFiles) /
+                                  closureLoadState.totalFileCount,
+                          ) / 10
+                      }%))`
                     : closureLoadState.type}
             </div>
             {closureLoadState.type === 'failed' ? (

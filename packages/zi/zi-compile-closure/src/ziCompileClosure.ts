@@ -26,15 +26,17 @@ export type RunOptions = {
     expectErrorOn: string[];
     expectWarningOn: string[];
     progressBar: boolean;
+    singleModuleWarningSize: number;
+    minify: boolean;
     entry: ZiEntrypointOptions;
 };
 
 const readFile = promisify(readFileCb);
 const stat = promisify(statCb);
 
-type HasLocation = {
+type MayHaveLocation = {
     pluginName?: string;
-    location: {
+    location?: {
         column: number;
         line: number;
     };
@@ -44,13 +46,15 @@ type HasLocation = {
 
 function formatSingleErrorOrWarning(
     filePath: string,
-    error: HasLocation,
+    error: MayHaveLocation,
 ): string {
-    return `${error.pluginName ? `[${error.pluginName}] ` : ''}${filePath}:${
-        error.location.line
-    }:${error.location.column}  ${error.text}${
-        error.detail ? ` (${error.detail})` : ''
-    }`;
+    return (
+        `${error.pluginName ? `[${error.pluginName}] ` : ''}${filePath}` +
+        (error.location
+            ? `:${error.location.line}:${error.location.column}`
+            : '') +
+        ` ${error.text}${error.detail ? ` (${error.detail})` : ''}`
+    );
 }
 
 function formatError(filePath: string, e: any) {
@@ -188,6 +192,8 @@ export async function run(options: RunOptions) {
         entry,
         expectErrorOn,
         expectWarningOn,
+        singleModuleWarningSize,
+        minify,
     } = options;
     const tsconfigRaw = await readFile(tsconfigPath, 'utf-8').then(JSON.parse);
     const outStream = createWriteStream(outputPath);
@@ -201,18 +207,6 @@ export async function run(options: RunOptions) {
                 }
             });
         });
-
-    const closureMeta: ZiClosureMeta = {
-        compilation: {
-            timestamp: new Date().toISOString(),
-            id: nanoid(),
-        },
-        entry,
-    };
-
-    // identify the closure with a random ID so the service worker
-    // can detect if it is out of sync with the main app
-    await outStreamWrite(serializeStreamEntry('meta', closureMeta) + '\n');
 
     // check if the list is globs or files
     const inputIsFiles = (
@@ -261,6 +255,19 @@ export async function run(options: RunOptions) {
               .crawl(resolvedRootDir)
               .withPromise() as Promise<string[]>);
 
+    const closureMeta: ZiClosureMeta = {
+        compilation: {
+            timestamp: new Date().toISOString(),
+            id: nanoid(),
+        },
+        entry,
+        fileCount: fileList.length,
+    };
+
+    // identify the closure with a random ID so the service worker
+    // can detect if it is out of sync with the main app
+    await outStreamWrite(serializeStreamEntry('meta', closureMeta) + '\n');
+
     if (fileList.length) {
         // transpile them with a concurrent limit
         await runWithConcurrentLimit(
@@ -276,11 +283,33 @@ export async function run(options: RunOptions) {
                     const transformResult = await transform(fileContent, {
                         tsconfigRaw,
                         loader: getLoaderFromExtension(crawlPath),
+                        minify,
                     });
 
                     // don't write into the closure if the file was empty
                     // (e.g. it was a type-only file)
                     if (transformResult.code.length) {
+                        if (
+                            transformResult.code.length >
+                            singleModuleWarningSize
+                        ) {
+                            const customWarning: MayHaveLocation = {
+                                pluginName: 'zi-closure',
+
+                                text: `Large entry "${path.relative(
+                                    process.cwd(),
+                                    crawlPath,
+                                )}" (${
+                                    Math.round(
+                                        transformResult.code.length / 10000,
+                                    ) / 100
+                                } MB)`,
+                            };
+                            transformResult.warnings = [
+                                ...(transformResult.warnings ?? []),
+                                customWarning as any,
+                            ];
+                        }
                         const entryName =
                             '/' + slash(relativePath(rootDir, crawlPath));
                         await outStreamWrite(
@@ -325,8 +354,8 @@ export async function run(options: RunOptions) {
                     );
                 } catch (e) {
                     const errLike = e as {
-                        warnings?: HasLocation[];
-                        errors?: HasLocation[];
+                        warnings?: MayHaveLocation[];
+                        errors?: MayHaveLocation[];
                     };
                     const unexpectedErrorLike = {
                         warnings:

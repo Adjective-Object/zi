@@ -48,6 +48,8 @@ async function main() {
             : closureOptions.preProcessSass,
         expectErrorOn: closureOptions.expectErrorOn,
         expectWarningOn: closureOptions.expectWarningOn,
+        singleModuleWarningSize: closureOptions.singleModuleWarningSize,
+        minify: closureOptions.minify,
         entry,
     };
     console.log('running with options', runOptions);

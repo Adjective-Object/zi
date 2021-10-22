@@ -6,6 +6,7 @@ export type ZiClosureMeta = {
         timestamp: string;
     };
     entry: ZiEntrypointOptions;
+    fileCount: number;
 };
 
 export type ZiClosureEntry = string;

@@ -22,11 +22,6 @@ export async function streamZiClosure(
         //
         // TODO figure out how multibyte characters are handled
         // when streaming as a uint8array.
-        console.log(
-            'nextChunk.byteLength',
-            nextChunk.byteLength,
-            accumulatedString.length,
-        );
         if (consecutiveFailedReads > 10) {
             console.log(accumulatedString);
             throw new Error(
@@ -36,14 +31,13 @@ export async function streamZiClosure(
         accumulatedString += decoder.decode(nextChunk);
         let nextEntry: [string, any, number] | null = null;
         while (true) {
-            if (accumulatedString[currentAccumulatedOffset] == '\n') {
+            while (/\s/.exec(accumulatedString[currentAccumulatedOffset])) {
                 currentAccumulatedOffset += 1;
             }
             nextEntry = tryGetEntryFromString(
                 accumulatedString,
                 currentAccumulatedOffset,
             );
-            console.log('nextEntry', nextEntry);
             if (nextEntry === null) {
                 // break and read next chunk
                 consecutiveFailedReads += 1;
@@ -56,7 +50,6 @@ export async function streamZiClosure(
             }
         }
         if (accumulatedString.length >= SOFT_MAX_ACCUM_BUFFER) {
-            console.log('slicing accumulated string!');
             // update accumulated string and offset to avoid eating too much memory
             accumulatedString = accumulatedString.slice(
                 currentAccumulatedOffset,

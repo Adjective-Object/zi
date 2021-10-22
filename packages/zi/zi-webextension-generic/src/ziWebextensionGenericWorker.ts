@@ -1,9 +1,12 @@
 import { autorun, observable } from 'mobx';
-import { Browser, storage } from 'webextension-polyfill';
+import { Browser, Runtime, storage } from 'webextension-polyfill';
 import { ClosureLoadState } from './ClosureLoadState';
 import { getClosureUrl } from './getClosureUrl';
 import { isKnownMessage } from './isKnownMessage';
-import type { StatsForPopoupMessage as StateForPopoupMessage } from './messageDefinitions';
+import type {
+    KnownMessage,
+    StatsForPopoupMessage as StateForPopoupMessage,
+} from './messageDefinitions';
 import type { ZiClosureMeta } from 'zi-closure';
 import { streamZiClosure } from './streamZiClosure';
 
@@ -17,14 +20,18 @@ function closureKey(closureMeta: ZiClosureMeta, fileName: string): string {
     return `${closureMeta.compilation.id}_${fileName}`;
 }
 
-async function storeInClosure(
+async function batchStoreInClosure(
     closureMeta: ZiClosureMeta,
-    name: string,
-    entryContent: string,
+    entries: [string, string][],
 ) {
-    await storage.local.set({
-        [closureKey(closureMeta, name)]: entryContent,
-    });
+    await storage.local.set(
+        Object.fromEntries(
+            entries.map(([name, entryContent]) => [
+                closureKey(closureMeta, name),
+                entryContent,
+            ]),
+        ),
+    );
 }
 
 async function clearStoredClosure() {
@@ -40,7 +47,8 @@ async function getFromStoredClosure(
     return storedResult[key] ?? null;
 }
 
-type OnClosureUpdatedCb = () => void;
+type OnClosureUpdatedCb = (meta: ZiClosureMeta) => void;
+const BATCH_STORE_SIZE = 1000;
 
 async function fetchClosure(
     state: ExtensionState,
@@ -54,6 +62,20 @@ async function fetchClosure(
     const bodyChunkReader = result.body.getReader();
     let thisClosureMeta: ZiClosureMeta | null = null;
     let pendingStoragePromises: Promise<void>[] = [];
+
+    let collection: [string, string][] = [];
+    function collectForStorage(name: string, entry: string) {
+        if (!thisClosureMeta) {
+            throw new Error('got entry before meta');
+        }
+        collection.push([name, entry]);
+        if (collection.length >= BATCH_STORE_SIZE) {
+            batchStoreInClosure(thisClosureMeta, collection);
+            onClosureUpdated(thisClosureMeta);
+            collection = [];
+        }
+    }
+
     await streamZiClosure(bodyChunkReader, (name: string, entry: any) => {
         if (name === 'meta') {
             thisClosureMeta = entry;
@@ -61,20 +83,18 @@ async function fetchClosure(
             if (typeof entry !== 'string') {
                 throw new Error(`entry had unexpected type ${typeof entry}`);
             }
-            if (!thisClosureMeta) {
-                throw new Error('got entry before meta');
-            }
-            pendingStoragePromises.push(
-                storeInClosure(thisClosureMeta, name, entry).then(
-                    onClosureUpdated,
-                ),
-            );
+            collectForStorage(name, entry);
         }
     });
-    await Promise.all(pendingStoragePromises);
+
     if (thisClosureMeta === null) {
         throw new Error('Closure did not contain a meta entry?');
     } else {
+        // store remaining collection
+        batchStoreInClosure(thisClosureMeta, collection);
+        // await pending storage transactions
+        await Promise.all(pendingStoragePromises);
+
         // update the closureMeta in the storage
         return thisClosureMeta;
     }
@@ -124,10 +144,23 @@ export function serviceWorkerMain(
         console.log('onInstalled!');
     });
 
-    browser.runtime.onConnect.addListener((port) => {
-        port.onMessage.addListener(async (message) => {
-            console.log('message', message);
+    const activePorts: Set<Runtime.Port> = new Set();
+    function broadcastOnOpenPorts(message: KnownMessage) {
+        for (let port of activePorts) {
+            try {
+                port.postMessage(message);
+            } catch {}
+        }
+    }
 
+    browser.runtime.onConnect.addListener((port: Runtime.Port) => {
+        activePorts.add(port);
+
+        port.onDisconnect.addListener(() => {
+            activePorts.delete(port);
+        });
+
+        port.onMessage.addListener(async (message) => {
             if (isKnownMessage(message)) {
                 switch (message.type) {
                     case 'popup_ready': {
@@ -152,21 +185,26 @@ export function serviceWorkerMain(
                                 let processedFiles = 0;
                                 state.closureMeta = await fetchClosure(
                                     state,
-                                    () => {
+                                    (meta: ZiClosureMeta) => {
                                         processedFiles += 1;
-                                        state.closureLoadState = {
-                                            type: 'pending',
-                                            processedFiles,
-                                        };
-                                        port.postMessage(getStateMessage());
+                                        if (
+                                            state.closureLoadState.type ===
+                                            'pending'
+                                        ) {
+                                            state.closureLoadState.processedFiles =
+                                                processedFiles;
+                                            state.closureLoadState.totalFileCount =
+                                                meta.fileCount;
+                                        }
+                                        broadcastOnOpenPorts(getStateMessage());
                                     },
                                 );
                                 state.closureLoadState = { type: 'success' };
-                                port.postMessage(getStateMessage());
+                                broadcastOnOpenPorts(getStateMessage());
                             } catch (e) {
                                 console.error(e);
                                 state.closureLoadState = { type: 'failed' };
-                                port.postMessage(getStateMessage());
+                                broadcastOnOpenPorts(getStateMessage());
                             }
                             return;
                         }

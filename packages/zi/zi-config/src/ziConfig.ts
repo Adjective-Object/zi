@@ -76,6 +76,12 @@ export type ZiClosureOptions = {
      * are not transpileable (e.g. preamble / outro script fragments)
      */
     expectWarningOn: string[];
+    /**
+     * If a single module has more than this number of characters in its
+     * string, print a warning during compilation
+     */
+    singleModuleWarningSize: number;
+    minify: boolean;
 };
 
 export type ZiConfig = {
@@ -96,13 +102,15 @@ const DEFAULT_CONFIG: ZiConfig = {
     },
     closure: {
         tsconfigPath: 'tsconfig.json',
-        outputPath: 'zi-closure.json',
+        outputPath: 'zi-closure',
         rootDir: '.',
         concurrency: 200,
         preProcessSass: true,
         inputPatterns: ['**/*.js', '**/*.ts'],
         expectErrorOn: [],
         expectWarningOn: [],
+        singleModuleWarningSize: 1000000,
+        minify: true,
     },
 };
 
