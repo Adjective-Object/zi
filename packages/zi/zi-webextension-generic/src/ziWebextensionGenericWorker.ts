@@ -1,5 +1,5 @@
 import { autorun, observable } from 'mobx';
-import { Browser, Runtime, storage } from 'webextension-polyfill';
+import { Browser, Runtime } from 'webextension-polyfill';
 import { ClosureLoadState } from './ClosureLoadState';
 import { getClosureUrl } from './getClosureUrl';
 import { isKnownMessage } from './isKnownMessage';
@@ -7,8 +7,10 @@ import type {
     KnownMessage,
     StatsForPopoupMessage as StateForPopoupMessage,
 } from './messageDefinitions';
-import type { ZiClosureMeta } from 'zi-closure';
-import { streamZiClosure } from './streamZiClosure';
+import { ZI_CLOSURE_FORMAT_VERSION, ZiClosureMeta } from 'zi-closure';
+import { ZiClosureStreamer } from './streamZiClosure';
+
+declare const browser: Browser;
 
 type ExtensionState = {
     closureMeta: ZiClosureMeta | null;
@@ -20,11 +22,11 @@ function closureKey(closureMeta: ZiClosureMeta, fileName: string): string {
     return `${closureMeta.compilation.id}_${fileName}`;
 }
 
-async function batchStoreInClosure(
+async function batchStoreClosureEntries(
     closureMeta: ZiClosureMeta,
     entries: [string, string][],
 ) {
-    await storage.local.set(
+    await browser.storage.local.set(
         Object.fromEntries(
             entries.map(([name, entryContent]) => [
                 closureKey(closureMeta, name),
@@ -32,10 +34,29 @@ async function batchStoreInClosure(
             ]),
         ),
     );
+    console.log('finished pushing to storage');
+}
+
+async function getStoredClosureMeta(): Promise<ZiClosureMeta | null> {
+    const storedMeta =
+        ((await browser.storage.local.get('stored_meta'))[
+            'stored_meta'
+        ] as ZiClosureMeta) || undefined;
+    if (storedMeta && storedMeta.version === ZI_CLOSURE_FORMAT_VERSION) {
+        return storedMeta;
+    } else {
+        return null;
+    }
+}
+
+async function setStoredClosureMeta(meta: ZiClosureMeta): Promise<void> {
+    await browser.storage.local.set({
+        stored_meta: JSON.stringify(meta),
+    });
 }
 
 async function clearStoredClosure() {
-    await storage.local.clear();
+    await browser.storage.local.clear();
 }
 
 async function getFromStoredClosure(
@@ -43,11 +64,11 @@ async function getFromStoredClosure(
     name: string,
 ): Promise<string | null> {
     const key = closureKey(closureMeta, name);
-    const storedResult = await storage.local.get([key]);
+    const storedResult = await browser.storage.local.get([key]);
     return storedResult[key] ?? null;
 }
 
-type OnClosureUpdatedCb = (meta: ZiClosureMeta) => void;
+type OnClosureUpdatedCb = (meta: ZiClosureMeta, currentCount: number) => void;
 const BATCH_STORE_SIZE = 1000;
 
 async function fetchClosure(
@@ -56,13 +77,15 @@ async function fetchClosure(
 ): Promise<ZiClosureMeta> {
     const closureUrl = getClosureUrl(state);
     const result = await fetch(closureUrl);
-    if (!result.body) {
+    const resultBody = result.body;
+    if (!resultBody) {
         throw new Error('Tried to fetch bodyless closure');
     }
-    const bodyChunkReader = result.body.getReader();
+    const bodyChunkReader = resultBody.getReader();
     let thisClosureMeta: ZiClosureMeta | null = null;
     let pendingStoragePromises: Promise<void>[] = [];
 
+    let totalStored = 0;
     let collection: [string, string][] = [];
     function collectForStorage(name: string, entry: string) {
         if (!thisClosureMeta) {
@@ -70,30 +93,68 @@ async function fetchClosure(
         }
         collection.push([name, entry]);
         if (collection.length >= BATCH_STORE_SIZE) {
-            batchStoreInClosure(thisClosureMeta, collection);
-            onClosureUpdated(thisClosureMeta);
+            const mylen = collection.length;
+            const metaOnUpdate = thisClosureMeta;
+            pendingStoragePromises.push(
+                batchStoreClosureEntries(metaOnUpdate, collection).then(() => {
+                    totalStored += mylen;
+                    onClosureUpdated(metaOnUpdate, totalStored);
+                }),
+            );
             collection = [];
         }
     }
 
-    await streamZiClosure(bodyChunkReader, (name: string, entry: any) => {
-        if (name === 'meta') {
-            thisClosureMeta = entry;
-        } else {
-            if (typeof entry !== 'string') {
-                throw new Error(`entry had unexpected type ${typeof entry}`);
+    const oldStoredClosureMeta = await getStoredClosureMeta();
+
+    const closureStreamer = new ZiClosureStreamer(
+        bodyChunkReader,
+        async (name: string, entry: any) => {
+            if (name === 'meta') {
+                thisClosureMeta = entry as ZiClosureMeta;
+                if (thisClosureMeta.version !== ZI_CLOSURE_FORMAT_VERSION) {
+                    throw new Error(
+                        `Tried to load incompatible closure version ${ZI_CLOSURE_FORMAT_VERSION}, got ${thisClosureMeta.version}`,
+                    );
+                }
+                if (
+                    thisClosureMeta &&
+                    oldStoredClosureMeta?.compilation.id ===
+                        thisClosureMeta.compilation.id
+                ) {
+                    console.log('old stored closure was already a match');
+                    closureStreamer.abortStream();
+                    bodyChunkReader.cancel();
+                    resultBody.cancel();
+                } else {
+                    await clearStoredClosure();
+                }
+            } else {
+                if (typeof entry !== 'string') {
+                    throw new Error(
+                        `entry had unexpected type ${typeof entry}`,
+                    );
+                }
+                collectForStorage(name, entry);
             }
-            collectForStorage(name, entry);
-        }
-    });
+        },
+    );
+
+    await closureStreamer.stream();
 
     if (thisClosureMeta === null) {
         throw new Error('Closure did not contain a meta entry?');
     } else {
-        // store remaining collection
-        batchStoreInClosure(thisClosureMeta, collection);
+        console.log('finalising any pending closure entries');
+        // store remaining collection and
         // await pending storage transactions
-        await Promise.all(pendingStoragePromises);
+        await Promise.all([
+            ...pendingStoragePromises,
+            batchStoreClosureEntries(thisClosureMeta, collection),
+        ]);
+        onClosureUpdated(thisClosureMeta, totalStored);
+        // update the stored closure for the next time we try to load
+        await setStoredClosureMeta(thisClosureMeta);
 
         // update the closureMeta in the storage
         return thisClosureMeta;
@@ -134,7 +195,6 @@ export function serviceWorkerMain(
     requestInterceptor: IRequestInterceptor,
 ) {
     const state: ExtensionState = observable({
-        // TODO restore last meta from storage
         closureMeta: null,
         closureLoadState: { type: 'unloaded' },
         baseUrl: initialBaseUrl,
@@ -142,6 +202,18 @@ export function serviceWorkerMain(
 
     browser.runtime.onInstalled.addListener(() => {
         console.log('onInstalled!');
+        if (state.closureMeta === null) {
+            // load initial stored closure from local storage
+            getStoredClosureMeta().then((meta) => {
+                if (meta) {
+                    state.closureMeta = meta;
+                    state.closureLoadState = {
+                        type: 'success',
+                    };
+                    broadcastOnOpenPorts(getStateMessage());
+                }
+            });
+        }
     });
 
     const activePorts: Set<Runtime.Port> = new Set();
@@ -180,13 +252,13 @@ export function serviceWorkerMain(
                             state.closureMeta = null;
                             state.closureLoadState = { type: 'pending' };
                             port.postMessage(getStateMessage());
-                            await clearStoredClosure();
                             try {
-                                let processedFiles = 0;
                                 state.closureMeta = await fetchClosure(
                                     state,
-                                    (meta: ZiClosureMeta) => {
-                                        processedFiles += 1;
+                                    (
+                                        meta: ZiClosureMeta,
+                                        processedFiles: number,
+                                    ) => {
                                         if (
                                             state.closureLoadState.type ===
                                             'pending'
@@ -199,6 +271,7 @@ export function serviceWorkerMain(
                                         broadcastOnOpenPorts(getStateMessage());
                                     },
                                 );
+                                console.log('closure finished load!');
                                 state.closureLoadState = { type: 'success' };
                                 broadcastOnOpenPorts(getStateMessage());
                             } catch (e) {

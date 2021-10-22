@@ -4,7 +4,11 @@ import { promisify } from 'util';
 import { fdir } from 'fdir';
 import { Loader, transform } from 'esbuild';
 import { runWithConcurrentLimit } from 'run-with-concurrent-limit';
-import { serializeStreamEntry, ZiClosureMeta } from 'zi-closure';
+import {
+    serializeStreamEntry,
+    ZI_CLOSURE_FORMAT_VERSION,
+    ZiClosureMeta,
+} from 'zi-closure';
 import { relative as relativePath } from 'path';
 import { slash } from 'mod-slash';
 import { renderSync as renderSassSync } from 'sass';
@@ -262,6 +266,7 @@ export async function run(options: RunOptions) {
         },
         entry,
         fileCount: fileList.length,
+        version: ZI_CLOSURE_FORMAT_VERSION,
     };
 
     // identify the closure with a random ID so the service worker
@@ -295,11 +300,7 @@ export async function run(options: RunOptions) {
                         ) {
                             const customWarning: MayHaveLocation = {
                                 pluginName: 'zi-closure',
-
-                                text: `Large entry "${path.relative(
-                                    process.cwd(),
-                                    crawlPath,
-                                )}" (${
+                                text: `Large entry (${
                                     Math.round(
                                         transformResult.code.length / 10000,
                                     ) / 100
@@ -391,11 +392,6 @@ export async function run(options: RunOptions) {
     } else {
         console.warn('Found no files matching input globs!');
     }
-
-    // write a single line with no trailing comma
-    await outStreamWrite(`"__dummy__": null`);
-
-    await outStreamWrite('}}');
 
     outStream.close();
 }

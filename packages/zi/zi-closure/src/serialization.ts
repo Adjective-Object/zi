@@ -55,3 +55,21 @@ export function tryGetEntryFromString(
         endOfEntryLenOffset + 1 + entryLen,
     ];
 }
+
+export function tryLookAheadRequiredLength(
+    bufferString: string,
+    initialOffset: number,
+): number | null {
+    const nl = accumulateNumber(bufferString, initialOffset);
+    if (nl == null) {
+        return null;
+    }
+    const [nameLen, endOfNameLenOffset] = nl;
+    // add 1 to skip the colon
+    const el = accumulateNumber(bufferString, endOfNameLenOffset + 1 + nameLen);
+    if (el == null) {
+        return null;
+    }
+    const [entryLen, endOfEntryLenOffset] = el;
+    return endOfEntryLenOffset + 1 + entryLen;
+}

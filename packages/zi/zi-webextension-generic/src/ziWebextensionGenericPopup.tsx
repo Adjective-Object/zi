@@ -74,9 +74,10 @@ const BundleInfo = observer(function BundleInfo(props: {
                     ? `pending (${closureLoadState.processedFiles} / ${
                           closureLoadState.totalFileCount
                       } files (${
-                          Math.round(
-                              (1000 * closureLoadState.processedFiles) /
-                                  closureLoadState.totalFileCount,
+                          Math.floor(
+                              1000 *
+                                  (closureLoadState.processedFiles /
+                                      closureLoadState.totalFileCount),
                           ) / 10
                       }%))`
                     : closureLoadState.type}
