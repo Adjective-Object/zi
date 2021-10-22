@@ -39,10 +39,14 @@ async function batchStoreClosureEntries(
 
 async function getStoredClosureMeta(): Promise<ZiClosureMeta | null> {
     const storedMeta =
-        ((await browser.storage.local.get('stored_meta'))[
+        ((await browser.storage.local.get(['stored_meta']))[
             'stored_meta'
         ] as ZiClosureMeta) || undefined;
-    if (storedMeta && storedMeta.version === ZI_CLOSURE_FORMAT_VERSION) {
+    if (
+        storedMeta &&
+        (storedMeta as Partial<ZiClosureMeta>)?.version ===
+            ZI_CLOSURE_FORMAT_VERSION
+    ) {
         return storedMeta;
     } else {
         return null;
@@ -51,7 +55,7 @@ async function getStoredClosureMeta(): Promise<ZiClosureMeta | null> {
 
 async function setStoredClosureMeta(meta: ZiClosureMeta): Promise<void> {
     await browser.storage.local.set({
-        stored_meta: JSON.stringify(meta),
+        stored_meta: metam,
     });
 }
 

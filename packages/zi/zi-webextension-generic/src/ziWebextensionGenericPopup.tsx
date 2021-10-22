@@ -80,6 +80,8 @@ const BundleInfo = observer(function BundleInfo(props: {
                                       closureLoadState.totalFileCount),
                           ) / 10
                       }%))`
+                    : closureLoadState.type === 'success'
+                    ? `Loaded ${props.state.closureId}`
                     : closureLoadState.type}
             </div>
             {closureLoadState.type === 'failed' ? (
