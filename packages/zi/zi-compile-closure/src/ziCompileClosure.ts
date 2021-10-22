@@ -212,7 +212,7 @@ export async function run(options: RunOptions) {
 
     // identify the closure with a random ID so the service worker
     // can detect if it is out of sync with the main app
-    await outStreamWrite(serializeStreamEntry('meta', closureMeta));
+    await outStreamWrite(serializeStreamEntry('meta', closureMeta) + '\n');
 
     // check if the list is globs or files
     const inputIsFiles = (
@@ -287,7 +287,7 @@ export async function run(options: RunOptions) {
                             serializeStreamEntry(
                                 entryName,
                                 transformResult.code,
-                            ),
+                            ) + '\n',
                         );
                     }
 

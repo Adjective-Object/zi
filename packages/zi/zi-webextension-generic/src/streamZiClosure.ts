@@ -36,6 +36,9 @@ export async function streamZiClosure(
         accumulatedString += decoder.decode(nextChunk);
         let nextEntry: [string, any, number] | null = null;
         while (true) {
+            if (accumulatedString[currentAccumulatedOffset] == '\n') {
+                currentAccumulatedOffset += 1;
+            }
             nextEntry = tryGetEntryFromString(
                 accumulatedString,
                 currentAccumulatedOffset,
